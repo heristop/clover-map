@@ -1,0 +1,124 @@
+{
+    "bug-tracking": {
+      "name": "Bug Tracking",
+      "path": "/bug-tracking",
+      "children": [
+        {
+          "name": "Frontend",
+          "path": "/bug-tracking/frontend",
+          "status": "open",
+          "children": [
+            {
+              "name": "Bug 1 - UI issue",
+              "path": "/bug-tracking/frontend/bug1",
+              "status": "assigned",
+              "children": [
+                {
+                  "name": "Bug Reported",
+                  "path": "/bug-tracking/frontend/bug1/report",
+                  "status": "completed",
+                  "children": []
+                },
+                {
+                  "name": "Bug Analysis",
+                  "path": "/bug-tracking/frontend/bug1/analysis",
+                  "status": "in_progress",
+                  "children": []
+                },
+                {
+                  "name": "Bug Fix",
+                  "path": "/bug-tracking/frontend/bug1/fix",
+                  "status": "pending",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "Bug 2 - CSS issue",
+              "path": "/bug-tracking/frontend/bug2",
+              "status": "new",
+              "children": [
+                {
+                  "name": "Bug Reported",
+                  "path": "/bug-tracking/frontend/bug2/report",
+                  "status": "completed",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Backend",
+          "path": "/bug-tracking/backend",
+          "status": "open",
+          "children": [
+            {
+              "name": "Bug 1 - API issue",
+              "path": "/bug-tracking/backend/bug1",
+              "status": "in_progress",
+              "children": [
+                {
+                  "name": "Bug Reported",
+                  "path": "/bug-tracking/backend/bug1/report",
+                  "status": "completed",
+                  "children": []
+                },
+                {
+                  "name": "Bug Analysis",
+                  "path": "/bug-tracking/backend/bug1/analysis",
+                  "status": "completed",
+                  "children": []
+                },
+                {
+                  "name": "Bug Fix",
+                  "path": "/bug-tracking/backend/bug1/fix",
+                  "status": "in_progress",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Database",
+          "path": "/bug-tracking/database",
+          "status": "closed",
+          "children": [
+            {
+              "name": "Bug 1 - Query optimization",
+              "path": "/bug-tracking/database/bug1",
+              "status": "resolved",
+              "children": [
+                {
+                  "name": "Bug Reported",
+                  "path": "/bug-tracking/database/bug1/report",
+                  "status": "completed",
+                  "children": []
+                },
+                {
+                  "name": "Bug Analysis",
+                  "path": "/bug-tracking/database/bug1/analysis",
+                  "status": "completed",
+                  "children": []
+                },
+                {
+                  "name": "Bug Fix",
+                  "path": "/bug-tracking/database/bug1/fix",
+                  "status": "completed",
+                  "children": []
+                },
+                {
+                  "name": "Testing",
+                  "path": "/bug-tracking/database/bug1/testing",
+                  "status": "completed",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+  
