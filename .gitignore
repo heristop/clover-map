@@ -21,4 +21,13 @@ logs
 # Local env files
 .env
 .env.*
-!.env.example
+!.env.
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
