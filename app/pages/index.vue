@@ -2,14 +2,14 @@
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from '~/composables/store'
 
-const sectionStore = useStore()
+const store = useStore()
 const isLoading = ref<boolean>(true)
-const sections = computed(() => sectionStore.sections)
+const sections = computed(() => store.sections)
 const router = useRouter()
 
 const loadConfigFromApi = async (model: string) => {
   isLoading.value = true
-  await sectionStore.fetchSections(model)
+  await store.fetchSections(model)
   isLoading.value = false
   router.push('/panel')
 }
@@ -58,5 +58,7 @@ onMounted(() => {
         Load Recruitment Data
       </button>
     </div>
+
+    <TreeFooter />
   </div>
 </template>

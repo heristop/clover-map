@@ -1,9 +1,8 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
-import { $fetch } from 'ofetch'
 import type { Section } from '~~/types'
 
 async function fetchConfig(model: string): Promise<Section[]> {
-  return await $fetch(`/configs/${model}.json`, { baseURL: useRuntimeConfig().apiUrl })
+  return await $fetch(`/configs/${model}.json`, { baseURL: useRuntimeConfig().apiBase })
 }
 
 export default defineCachedEventHandler(async (event: H3Event<EventHandlerRequest>): Promise<Section[]> => {

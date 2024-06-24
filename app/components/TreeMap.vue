@@ -4,9 +4,9 @@ import TreeNode from './TreeNode.vue'
 import { useStore } from '~/composables/store'
 
 const chart = ref<HTMLElement | null>(null)
-const sectionStore = useStore()
+const store = useStore()
 
-const rootNodes = computed(() => sectionStore.sections)
+const rootNodes = computed(() => store.sections)
 </script>
 
 <template>

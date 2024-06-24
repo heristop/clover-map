@@ -6,7 +6,6 @@
       {
         "name": "Software Engineer",
         "path": "/recruitment/software-engineer",
-        "status": "open",
         "children": [
           {
             "name": "Candidate 1",
@@ -16,7 +15,7 @@
               {
                 "name": "Resume Review",
                 "path": "/recruitment/software-engineer/candidate1/resume",
-                "status": "completed",
+                "status": "pending",
                 "children": []
               },
               {
@@ -35,7 +34,7 @@
               {
                 "name": "Resume Review",
                 "path": "/recruitment/software-engineer/candidate2/resume",
-                "status": "pending",
+                "status": "in_progress",
                 "children": []
               }
             ]
@@ -45,7 +44,6 @@
       {
         "name": "Data Scientist",
         "path": "/recruitment/data-scientist",
-        "status": "open",
         "children": [
           {
             "name": "Candidate 1",
@@ -55,7 +53,7 @@
               {
                 "name": "Resume Review",
                 "path": "/recruitment/data-scientist/candidate1/resume",
-                "status": "completed",
+                "status": "in_progress",
                 "children": []
               },
               {
@@ -77,7 +75,6 @@
       {
         "name": "Product Manager",
         "path": "/recruitment/product-manager",
-        "status": "closed",
         "children": [
           {
             "name": "Candidate 1",
@@ -93,7 +90,7 @@
               {
                 "name": "Technical Interview",
                 "path": "/recruitment/product-manager/candidate1/interview",
-                "status": "completed",
+                "status": "scheduled",
                 "children": []
               },
               {
@@ -112,13 +109,13 @@
               {
                 "name": "Resume Review",
                 "path": "/recruitment/product-manager/candidate2/resume",
-                "status": "completed",
+                "status": "pending",
                 "children": []
               },
               {
                 "name": "Technical Interview",
                 "path": "/recruitment/product-manager/candidate2/interview",
-                "status": "completed",
+                "status": "in_progress",
                 "children": []
               }
             ]

@@ -7,15 +7,20 @@ import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
 
 const router = useRouter()
-const sectionStore = useStore()
-const dialogMinimized = computed(() => sectionStore.dialogMinimized)
-const statuses = computed(() => sectionStore.statuses)
-const dialogCoordinates = computed(() => sectionStore.dialogCoordinates)
-const useFullHeight = ref<boolean>(sectionStore.useFullHeight)
+const store = useStore()
+const dialogMinimized = computed(() => store.dialogMinimized)
+const statuses = computed(() => store.statuses)
+const dialogCoordinates = computed(() => store.dialogCoordinates)
 
-const toggleHeight = () => {
-  sectionStore.toggleHeight()
-}
+const minWidth = computed({
+  get: () => store.minWidth,
+  set: value => store.minWidth = value,
+})
+
+const minHeight = computed({
+  get: () => store.minHeight,
+  set: value => store.minHeight = value,
+})
 
 const newStatus = reactive({
   name: '',
@@ -24,14 +29,14 @@ const newStatus = reactive({
 
 const addNewStatus = () => {
   if (newStatus.name && newStatus.color) {
-    sectionStore.addStatus({ name: newStatus.name, color: newStatus.color })
+    store.addStatus({ name: newStatus.name, color: newStatus.color })
     newStatus.name = ''
     newStatus.color = ''
   }
 }
 
 const removeStatus = (index: number) => {
-  sectionStore.removeStatus(index)
+  store.removeStatus(index)
 }
 
 const position = reactive({ x: dialogCoordinates.value.x, y: dialogCoordinates.value.y })
@@ -42,11 +47,11 @@ const isPositioned = ref(false)
 let isDragging = false
 
 const toggleMinimize = () => {
-  sectionStore.toggleMinimize()
+  store.toggleMinimize()
 }
 
 const setDisplay = (value: string) => {
-  sectionStore.display = value
+  store.display = value
 }
 
 const startDialogDrag = (event: MouseEvent | TouchEvent) => {
@@ -82,7 +87,7 @@ const dragDialog = (event: MouseEvent | TouchEvent) => {
 
 const stopDialogDrag = () => {
   isDragging = false
-  sectionStore.updateDialogCoordinates(position.x, position.y)
+  store.updateDialogCoordinates(position.x, position.y)
   document.removeEventListener('mousemove', dragDialog)
   document.removeEventListener('mouseup', stopDialogDrag)
   document.removeEventListener('touchmove', dragDialog)
@@ -113,16 +118,19 @@ const dropStatus = (event: DragEvent, dropIndex: number) => {
 const captureTreeMap = () => {
   const projectMapElement = document.querySelector('.tree-map') as HTMLElement | null
   if (projectMapElement) {
-    domtoimage.toSvg(projectMapElement, { quality: 1, bgcolor: 'white' })
-      .then((dataUrl: string) => {
-        const link = document.createElement('a')
-        link.href = dataUrl
-        link.download = 'treeMap.svg'
-        link.click()
-      })
-      .catch((error: Error) => {
-        console.error('Error: ', error)
-      })
+    window.scrollTo(0, 0)
+    setTimeout(() => {
+      domtoimage.toPng(projectMapElement, { quality: 1, bgcolor: 'white' })
+        .then((dataUrl: string) => {
+          const link = document.createElement('a')
+          link.href = dataUrl
+          link.download = 'treeMap.png'
+          link.click()
+        })
+        .catch((error: Error) => {
+          console.error('Error: ', error)
+        })
+    }, 300)
   }
   else {
     console.error('TreeMap section is not found')
@@ -154,7 +162,7 @@ const loadSectionsFromFile = async (event: Event) => {
         if (!Array.isArray(sections)) {
           throw new Error('Invalid sections format, expected an array')
         }
-        sectionStore.setSections(sections)
+        store.setSections(sections)
       }
       catch (error) {
         console.error('Error parsing JSON:', error)
@@ -167,18 +175,18 @@ const loadSectionsFromFile = async (event: Event) => {
 }
 
 const saveSectionsToFile = () => {
-  const sections = JSON.stringify(sectionStore.sections, null, 2)
+  const sections = JSON.stringify(store.sections, null, 2)
   const blob = new Blob([sections], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `projectPulse-${new Date().toISOString()}.json`
+  link.download = `trackerMap-${new Date().toISOString()}.json`
   link.click()
   URL.revokeObjectURL(url)
 }
 
 const resetConfiguration = () => {
-  sectionStore.clear()
+  store.clear()
   router.push('/')
 }
 
@@ -221,7 +229,7 @@ onBeforeUnmount(() => {
 
       <div
         v-show="!dialogMinimized"
-        class="px-4"
+        class="px-4 max-h-[500px] overflow-y-auto"
       >
         <h2 class="text-md font-bold mb-3">
           Progress
@@ -235,23 +243,9 @@ onBeforeUnmount(() => {
           </h2>
 
           <div class="flex items-center justify-between space-x-2 mb-4">
-            <div class="flex-1 flex items-center">
-              <input
-                id="height-checkbox"
-                v-model="useFullHeight"
-                type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-neutral-100 border-neutral-300 rounded focus:ring-blue-500 focus:ring-2"
-                @change="toggleHeight"
-              >
-              <label
-                for="height-checkbox"
-                class="ms-2 text-sm font-medium text-neutral-300"
-              >Use Full Height</label>
-            </div>
-
             <button
               class="flex-1 flex font-semibold items-center justify-center disabled:cursor-not-allowed border-2 border-neutral-600 text-white px-2 py-1 rounded-md transition duration-300 bg-neutral-900 hover:bg-neutral-600"
-              :disabled="!sectionStore.configLoaded"
+              :disabled="!store.configLoaded"
               @click="captureTreeMap"
             >
               <svg
@@ -279,13 +273,41 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
+        <div class="config-section flex items-center cursor-default space-x-2 mb-3">
+          <h2 class="text-md font-bold mb-0 w-60">
+            Section Width
+          </h2>
+          <input
+            v-model="minWidth"
+            type="range"
+            min="0"
+            max="500"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          >
+          <span class="w-20">{{ minWidth }}px</span>
+        </div>
+
+        <div class="config-section flex items-center cursor-default space-x-2 mb-3">
+          <h2 class="text-md font-bold mb-0 w-60">
+            Section Height
+          </h2>
+          <input
+            v-model="minHeight"
+            type="range"
+            min="0"
+            max="500"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          >
+          <span class="w-20">{{ minHeight }}px</span>
+        </div>
+
         <div class="config-section">
           <h2 class="text-md font-bold mb-3">
             Display
           </h2>
-          <div class="flex items-center justify-between space-x-2 mb-4">
+          <div class="flex items-center justify-between space-x-2 mb-3">
             <button
-              :class="{ 'bg-neutral-600': sectionStore.display === 'section', 'bg-neutral-900': sectionStore.display !== 'section' }"
+              :class="{ 'bg-neutral-600': store.display === 'section', 'bg-neutral-900': store.display !== 'section' }"
               class="flex-1 font-semibold border-2 border-neutral-600 text-white px-2 py-1 rounded-md transition duration-300 hover:bg-neutral-600"
               @click="setDisplay('section')"
             >
@@ -293,7 +315,7 @@ onBeforeUnmount(() => {
             </button>
 
             <button
-              :class="{ 'bg-neutral-600': sectionStore.display === 'path', 'bg-neutral-900': sectionStore.display !== 'path' }"
+              :class="{ 'bg-neutral-600': store.display === 'path', 'bg-neutral-900': store.display !== 'path' }"
               class="flex-1 font-semibold border-2 border-neutral-600 text-white px-2 py-1 rounded-md transition duration-300 hover:bg-neutral-600"
               @click="setDisplay('path')"
             >
@@ -305,7 +327,7 @@ onBeforeUnmount(() => {
         <h2 class="text-md font-bold mb-3">
           Flow
         </h2>
-        <div class="config-section max-h-[300px] overflow-y-auto">
+        <div class="config-section">
           <div
             v-for="(status, index) in statuses"
             :key="index"
@@ -376,7 +398,7 @@ onBeforeUnmount(() => {
             Import/Export JSON
           </h2>
 
-          <div class="flex items-center justify-between space-x-2 mb-4">
+          <div class="flex items-center justify-between space-x-2 mb-3">
             <input
               ref="fileInput"
               type="file"
@@ -391,7 +413,7 @@ onBeforeUnmount(() => {
             </button>
             <button
               class="flex-1 font-semibold border-2 border-neutral-600 text-white px-2 py-1 disabled:cursor-not-allowed rounded-md transition duration-300 bg-neutral-900 hover:bg-neutral-600"
-              :disabled="!sectionStore.configLoaded"
+              :disabled="!store.configLoaded"
               @click="saveSectionsToFile"
             >
               save
@@ -404,7 +426,7 @@ onBeforeUnmount(() => {
             Reset Configuration
           </h2>
 
-          <div class="flex items-center justify-between space-x-2 mb-4">
+          <div class="flex items-center justify-between space-x-2 mb-3">
             <button
               class="flex-1 font-semibold border-2 border-red-600 text-white px-2 py-1 rounded-md transition duration-300 bg-red-700 hover:bg-red-600"
               @click="resetConfiguration"

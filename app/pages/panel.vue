@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import TreeMap from '~/components/TreeMap.vue'
 import { useStore } from '~/composables/store'
 
-const sectionStore = useStore()
-const isConfigLoaded = computed(() => sectionStore.configLoaded)
+const store = useStore()
+const isConfigLoaded = computed(() => store.configLoaded)
 const router = useRouter()
 
 onMounted(() => {

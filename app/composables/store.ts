@@ -11,10 +11,11 @@ const defaultStatus = [
 export const useStore = defineStore('store', {
   state: () => ({
     sections: [] as Section[],
-    useFullHeight: false,
     configLoaded: false,
     dialogMinimized: true,
     dialogCoordinates: { x: 0, y: 0 },
+    minWidth: 80,
+    minHeight: 10,
     display: 'section',
     statuses: ref<Status[]>(defaultStatus),
   }),
@@ -90,7 +91,7 @@ export const useStore = defineStore('store', {
         '#AEC6CF', // Pastel Blue
         '#CFCFC4', // Pastel Gray
         '#B19CD9', // Pastel Lilac
-      ]      
+      ]
       let colorIndex = 0
 
       const traverse = (modules: Section[]) => {
@@ -151,9 +152,6 @@ export const useStore = defineStore('store', {
         }
       }
       this.sections.forEach(updateStatusRecursively)
-    },
-    toggleHeight() {
-      this.useFullHeight = !this.useFullHeight
     },
     toggleMinimize() {
       this.dialogMinimized = !this.dialogMinimized

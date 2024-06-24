@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
 
-const componentStore = useStore()
-const statuses = computed(() => componentStore.statuses)
+const store = useStore()
+const statuses = computed(() => store.statuses)
 
 const totalModules: ComputedRef<number> = computed(() => {
   const count = (modules: Section[]): number => {
@@ -14,7 +14,7 @@ const totalModules: ComputedRef<number> = computed(() => {
       return acc
     }, 0)
   }
-  return count(componentStore.sections)
+  return count(store.sections)
 })
 
 const countComponentsByStatus = (status: string) => {
@@ -25,7 +25,7 @@ const countComponentsByStatus = (status: string) => {
       return acc
     }, 0)
   }
-  return count(componentStore.sections)
+  return count(store.sections)
 }
 
 const statusPercentage = (status: string) => {
