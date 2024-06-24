@@ -9,9 +9,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useStore } from '~/composables/store'
 
 const container = ref(null)
 const useFullHeight = ref(false)
+const store = useStore()
 
 const checkContentHeight = () => {
   if (container.value) {
@@ -25,13 +27,14 @@ onMounted(() => {
   checkContentHeight()
   window.addEventListener('resize', checkContentHeight)
   const observer = new MutationObserver(checkContentHeight)
+
   if (container.value) {
     observer.observe(container.value, { childList: true, subtree: true })
   }
 })
 
-watch(() => useFullHeight, () => {
-  checkContentHeight()
+watch(() => store.display, () => {
+  nextTick(() => checkContentHeight())
 })
 
 onUnmounted(() => {

@@ -12,7 +12,7 @@ const rootNodes = computed(() => store.sections)
 <template>
   <div
     ref="chart"
-    class="flex flex-wrap w-full h-full bg-gray-200 p-4 grid-container"
+    class="tree-map flex flex-wrap w-full h-full bg-gray-200 p-4 grid-container"
   >
     <ClientOnly>
       <TreeNode

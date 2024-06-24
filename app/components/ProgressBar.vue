@@ -10,7 +10,11 @@ const totalModules: ComputedRef<number> = computed(() => {
   const count = (modules: Section[]): number => {
     return modules.reduce((acc: number, module: Section) => {
       acc++
-      if (module.children) acc += count(module.children)
+
+      if (module.children) {
+        acc += count(module.children)
+      }
+
       return acc
     }, 0)
   }
@@ -20,8 +24,14 @@ const totalModules: ComputedRef<number> = computed(() => {
 const countComponentsByStatus = (status: string) => {
   const count = (modules: Section[]) => {
     return modules.reduce((acc, module) => {
-      if (module.status === status) acc++
-      if (module.children) acc += count(module.children)
+      if (module.status === status) {
+        acc++
+      }
+
+      if (module.children) {
+        acc += count(module.children)
+      }
+
       return acc
     }, 0)
   }
@@ -35,7 +45,7 @@ const statusPercentage = (status: string) => {
 </script>
 
 <template>
-  <div class="flex w-full h-4 bg-gray-300 rounded-lg overflow-hidden mb-4">
+  <div class="flex w-full shadow-md h-4 bg-gray-300 rounded-lg overflow-hidden mb-4">
     <div
       v-for="status in statuses"
       :key="status.name"

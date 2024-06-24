@@ -15,8 +15,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <TreeMap
+  <div
     v-show="isConfigLoaded"
-    class="tree-map"
-  />
+    class="h-full"
+  >
+    <TreeMap />
+
+    <ConfigDrawer />
+  </div>
 </template>

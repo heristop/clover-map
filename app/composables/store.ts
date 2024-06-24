@@ -3,17 +3,36 @@ import { ref } from 'vue'
 import type { Section, Status } from '~~/types'
 
 const defaultStatus = [
-  { name: 'To Do', color: '#AEC6CF' }, // Pastel blue
-  { name: 'In Progress', color: '#FFDAB9' }, // Pastel peach
-  { name: 'Done', color: '#C1E1C1' }, // Pastel green
+  { name: 'To Do', color: '#FFB3BA' },
+  { name: 'In Progress', color: '#FFDFBA' },
+  { name: 'Done', color: '#FFFFBA' },
+  { name: 'Closed', color: '#BAFFC9' },
+]
+
+export const pastelColors = [
+  '#FFB3BA', // Light Pink
+  '#FFDFBA', // Light Orange
+  '#FFFFBA', // Light Yellow
+  '#BAFFC9', // Light Green
+  '#BAE1FF', // Light Blue
+  '#E2CFCF', // Light Red
+  '#C9C9FF', // Light Purple
+  '#D4A5A5', // Light Rose
+  '#FFD1DC', // Light Pinkish
+  '#B2B2B2', // Light Gray
+  '#FF6961', // Pastel Red
+  '#F49AC2', // Pastel Pink
+  '#77DD77', // Pastel Green
+  '#AEC6CF', // Pastel Blue
+  '#CFCFC4', // Pastel Gray
+  '#B19CD9', // Pastel Lilac
 ]
 
 export const useStore = defineStore('store', {
   state: () => ({
     sections: [] as Section[],
     configLoaded: false,
-    dialogMinimized: true,
-    dialogCoordinates: { x: 0, y: 0 },
+    dialogMinimized: false,
     minWidth: 80,
     minHeight: 10,
     display: 'section',
@@ -38,18 +57,19 @@ export const useStore = defineStore('store', {
         this.statuses = extractedStatuses
       }
 
-      const formattedModules = this.formatModules(sectionArray)
+      const formattedSections = this.formatSections(sectionArray)
 
-      this.sections = this.applyDefaultStatus(formattedModules, this.sections)
+      this.sections = this.applyDefaultStatus(formattedSections, this.sections)
       this.updateParentStatuses()
       this.configLoaded = true
     },
-    formatModules(sections: Section[]): Section[] {
+    formatSections(sections: Section[]): Section[] {
       return sections.map((section: Section) => {
-        const { name, children, status, path } = section
-        const formattedChildren = children ? this.formatModules(children) : []
+        const { name, children, status, key } = section
+        const formattedChildren = children ? this.formatSections(children) : []
+
         return {
-          path: path,
+          key,
           name,
           children: formattedChildren,
           status: status || '',
@@ -58,7 +78,7 @@ export const useStore = defineStore('store', {
     },
     applyDefaultStatus(sections: Section[], existingProjects: Section[]): Section[] {
       return sections.map((module) => {
-        const existingProject = this.findProjectByPath(module.path, existingProjects)
+        const existingProject = this.findProjectByKey(module.key, existingProjects)
         if (!module.status && existingProject) {
           module.status = existingProject.status
         }
@@ -74,24 +94,6 @@ export const useStore = defineStore('store', {
     extractStatuses(sections: Section[]): Status[] {
       const statusSet = new Set<string>()
       const statusColors: { [key: string]: string } = {}
-      const pastelColors = [
-        '#FFB3BA', // Light Pink
-        '#FFDFBA', // Light Orange
-        '#FFFFBA', // Light Yellow
-        '#BAFFC9', // Light Green
-        '#BAE1FF', // Light Blue
-        '#E2CFCF', // Light Red
-        '#C9C9FF', // Light Purple
-        '#D4A5A5', // Light Rose
-        '#FFD1DC', // Light Pinkish
-        '#B2B2B2', // Light Gray
-        '#FF6961', // Pastel Red
-        '#F49AC2', // Pastel Pink
-        '#77DD77', // Pastel Green
-        '#AEC6CF', // Pastel Blue
-        '#CFCFC4', // Pastel Gray
-        '#B19CD9', // Pastel Lilac
-      ]
       let colorIndex = 0
 
       const traverse = (modules: Section[]) => {
@@ -115,21 +117,28 @@ export const useStore = defineStore('store', {
         color: statusColors[status] || '',
       }))
     },
-    updateSectionStatus(path: string, status: string) {
-      const module = this.findProjectByPath(path, this.sections)
+    updateSectionStatus(key: string, status: string) {
+      const module = this.findProjectByKey(key, this.sections)
       if (module) {
         module.status = status
         this.updateParentStatuses()
       }
     },
-    findProjectByPath(path: string, sections: Section[]): Section | undefined {
+    findProjectByKey(key: string, sections: Section[]): Section | undefined {
       for (const module of sections) {
-        if (module.path === path) return module
+        if (module.key === key) {
+          return module
+        }
+
         if (module.children) {
-          const found = this.findProjectByPath(path, module.children)
-          if (found) return found
+          const found = this.findProjectByKey(key, module.children)
+
+          if (found) {
+            return found
+          }
         }
       }
+
       return undefined
     },
     updateParentStatuses() {
@@ -140,6 +149,7 @@ export const useStore = defineStore('store', {
           module.children.forEach(updateStatusRecursively)
           const statuses = module.children.map(child => child.status)
           const uniqueStatuses = [...new Set(statuses)]
+
           if (uniqueStatuses.length === 1) {
             module.status = uniqueStatuses[0]
           }
@@ -151,6 +161,7 @@ export const useStore = defineStore('store', {
           }
         }
       }
+
       this.sections.forEach(updateStatusRecursively)
     },
     toggleMinimize() {
@@ -165,9 +176,6 @@ export const useStore = defineStore('store', {
     removeStatus(index: number) {
       this.statuses.splice(index, 1)
     },
-    updateDialogCoordinates(x: number, y: number) {
-      this.dialogCoordinates = { x, y }
-    },
     clear() {
       this.sections = []
       this.statuses = defaultStatus
@@ -175,14 +183,15 @@ export const useStore = defineStore('store', {
     },
   },
   getters: {
-    duplicateProjects(state): { sections: string[], paths: string[] } {
+    duplicateProjects(state): { sections: string[], keys: string[] } {
       const sections: string[] = []
-      const paths: string[] = []
+      const keys: string[] = []
 
       const checkDuplicates = (modules: Section[]) => {
         modules.forEach((module) => {
           sections.push(module.name)
-          paths.push(module.path ?? '')
+          keys.push(module.key ?? '')
+
           if (module.children) {
             checkDuplicates(module.children)
           }
@@ -193,7 +202,7 @@ export const useStore = defineStore('store', {
 
       return {
         sections: sections.filter((item, index) => sections.indexOf(item) !== index),
-        paths: paths.filter((item, index) => paths.indexOf(item) !== index),
+        keys: keys.filter((item, index) => keys.indexOf(item) !== index),
       }
     },
   },

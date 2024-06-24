@@ -1,12 +1,8 @@
-<script setup lang="ts">
-import ConfigDialog from '~/components/ConfigDialog.vue'
-</script>
+<script setup lang="ts" />
 
 <template>
   <NuxtLayout name="default">
     <NuxtRouteAnnouncer />
-
-    <ConfigDialog />
 
     <NuxtPage />
   </NuxtLayout>

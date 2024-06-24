@@ -19,6 +19,13 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en',
       },
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Project management tool designed to visualize and monitor the status of various projects and processes',
+        },
+      ],
     },
   },
   googleFonts: {

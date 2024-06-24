@@ -1,6 +1,6 @@
 export interface Section {
   name: string
-  path: string
+  key: string
   status?: string
   children?: Section[]
 }

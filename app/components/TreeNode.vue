@@ -1,38 +1,3 @@
-<template>
-  <div
-    class="node-container relative"
-    :class="{ 'success-animation': isSuccessNode }"
-    :style="nodeStyle"
-    :data-node-path="node.path"
-    @click="handleClick"
-  >
-    <div :class="['node-title', { 'center-title': !node.children || !node.children.length }]">
-      <span
-        v-if="node.children && node.children.length"
-        class="collapse-icon"
-        @click.stop="toggleCollapse"
-      >
-        {{ isCollapsed ? '▶' : '▼' }}
-      </span>
-      {{ displayContent }}
-    </div>
-
-    <div
-      v-if="node.children && node.children.length && !isCollapsed"
-      class="node-children"
-      style="display: flex; flex-wrap: wrap; justify-content: center;"
-    >
-      <TreeNode
-        v-for="child in node.children"
-        :key="child.path || child.name"
-        :node="child"
-        :depth="depth + 1"
-        @status-updated="updateParentStatus"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed, watchEffect, onMounted, type StyleValue } from 'vue'
 import { useStore } from '~/composables/store'
@@ -46,7 +11,7 @@ const nodeStatus = ref(props.node.status || store.statuses[0]?.name)
 const isCollapsed = ref(false)
 
 const displayContent = computed(() => {
-  return store.display === 'path' ? props.node.path : props.node.name
+  return store.display === 'key' ? props.node.key : props.node.name
 })
 
 const minWidth = computed(() => store.minWidth)
@@ -98,7 +63,8 @@ const darkenColor = (color: string, percent: number) => {
   return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1).toUpperCase()
 }
 
-const toggleCollapse = () => {
+const toggleCollapse = (event: MouseEvent) => {
+  event.stopPropagation()
   isCollapsed.value = !isCollapsed.value
 }
 
@@ -122,12 +88,12 @@ const nodeStyle = computed(() => {
 })
 
 const handleClick = (event: MouseEvent) => {
+  event.stopPropagation()
   if (!props.node.children || !props.node.children.length) {
-    event.stopPropagation()
     updateStatus()
   }
   else {
-    toggleCollapse()
+    toggleCollapse(event)
   }
 }
 
@@ -136,7 +102,7 @@ const updateStatus = () => {
   const nextStatusIndex = (store.statuses.indexOf(newStatus!) + 1) % store.statuses.length
   const nextStatus = store.statuses[nextStatusIndex]?.name
   nodeStatus.value = nextStatus
-  store.updateSectionStatus(props.node.path || '', nextStatus || '')
+  store.updateSectionStatus(props.node.key || '', nextStatus || '')
 
   if (store.statuses.length > 0 && nextStatus === store.statuses[store.statuses.length - 1]?.name) {
     applySuccessAnimation(props.node)
@@ -147,7 +113,7 @@ const updateStatus = () => {
 const applySuccessAnimation = (node: Section) => {
   const applyToParents = (currentNode: Section) => {
     if (currentNode.status === nodeStatus.value) {
-      const nodeElement = document.querySelector(`[data-node-path="${currentNode.path}"]`)
+      const nodeElement = document.querySelector(`[data-node-key="${currentNode.key}"]`)
 
       if (nodeElement) {
         nodeElement.classList.add('success-animation')
@@ -162,6 +128,41 @@ const applySuccessAnimation = (node: Section) => {
   isSuccessNode.value = true
 }
 </script>
+
+<template>
+  <div
+    class="node-container relative"
+    :class="{ 'success-animation': isSuccessNode }"
+    :style="nodeStyle"
+    :data-node-key="node.key"
+    @click="handleClick"
+  >
+    <div :class="['node-title', { 'center-title': !node.children || !node.children.length }]">
+      <span
+        v-if="node.children && node.children.length"
+        class="collapse-icon"
+        @click.stop="toggleCollapse"
+      >
+        {{ isCollapsed ? '▶' : '▼' }}
+      </span>
+      {{ displayContent }}
+    </div>
+
+    <div
+      v-if="node.children && node.children.length && !isCollapsed"
+      class="node-children"
+      style="display: flex; flex-wrap: wrap; justify-content: center;"
+    >
+      <TreeNode
+        v-for="child in node.children"
+        :key="child.key || child.name"
+        :node="child"
+        :depth="depth + 1"
+        @status-updated="updateParentStatus"
+      />
+    </div>
+  </div>
+</template>
 
 <style scoped>
 @keyframes stackIn {
@@ -210,7 +211,7 @@ const applySuccessAnimation = (node: Section) => {
   font-weight: bold;
   color: white;
   background-color: rgba(0, 0, 0, 0.25);
-  pointer-events: none;
+  pointer-events: auto;
   padding: 8px;
   white-space: nowrap;
   overflow: hidden;

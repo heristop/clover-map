@@ -1,26 +1,26 @@
 {
   "recruitment": {
     "name": "Recruitment",
-    "path": "/recruitment",
+    "key": "/recruitment",
     "children": [
       {
         "name": "Software Engineer",
-        "path": "/recruitment/software-engineer",
+        "key": "/recruitment/software-engineer",
         "children": [
           {
             "name": "Candidate 1",
-            "path": "/recruitment/software-engineer/candidate1",
+            "key": "/recruitment/software-engineer/candidate1",
             "status": "interview_scheduled",
             "children": [
               {
                 "name": "Resume Review",
-                "path": "/recruitment/software-engineer/candidate1/resume",
+                "key": "/recruitment/software-engineer/candidate1/resume",
                 "status": "pending",
                 "children": []
               },
               {
                 "name": "Technical Interview",
-                "path": "/recruitment/software-engineer/candidate1/interview",
+                "key": "/recruitment/software-engineer/candidate1/interview",
                 "status": "scheduled",
                 "children": []
               }
@@ -28,12 +28,12 @@
           },
           {
             "name": "Candidate 2",
-            "path": "/recruitment/software-engineer/candidate2",
+            "key": "/recruitment/software-engineer/candidate2",
             "status": "application_received",
             "children": [
               {
                 "name": "Resume Review",
-                "path": "/recruitment/software-engineer/candidate2/resume",
+                "key": "/recruitment/software-engineer/candidate2/resume",
                 "status": "in_progress",
                 "children": []
               }
@@ -43,28 +43,28 @@
       },
       {
         "name": "Data Scientist",
-        "path": "/recruitment/data-scientist",
+        "key": "/recruitment/data-scientist",
         "children": [
           {
             "name": "Candidate 1",
-            "path": "/recruitment/data-scientist/candidate1",
+            "key": "/recruitment/data-scientist/candidate1",
             "status": "offer_made",
             "children": [
               {
                 "name": "Resume Review",
-                "path": "/recruitment/data-scientist/candidate1/resume",
+                "key": "/recruitment/data-scientist/candidate1/resume",
                 "status": "in_progress",
                 "children": []
               },
               {
                 "name": "Technical Interview",
-                "path": "/recruitment/data-scientist/candidate1/interview",
+                "key": "/recruitment/data-scientist/candidate1/interview",
                 "status": "completed",
                 "children": []
               },
               {
                 "name": "Offer",
-                "path": "/recruitment/data-scientist/candidate1/offer",
+                "key": "/recruitment/data-scientist/candidate1/offer",
                 "status": "sent",
                 "children": []
               }
@@ -74,28 +74,28 @@
       },
       {
         "name": "Product Manager",
-        "path": "/recruitment/product-manager",
+        "key": "/recruitment/product-manager",
         "children": [
           {
             "name": "Candidate 1",
-            "path": "/recruitment/product-manager/candidate1",
+            "key": "/recruitment/product-manager/candidate1",
             "status": "hired",
             "children": [
               {
                 "name": "Resume Review",
-                "path": "/recruitment/product-manager/candidate1/resume",
+                "key": "/recruitment/product-manager/candidate1/resume",
                 "status": "completed",
                 "children": []
               },
               {
                 "name": "Technical Interview",
-                "path": "/recruitment/product-manager/candidate1/interview",
+                "key": "/recruitment/product-manager/candidate1/interview",
                 "status": "scheduled",
                 "children": []
               },
               {
                 "name": "Offer",
-                "path": "/recruitment/product-manager/candidate1/offer",
+                "key": "/recruitment/product-manager/candidate1/offer",
                 "status": "accepted",
                 "children": []
               }
@@ -103,18 +103,18 @@
           },
           {
             "name": "Candidate 2",
-            "path": "/recruitment/product-manager/candidate2",
+            "key": "/recruitment/product-manager/candidate2",
             "status": "rejected",
             "children": [
               {
                 "name": "Resume Review",
-                "path": "/recruitment/product-manager/candidate2/resume",
+                "key": "/recruitment/product-manager/candidate2/resume",
                 "status": "pending",
                 "children": []
               },
               {
                 "name": "Technical Interview",
-                "path": "/recruitment/product-manager/candidate2/interview",
+                "key": "/recruitment/product-manager/candidate2/interview",
                 "status": "in_progress",
                 "children": []
               }
