@@ -8,6 +8,7 @@ import TButton from '~/components/ui/TButton.vue'
 
 const store = useStore()
 const isLoading = ref<boolean>(true)
+const sections = computed(() => store.sections)
 const router = useRouter()
 
 const { fileInput, loadSectionsFromFile } = useUpload()
@@ -18,6 +19,10 @@ const loadConfigFromApi = async (model: string) => {
 }
 
 onMounted(() => {
+  if (sections.value.length) {
+    router.push('/panel')
+  }
+
   nextTick(() => isLoading.value = false)
 })
 </script>

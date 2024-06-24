@@ -1,10 +1,14 @@
-# TrackerMap 🚀
+# TrackerMap
 
-TrackerMap is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of information systems (SI), TrackerMap helps you visualize and monitor the status of your projects effectively.
+🟥 🟧 🟨 🟩 🟦 🟪 🟫 ⬛ ⬜
 
-## Features ✨
+**TrackerMap** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TrackerMap** helps you visualize and monitor the status of your projects effectively.
 
-- **SI Migration Tracking**: Monitor the migration progress of your information systems.
+![screenshot](/public/screenshot.png)
+
+## ✨ Features
+
+- **Migration Tracking**: Monitor the migration progress of your Information Systems or applications.
 - **Task Management**: Track tasks, subtasks, and their statuses.
 - **Bug Tracking**: Manage bug reports, assign them to developers, and monitor their resolution.
 - **Production Management**: Visualize production stages, quality control statuses, and inventory levels.
@@ -12,10 +16,11 @@ TrackerMap is a versatile project management tool designed to track the progress
 - **HR Management**: Track recruitment processes, employee training programs, and more.
 - **Customizable Statuses**: Define and customize statuses to fit your specific workflow.
 - **Import/Export**: Import project data from JSON files and export current project data for backup or sharing.
+- **And more...**
 
-## Installation 🛠️
+## 🛠️ Installation
 
-To install and run TrackerMap locally, follow these steps:
+To install and run **TrackerMap** locally, follow these steps:
 
 1. Clone the repository:
 
@@ -38,7 +43,7 @@ To install and run TrackerMap locally, follow these steps:
 
 4. Open your browser and navigate to `http://localhost:3000`.
 
-## Usage 📚
+## 📚 Usage
 
 ### Loading Configuration
 
@@ -53,8 +58,12 @@ To install and run TrackerMap locally, follow these steps:
 ### Managing Projects
 
 - **Adding/Updating Statuses**: In the configuration panel, you can add new statuses, update existing ones, or remove them.
-- **Updating Tasks**: Click on a task to cycle through its statuses. Double-click to reset its status.
+- **Updating Tasks**: Click on a task to cycle through its statuses.
 
-## License 📄
+## 📄 License
 
 This project is licensed under the MIT License.
+
+## 💬 Feedback and Contributions
+
+We welcome feedback and contributions! If you have any suggestions or encounter any issues, please feel free to open an issue or submit a pull request.
