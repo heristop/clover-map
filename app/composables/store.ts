@@ -35,13 +35,17 @@ export const useStore = defineStore('store', {
     dialogMinimized: false,
     minWidth: 80,
     minHeight: 10,
-    display: 'section',
+    display: 'name',
     statuses: ref<Status[]>(defaultStatus),
   }),
   persist: {
     storage: persistedState.localStorage,
   },
   actions: {
+    async fetchSectionsFromUrl(url: string): Promise<void> {
+      const sections = await $fetch<Section[]>(url, { method: 'get' })
+      this.setSections(sections)
+    },
     async fetchSections(model: string) {
       const sections = await this.getSections(model)
       this.setSections(sections)

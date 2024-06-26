@@ -22,7 +22,7 @@ export function useUpload() {
           }
 
           store.setSections(sections)
-          router.push('/panel')
+          router.push('/viewport')
         }
         catch (error) {
           console.error('Error parsing JSON:', error)
@@ -30,7 +30,7 @@ export function useUpload() {
       }
 
       reader.readAsText(file)
-      router.push('/panel')
+      router.push('/viewport')
     }
   }
 
@@ -45,9 +45,14 @@ export function useUpload() {
     URL.revokeObjectURL(url)
   }
 
+  const loadSectionsFromUrl = async (url: string) => {
+    await store.fetchSectionsFromUrl(url)
+  }
+
   return {
     fileInput,
     loadSectionsFromFile,
     saveSectionsToFile,
+    loadSectionsFromUrl,
   }
 }

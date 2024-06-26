@@ -60,6 +60,45 @@ To install and run **TrackerMap** locally, follow these steps:
 - **Adding/Updating Statuses**: In the configuration panel, you can add new statuses, update existing ones, or remove them.
 - **Updating Tasks**: Click on a task to cycle through its statuses.
 
+### JSON Configuration Format
+
+The JSON configuration file should follow this format:
+
+```json
+[
+  {
+    "key": "project1",
+    "name": "Project 1",
+    "status": "To Do",
+    "children": [
+      {
+        "key": "task1",
+        "name": "Task 1",
+        "status": "In Progress",
+        "children": []
+      },
+      {
+        "key": "task2",
+        "name": "Task 2",
+        "status": "Done",
+        "children": []
+      }
+    ]
+  },
+  {
+    "key": "project2",
+    "name": "Project 2",
+    "status": "In Progress",
+    "children": []
+  }
+]
+```
+
+- `key`: Unique identifier for the section or task.
+- `name`: Name of the section or task.
+- `status`: Current status of the section or task.
+- `children`: Nested sections or tasks.
+
 ## 📄 License
 
 This project is licensed under the MIT License.
