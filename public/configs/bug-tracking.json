@@ -1,5 +1,5 @@
-{
-  "bug-tracking": {
+[
+  {
     "name": "Bug Tracking",
     "key": "/bug-tracking",
     "children": [
@@ -253,4 +253,4 @@
       }
     ]
   }
-}
+]

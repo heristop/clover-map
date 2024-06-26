@@ -1,19 +1,36 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Ajv from 'ajv'
 import { useStore } from '~/composables/store'
+import schema from '~/schema.json'
 import type { Section } from '~~/types'
+import { useSnackbar } from '#imports'
 
 export function useConfig() {
   const router = useRouter()
   const store = useStore()
+  const snackbar = useSnackbar()
   const fileInput = ref<HTMLInputElement | null>(null)
+
+  const ajv = new Ajv()
+  const validate = ajv.compile(schema)
+
+  const validateSections = (sections: Section[]): boolean => {
+    if (validate(sections)) {
+      return true
+    }
+
+    displayInvalidDataError()
+
+    return false
+  }
 
   const loadFromModel = async (model: string) => {
     await store.fetchSections(model)
     router.push('/viewport')
   }
 
-  const loadFromFile = async (event: Event) => {
+  const loadFromFile = async (event: Event): Promise<boolean | undefined> => {
     const file = (event.target as HTMLInputElement).files?.[0]
 
     if (file) {
@@ -22,16 +39,27 @@ export function useConfig() {
       reader.onload = async (e) => {
         try {
           const sections = JSON.parse(e.target?.result as string) as Section[]
+
+          if (!validateSections(sections)) {
+            return false
+          }
+
           store.setSections(sections)
-          nextTick(() => router.push('/viewport'))
+          router.push('/viewport')
+
+          return true
         }
         catch (error) {
-          console.error('Error parsing JSON:', error)
+          displayInvalidDataError()
+
+          return false
         }
       }
 
       reader.readAsText(file)
     }
+
+    return undefined
   }
 
   const saveToFile = () => {
@@ -45,14 +73,55 @@ export function useConfig() {
     URL.revokeObjectURL(url)
   }
 
-  const loadFromUrl = async (url: string) => {
-    await store.fetchSectionsFromUrl(url)
-    router.push('/viewport')
+  const loadFromUrl = async (url: string): Promise<boolean> => {
+    const sections = await store.fetchSectionsFromUrl(url)
+
+    if (!sections) {
+      snackbar.add({
+        type: 'error',
+        title: 'Error fetching data. Please check the URL and try again.',
+      })
+
+      return false
+    }
+
+    if (validateSections(sections)) {
+      store.setSections(sections)
+      router.push('/viewport')
+
+      return true
+    }
+
+    return false
   }
 
-  const loadFromUserInput = async (sample: Section[]) => {
-    store.setSections(sample)
-    router.push('/viewport')
+  const loadFromUserInput = async (sample: string): Promise<boolean> => {
+    let data
+
+    try {
+      data = JSON.parse(sample)
+    }
+    catch (error) {
+      displayInvalidDataError()
+
+      return false
+    }
+
+    if (validateSections(data)) {
+      store.setSections(data)
+      router.push('/viewport')
+
+      return true
+    }
+
+    return false
+  }
+
+  const displayInvalidDataError = () => {
+    snackbar.add({
+      type: 'error',
+      title: 'Invalid data format. Please check the structure of your JSON.',
+    })
   }
 
   return {

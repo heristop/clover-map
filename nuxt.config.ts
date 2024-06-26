@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/google-fonts',
+    'nuxt-snackbar',
   ],
   app: {
     head: {

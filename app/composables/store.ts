@@ -42,11 +42,12 @@ export const useStore = defineStore('store', {
     storage: persistedState.localStorage,
   },
   actions: {
-    async fetchSectionsFromUrl(url: string): Promise<void> {
-      const sections = await $fetch<Section[]>(url, { method: 'get' })
-      this.setSections(sections)
+    async fetchSectionsFromUrl(url: string): Promise<Section[] | null> {
+      return await $fetch<Section[]>(url, { method: 'get' }).catch(() => {
+        return null
+      })
     },
-    async fetchSections(model: string) {
+    async fetchSections(model: string): Promise<void> {
       const sections = await this.getSections(model)
       this.setSections(sections)
     },

@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { useConfig } from '~/composables/config'
 import AppFooter from '~/components/AppFooter.vue'
 import TButton from '~/components/ui/TButton.vue'
-import type { Section } from '~~/types'
 
 const store = useStore()
 const isLoading = ref<boolean>(true)
@@ -49,7 +48,7 @@ const loadConfigFromUrl = async (url: string) => {
 }
 
 const loadConfigFromUserInput = async () => {
-  await loadFromUserInput(JSON.parse(sample.value) as Section[])
+  await loadFromUserInput(sample.value)
 }
 
 onMounted(() => {
@@ -216,7 +215,7 @@ onMounted(() => {
         v-if="!isLoading"
         class="text-md font-bold"
       >
-        JSON Configuration Format
+        Load Custom Configuration
       </h3>
 
       <div
@@ -244,6 +243,15 @@ onMounted(() => {
           load config
         </TButton>
       </div>
+
+      <NuxtSnackbar
+        bottom
+        right
+        shadow
+        success="#34d399"
+        error="#f87171"
+        info="#3b82f6"
+      />
 
       <AppFooter />
     </div>

@@ -1,0 +1,28 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "key": { "type": "string" },
+      "name": { "type": "string" },
+      "status": { "type": "string", "nullable": true },
+      "children": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": { "type": "string" },
+            "name": { "type": "string" },
+            "status": { "type": "string", "nullable": true },
+            "children": { "$ref": "#" }
+          },
+          "required": ["key", "name"],
+          "additionalProperties": false
+        },
+        "nullable": true
+      }
+    },
+    "required": ["key", "name"],
+    "additionalProperties": false
+  }
+}

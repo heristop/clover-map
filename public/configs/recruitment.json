@@ -1,5 +1,5 @@
-{
-  "recruitment": {
+[
+  {
     "name": "Recruitment",
     "key": "/recruitment",
     "children": [
@@ -124,4 +124,4 @@
       }
     ]
   }
-}
+]
