@@ -1,33 +1,23 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUpload } from '~/composables/upload'
+import { useConfig } from '~/composables/config'
 import AppFooter from '~/components/AppFooter.vue'
 import TButton from '~/components/ui/TButton.vue'
+import type { Section } from '~~/types'
 
 const store = useStore()
 const isLoading = ref<boolean>(true)
-const sections = computed(() => store.sections)
+const isConfigLoaded = computed(() => store.configLoaded)
 const router = useRouter()
 
-const { fileInput, loadSectionsFromFile, loadSectionsFromUrl } = useUpload()
-
-const loadConfigFromApi = async (model: string) => {
-  await store.fetchSections(model)
-  router.push('/viewport')
-}
-
-const loadConfigFromUrl = async (url: string) => {
-  await loadSectionsFromUrl(url)
-  router.push('/viewport')
-}
+const { fileInput, loadFromModel, loadFromFile, loadFromUrl, loadFromUserInput } = useConfig()
 
 const url = ref('https://tracker-map.nuxt.dev/configs/project-migration.json')
 const sample = ref(`[
   {
     "key": "project1",
     "name": "Project 1",
-    "status": "To Do",
     "children": [
       {
         "key": "task1",
@@ -46,13 +36,24 @@ const sample = ref(`[
   {
     "key": "project2",
     "name": "Project 2",
-    "status": "In Progress",
     "children": []
   }
 ]`)
 
+const loadConfigFromApi = async (model: string) => {
+  await loadFromModel(model)
+}
+
+const loadConfigFromUrl = async (url: string) => {
+  await loadFromUrl(url)
+}
+
+const loadConfigFromUserInput = async () => {
+  await loadFromUserInput(JSON.parse(sample.value) as Section[])
+}
+
 onMounted(() => {
-  if (sections.value.length) {
+  if (isConfigLoaded.value) {
     router.push('/viewport')
   }
 
@@ -63,7 +64,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative w-full min-h-60 overflow-auto">
+  <div class="relative w-full min-h-screen overflow-auto">
     <div class="background-grid fixed inset-0 z-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
       <div class="bg-purple-300 rounded-lg opacity-30" />
       <div class="bg-yellow-300 rounded-lg opacity-30" />
@@ -77,7 +78,7 @@ onMounted(() => {
       <div class="bg-lime-300 rounded-lg opacity-30" />
     </div>
 
-    <div class="absolute inset-0 z-10 bg-neutral-600 opacity-90" />
+    <div class="absolute h-full inset-0 z-10 bg-neutral-600 opacity-90" />
 
     <div
       v-if="!isLoading"
@@ -171,7 +172,7 @@ onMounted(() => {
         type="file"
         accept=".json"
         class="hidden"
-        @change="loadSectionsFromFile"
+        @change="loadFromFile"
       >
 
       <div
@@ -220,16 +221,28 @@ onMounted(() => {
 
       <div
         v-if="!isLoading"
-        class="bg-neutral-700 text-white p-4 rounded-md text-sm max-w-3xl max-h-60 overflow-y-auto"
+        class="bg-neutral-700 text-white p-4 rounded-md text-sm max-w-3xl"
       >
-        <pre><code>{{ sample }}</code></pre>
+        <textarea
+          v-model="sample"
+          class="w-full h-60 bg-neutral-700 text-sm p-2"
+        />
 
         <p class="text-neutral-300 mt-4">
-          <strong>key:</strong> Unique identifier for the section or task.<br>
-          <strong>name:</strong> Name of the section or task.<br>
-          <strong>status:</strong> Current status of the section or task.<br>
-          <strong>children:</strong> Nested sections or tasks.
+          <strong>key:</strong> Unique identifier for the section or task<br>
+          <strong>name:</strong> Name of the section or task<br>
+          <strong>status:</strong> Current status of the section or task<br>
+          <strong>children:</strong> Nested sections or tasks
         </p>
+
+        <TButton
+          class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm mt-4"
+          aria-label="Load Sample Data"
+          :is-active="false"
+          @click="loadConfigFromUserInput"
+        >
+          load config
+        </TButton>
       </div>
 
       <AppFooter />

@@ -69,7 +69,6 @@ The JSON configuration file should follow this format:
   {
     "key": "project1",
     "name": "Project 1",
-    "status": "To Do",
     "children": [
       {
         "key": "task1",
@@ -88,7 +87,6 @@ The JSON configuration file should follow this format:
   {
     "key": "project2",
     "name": "Project 2",
-    "status": "In Progress",
     "children": []
   }
 ]

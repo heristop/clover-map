@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useUpload } from '~/composables/upload'
+import { useConfig } from '~/composables/config'
 import { useStore } from '~/composables/store'
 
 const store = useStore()
 
-const { fileInput, loadSectionsFromFile, saveSectionsToFile } = useUpload()
+const { fileInput, loadFromFile, saveToFile } = useConfig()
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const { fileInput, loadSectionsFromFile, saveSectionsToFile } = useUpload()
     type="file"
     accept=".json"
     class="hidden"
-    @change="loadSectionsFromFile"
+    @change="loadFromFile"
   >
   <div class="flex items-center justify-between space-x-2 mb-3">
     <button
@@ -26,7 +26,7 @@ const { fileInput, loadSectionsFromFile, saveSectionsToFile } = useUpload()
     <button
       class="flex-1 font-semibold border-2 border-neutral-600 text-white px-2 py-1 disabled:cursor-not-allowed rounded-md transition duration-300 bg-neutral-900 hover:bg-neutral-600"
       :disabled="!store.configLoaded"
-      @click="saveSectionsToFile"
+      @click="saveToFile"
     >
       save
     </button>
