@@ -90,7 +90,7 @@ onMounted(() => {
     <div class="background-grid fixed inset-0 z-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
       <div class="bg-purple-300 rounded-lg opacity-30" />
       <div class="bg-yellow-300 rounded-lg opacity-30" />
-      <div class="bg-blue-300 rounded-lg opacity-30" />
+      <div class="bg-blue-300 rounded-lg col-span-2 opacity-30" />
       <div class="bg-pink-300 rounded-lg col-span-2 opacity-30" />
       <div class="bg-green-300 rounded-lg opacity-30" />
       <div class="bg-red-300 rounded-lg opacity-30" />
@@ -114,7 +114,7 @@ onMounted(() => {
             Welcome to TreePulse! <img
               src="/tree-pulse-white.webp"
               alt="TreePulse"
-              class="w-12 h-12 mb-2 inline-block"
+              class="w-14 h-14 mb-4 inline-block"
               aria-label="TreePulse"
             >
           </h1>
