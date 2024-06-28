@@ -111,7 +111,12 @@ onMounted(() => {
       >
         <section class="text-center text-neutral-100 space-y-6">
           <h1 class="text-3xl font-semibold">
-            Welcome to TreePulse!
+            Welcome to TreePulse! <img
+              src="/tree-pulse-white.webp"
+              alt="TreePulse"
+              class="w-12 h-12 mb-2 inline-block"
+              aria-label="TreePulse"
+            >
           </h1>
           <h2 class="text-lg text-neutral-300 max-w-3xl mx-auto">
             It looks like you haven't loaded any configuration yet. Click one of the buttons below to load sample data and see TreePulse in action!

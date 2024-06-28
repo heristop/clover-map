@@ -26,6 +26,41 @@ export default defineNuxtConfig({
           name: 'description',
           content: 'Project management tool designed to visualize and monitor the status of various projects and processes',
         },
+        {
+          hid: 'apple-mobile-web-app-title',
+          name: 'apple-mobile-web-app-title',
+          content: 'TreePulse',
+        },
+        {
+          hid: 'application-name',
+          name: 'application-name',
+          content: 'TreePulse',
+        },
+        {
+          hid: 'msapplication-TileColor',
+          name: 'msapplication-TileColor',
+        },
+      ],
+      link: [
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '32x32',
+          href: '/favicon-32x32.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/favicon-16x16.png',
+        },
+        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'mask-icon', href: '/safari-pinned-tab.svg' },
       ],
     },
   },

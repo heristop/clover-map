@@ -1,7 +1,5 @@
 # TreePulse
 
-🟥 🟧 🟨 🟩 🟦 🟪 🟫 ⬛ ⬜
-
 **TreePulse** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TreePulse** helps you visualize and monitor the status of your projects effectively.
 
 ![screenshot](/public/screenshot.png)
@@ -104,3 +102,7 @@ This project is licensed under the MIT License.
 ## 💬 Feedback and Contributions
 
 We welcome feedback and contributions! If you have any suggestions or encounter any issues, please feel free to open an issue or submit a pull request.
+
+🟥 🟧 🟨 🟩 🟦 🟪 🟫 ⬛ ⬜
+
+![Logo](/public/tree-pulse.webp)
