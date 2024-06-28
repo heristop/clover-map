@@ -74,24 +74,25 @@ export function useConfig() {
       const response = await fetch(url)
       const sections = await response.json()
 
-      if (validateSections(sections)) {
-        store.setSections(sections)
-        router.push('/viewport')
-
-        return true
-      }
-      else {
+      if (!validateSections(sections)) {
         displayInvalidDataError()
+
         return false
       }
+
+      store.setSections(sections)
+      router.push('/viewport')
+
+      return true
     }
     catch (error) {
       snackbar.add({
         type: 'error',
         title: 'Error fetching data. Please check the URL and try again.',
       })
-      return false
     }
+
+    return false
   }
 
   const loadFromUserInput = async (sample: string): Promise<boolean> => {

@@ -42,8 +42,10 @@ const getNodeStyles = (node: Section, depth: number) => {
 const checkIfSuccessNode = (node: Section) => {
   if (store.statuses?.length > 0 && node.status === store.statuses[store.statuses.length - 1]?.name) {
     isSuccessNode.value = true
+
     return
   }
+
   isSuccessNode.value = false
 }
 
@@ -55,11 +57,13 @@ const darkenColor = (color: string, percent: number) => {
   if (!/^#[0-9A-F]{6}$/i.test(color)) {
     return color
   }
+
   const num = parseInt(color.replace('#', ''), 16),
     amt = Math.round(2.55 * percent),
     R = Math.max((num >> 16) - amt, 0),
     G = Math.max((num >> 8 & 0x00FF) - amt, 0),
     B = Math.max((num & 0x0000FF) - amt, 0)
+
   return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1).toUpperCase()
 }
 
@@ -80,6 +84,7 @@ onMounted(() => {
 const nodeStyle = computed(() => {
   const baseFlex = 1
   const childCount = props.node.children ? props.node.children.length : 0
+
   return {
     flex: `${baseFlex + childCount} 1 auto`,
     cursor: !props.node.children || !props.node.children.length ? 'pointer' : 'default',
@@ -89,12 +94,14 @@ const nodeStyle = computed(() => {
 
 const handleClick = (event: MouseEvent) => {
   event.stopPropagation()
+
   if (!props.node.children || !props.node.children.length) {
     updateStatus()
+
+    return
   }
-  else {
-    toggleCollapse(event)
-  }
+
+  toggleCollapse(event)
 }
 
 const updateStatus = () => {

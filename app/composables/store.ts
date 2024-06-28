@@ -84,15 +84,21 @@ export const useStore = defineStore('store', {
     applyDefaultStatus(sections: Section[], existingProjects: Section[]): Section[] {
       return sections.map((module) => {
         const existingProject = this.findProjectByKey(module.key, existingProjects)
-        if (!module.status && existingProject) {
-          module.status = existingProject.status
+
+        if (!module.status) {
+          if (existingProject) {
+            module.status = existingProject.status
+          }
+
+          if (!existingProject) {
+            module.status = this.statuses[0]?.name || ''
+          }
         }
-        else if (!module.status) {
-          module.status = this.statuses[0]?.name || ''
-        }
+
         if (module.children) {
           module.children = this.applyDefaultStatus(module.children, existingProject?.children ?? [])
         }
+
         return module
       })
     },
@@ -105,11 +111,13 @@ export const useStore = defineStore('store', {
         modules.forEach((module) => {
           if (module.status) {
             statusSet.add(module.status)
+
             if (!statusColors[module.status]) {
               statusColors[module.status] = pastelColors[colorIndex % pastelColors.length] as string
               colorIndex++
             }
           }
+
           if (module.children) {
             traverse(module.children)
           }
@@ -150,21 +158,24 @@ export const useStore = defineStore('store', {
       const getStatusIndex = (status: string) => this.statuses.findIndex(s => s.name === status)
 
       const updateStatusRecursively = (module: Section) => {
-        if (module.children && module.children.length) {
-          module.children.forEach(updateStatusRecursively)
-          const statuses = module.children.map(child => child.status)
-          const uniqueStatuses = [...new Set(statuses)]
-
-          if (uniqueStatuses.length === 1) {
-            module.status = uniqueStatuses[0]
-          }
-          else {
-            const leastAdvancedStatus = uniqueStatuses.reduce((prev, curr) => {
-              return getStatusIndex(curr || '') < getStatusIndex(prev || '') ? curr : prev || ''
-            }, uniqueStatuses[0] || '')
-            module.status = leastAdvancedStatus
-          }
+        if (!module.children || !module.children.length) {
+          return
         }
+
+        module.children.forEach(updateStatusRecursively)
+        const statuses = module.children.map(child => child.status)
+        const uniqueStatuses = [...new Set(statuses)]
+
+        if (uniqueStatuses.length === 1) {
+          module.status = uniqueStatuses[0]
+
+          return
+        }
+
+        const leastAdvancedStatus = uniqueStatuses.reduce((prev, curr) => {
+          return getStatusIndex(curr || '') < getStatusIndex(prev || '') ? curr : prev || ''
+        }, uniqueStatuses[0] || '')
+        module.status = leastAdvancedStatus
       }
 
       this.sections.forEach(updateStatusRecursively)

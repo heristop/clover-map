@@ -34,9 +34,6 @@ const captureTreeMap = () => {
         })
     })
   }
-  else {
-    console.error('TreeMap section is not found')
-  }
 }
 </script>
 
