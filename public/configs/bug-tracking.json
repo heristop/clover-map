@@ -16,7 +16,7 @@
               {
                 "name": "Bug Reported",
                 "key": "/bug-tracking/frontend/bug1/report",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               },
               {
@@ -49,12 +49,12 @@
           {
             "name": "Bug 3 - JavaScript error",
             "key": "/bug-tracking/frontend/bug3",
-            "status": "in_progress",
+            "status": "assigned",
             "children": [
               {
                 "name": "Bug Reported",
                 "key": "/bug-tracking/frontend/bug3/report",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               },
               {
@@ -88,12 +88,12 @@
           {
             "name": "Bug 1 - API issue",
             "key": "/bug-tracking/backend/bug1",
-            "status": "in_progress",
+            "status": "assigned",
             "children": [
               {
                 "name": "Bug Reported",
                 "key": "/bug-tracking/backend/bug1/report",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               },
               {
@@ -118,7 +118,7 @@
               {
                 "name": "Bug Reported",
                 "key": "/bug-tracking/backend/bug2/report",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               }
             ]
@@ -137,7 +137,7 @@
               {
                 "name": "Bug Analysis",
                 "key": "/bug-tracking/backend/bug3/analysis",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               }
             ]
@@ -145,7 +145,7 @@
           {
             "name": "Bug 4 - Authentication failure",
             "key": "/bug-tracking/backend/bug4",
-            "status": "in_progress",
+            "status": "assigned",
             "children": [
               {
                 "name": "Bug Reported",
@@ -194,7 +194,7 @@
               {
                 "name": "Bug Fix",
                 "key": "/bug-tracking/database/bug1/fix",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               },
               {
@@ -213,7 +213,7 @@
               {
                 "name": "Bug Reported",
                 "key": "/bug-tracking/database/bug2/report",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               },
               {
@@ -238,7 +238,7 @@
               {
                 "name": "Bug Analysis",
                 "key": "/bug-tracking/database/bug3/analysis",
-                "status": "in_progress",
+                "status": "assigned",
                 "children": []
               },
               {

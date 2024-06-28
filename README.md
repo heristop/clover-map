@@ -1,8 +1,8 @@
-# TrackerMap
+# TreePulse
 
 🟥 🟧 🟨 🟩 🟦 🟪 🟫 ⬛ ⬜
 
-**TrackerMap** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TrackerMap** helps you visualize and monitor the status of your projects effectively.
+**TreePulse** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TreePulse** helps you visualize and monitor the status of your projects effectively.
 
 ![screenshot](/public/screenshot.png)
 
@@ -20,13 +20,13 @@
 
 ## 🛠️ Installation
 
-To install and run **TrackerMap** locally, follow these steps:
+To install and run **TreePulse** locally, follow these steps:
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/heristop/tracker-map.git
-    cd tracker-map
+    git clone https://github.com/heristop/tree-pulse.git
+    cd tree-pulse
     ```
 
 2. Install dependencies:
@@ -47,7 +47,7 @@ To install and run **TrackerMap** locally, follow these steps:
 
 ### Loading Configuration
 
-- **From Local Storage**: If there is a saved configuration in local storage, TrackerMap will load it automatically.
+- **From Local Storage**: If there is a saved configuration in local storage, TreePulse will load it automatically.
 - **From API**: If no local configuration is found, you can load a sample configuration by clicking the "Load Sample Data" button.
 
 ### Importing and Exporting Data
@@ -92,10 +92,10 @@ The JSON configuration file should follow this format:
 ]
 ```
 
-- `key`: Unique identifier for the section or task.
-- `name`: Name of the section or task.
-- `status`: Current status of the section or task.
-- `children`: Nested sections or tasks.
+- `key`: Unique identifier for the section or task
+- `name`: Name of the section or task
+- `status`: Current status of the section or task
+- `children`: Nested sections or tasks
 
 ## 📄 License
 

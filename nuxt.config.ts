@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'TrackerMap',
+      title: 'TreePulse',
       htmlAttrs: {
         lang: 'en',
       },
@@ -54,7 +54,9 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    apiBase: process.env.API_BASE || 'http://localhost:3000',
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3000',
+    },
   },
   // https://eslint.nuxt.com
   eslint: {

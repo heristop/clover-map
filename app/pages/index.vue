@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from '~/composables/store'
 import { useConfig } from '~/composables/config'
 import AppFooter from '~/components/AppFooter.vue'
 import TButton from '~/components/ui/TButton.vue'
@@ -12,7 +13,7 @@ const router = useRouter()
 
 const { fileInput, loadFromModel, loadFromFile, loadFromUrl, loadFromUserInput } = useConfig()
 
-const url = ref('https://tracker-map.nuxt.dev/configs/project-migration.json')
+const url = ref(`${useRuntimeConfig().public.apiBaseUrl}/configs/project-migration.json`)
 const sample = ref(`[
   {
     "key": "project1",
@@ -51,6 +52,27 @@ const loadConfigFromUserInput = async () => {
   await loadFromUserInput(sample.value)
 }
 
+const observeSections = () => {
+  const sections = document.querySelectorAll('.section')
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show')
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    {
+      threshold: 0.1,
+    },
+  )
+
+  sections.forEach((section) => {
+    observer.observe(section)
+  })
+}
+
 onMounted(() => {
   if (isConfigLoaded.value) {
     router.push('/viewport')
@@ -58,6 +80,7 @@ onMounted(() => {
 
   nextTick(() => {
     isLoading.value = false
+    observeSections()
   })
 })
 </script>
@@ -76,23 +99,22 @@ onMounted(() => {
       <div class="bg-orange-300 rounded-lg opacity-30" />
       <div class="bg-lime-300 rounded-lg opacity-30" />
     </div>
-
     <div class="absolute h-full inset-0 z-10 bg-neutral-600 opacity-90" />
 
     <div
       v-if="!isLoading"
-      class="relative z-20 flex flex-col justify-center items-center min-h-screen p-6 max-w-6xl mx-auto"
+      class="relative z-20 flex flex-col justify-center items-center h-screen p-6 max-w-6xl mx-auto section show"
     >
       <transition
         name="fade"
         appear
       >
-        <div class="text-center text-neutral-100 space-y-6">
+        <section class="text-center text-neutral-100 space-y-6">
           <h1 class="text-3xl font-semibold">
-            Welcome to TrackerMap!
+            Welcome to TreePulse!
           </h1>
           <h2 class="text-lg text-neutral-300 max-w-3xl mx-auto">
-            It looks like you haven't loaded any configuration yet. Click one of the buttons below to load sample data and see TrackerMap in action!
+            It looks like you haven't loaded any configuration yet. Click one of the buttons below to load sample data and see TreePulse in action!
           </h2>
           <div class="mt-8 animate-bounce">
             <svg
@@ -110,150 +132,138 @@ onMounted(() => {
               />
             </svg>
           </div>
-        </div>
+        </section>
       </transition>
     </div>
 
-    <div
-      v-if="!isLoading"
-      class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto"
-    >
-      <h3
-        v-if="!isLoading"
-        class="text-md font-bold"
+    <div class="min-h-screen">
+      <transition
+        name="fade"
+        appear
       >
-        Load Sample Data
-      </h3>
-
-      <div
-        v-if="!isLoading"
-        class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 text-center space-y-6 md:space-y-0"
-      >
-        <TButton
-          class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
-          aria-label="Load Project Migration Data"
-          :is-active="false"
-          @click="loadConfigFromApi('project-migration')"
+        <section
+          id="section-to-fade"
+          class="min-h-screen section"
         >
-          project migration
-        </TButton>
+          <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
+            <h3 class="text-md font-bold">
+              Load Sample Data
+            </h3>
 
-        <TButton
-          class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
-          aria-label="Load Bug Tracking Data"
-          :is-active="false"
-          @click="loadConfigFromApi('bug-tracking')"
-        >
-          bug tracking
-        </TButton>
+            <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 text-center space-y-6 md:space-y-0">
+              <TButton
+                class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
+                aria-label="Load Project Migration Data"
+                :is-active="false"
+                @click="loadConfigFromApi('project-migration')"
+              >
+                project migration
+              </TButton>
 
-        <TButton
-          class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
-          aria-label="Load Recruitment Data"
-          :is-active="false"
-          @click="loadConfigFromApi('recruitment')"
-        >
-          recruitment
-        </TButton>
-      </div>
-    </div>
+              <TButton
+                class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
+                aria-label="Load Bug Tracking Data"
+                :is-active="false"
+                @click="loadConfigFromApi('bug-tracking')"
+              >
+                bug tracking
+              </TButton>
 
-    <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-      <h3
-        v-if="!isLoading"
-        class="text-md font-bold"
-      >
-        Load Configuration
-      </h3>
+              <TButton
+                class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
+                aria-label="Load Recruitment Data"
+                :is-active="false"
+                @click="loadConfigFromApi('recruitment')"
+              >
+                recruitment
+              </TButton>
+            </div>
+          </div>
 
-      <input
-        ref="fileInput"
-        type="file"
-        accept=".json"
-        class="hidden"
-        @change="loadFromFile"
-      >
+          <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
+            <h3 class="text-md font-bold">
+              Load Configuration
+            </h3>
 
-      <div
-        v-if="!isLoading"
-        class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 space-y-6 md:space-y-0"
-      >
-        <TButton
-          class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
-          aria-label="Load Project Migration Data"
-          :is-active="false"
-          @click="($refs.fileInput as HTMLInputElement).click()"
-        >
-          upload file
-        </TButton>
-      </div>
+            <input
+              ref="fileInput"
+              type="file"
+              accept=".json"
+              class="hidden"
+              @change="loadFromFile"
+            >
 
-      <div
-        v-if="!isLoading"
-        class="flex flex-col w-full md:w-2/3 md:flex-row md:space-x-4 space-y-6 md:space-y-0"
-      >
-        <input
-          v-model="url"
-          placeholder="https://"
-          class="bg-neutral-700 text-white px-4 py-2 rounded-md text-sm w-full md:w-2/3"
-        >
+            <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 space-y-6 md:space-y-0">
+              <TButton
+                class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm"
+                aria-label="Load Project Migration Data"
+                :is-active="false"
+                @click="($refs.fileInput as HTMLInputElement).click()"
+              >
+                upload file
+              </TButton>
+            </div>
 
-        <TButton
-          class="bg-neutral-900 px-6 py-2 w-full md:w-1/3 hover:bg-neutral-800 text-sm disabled:cursor-not-allowed"
-          aria-label="Load Configuration from URL"
-          :is-active="false"
-          :disabled="!url"
-          @click="loadConfigFromUrl(url)"
-        >
-          load from url
-        </TButton>
-      </div>
-    </div>
+            <div class="flex flex-col w-full md:w-2/3 md:flex-row md:space-x-4 space-y-6 md:space-y-0">
+              <input
+                v-model="url"
+                placeholder="https://"
+                class="bg-neutral-700 text-white px-4 py-2 rounded-md text-sm w-full md:w-2/3"
+              >
 
-    <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-      <h3
-        v-if="!isLoading"
-        class="text-md font-bold"
-      >
-        Load Custom Configuration
-      </h3>
+              <TButton
+                class="bg-neutral-900 px-6 py-2 w-full md:w-1/3 hover:bg-neutral-800 text-sm disabled:cursor-not-allowed"
+                aria-label="Load Configuration from URL"
+                :is-active="false"
+                :disabled="!url"
+                @click="loadConfigFromUrl(url)"
+              >
+                load from url
+              </TButton>
+            </div>
+          </div>
 
-      <div
-        v-if="!isLoading"
-        class="bg-neutral-700 text-white p-4 rounded-md text-sm max-w-3xl"
-      >
-        <textarea
-          v-model="sample"
-          class="w-full h-60 bg-neutral-700 text-sm p-2"
-        />
+          <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
+            <h3 class="text-md font-bold">
+              Load Custom Configuration
+            </h3>
 
-        <p class="text-neutral-300 mt-4">
-          <strong>key:</strong> Unique identifier for the section or task<br>
-          <strong>name:</strong> Name of the section or task<br>
-          <strong>status:</strong> Current status of the section or task<br>
-          <strong>children:</strong> Nested sections or tasks
-        </p>
+            <div class="bg-neutral-700 text-white p-4 rounded-md text-sm max-w-3xl">
+              <textarea
+                v-model="sample"
+                class="w-full h-60 bg-neutral-700 text-sm p-2"
+              />
 
-        <TButton
-          class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm mt-4"
-          aria-label="Load Sample Data"
-          :is-active="false"
-          @click="loadConfigFromUserInput"
-        >
-          load config
-        </TButton>
-      </div>
+              <p class="text-neutral-300 mt-4">
+                <strong>key:</strong> Unique identifier for the section or task<br>
+                <strong>name:</strong> Name of the section or task<br>
+                <strong>status:</strong> Current status of the section or task<br>
+                <strong>children:</strong> Nested sections or tasks
+              </p>
 
-      <NuxtSnackbar
-        bottom
-        right
-        shadow
-        success="#34d399"
-        error="#f87171"
-        info="#3b82f6"
-      />
+              <TButton
+                class="bg-neutral-900 px-6 py-2 min-w-fit hover:bg-neutral-800 text-sm mt-4"
+                aria-label="Load Sample Data"
+                :is-active="false"
+                @click="loadConfigFromUserInput"
+              >
+                load config
+              </TButton>
+            </div>
 
-      <AppFooter />
+            <NuxtSnackbar
+              bottom
+              right
+              shadow
+              success="#34d399"
+              error="#f87171"
+              info="#3b82f6"
+            />
+
+            <AppFooter />
+          </div>
+        </section>
+      </transition>
     </div>
   </div>
 </template>
@@ -283,5 +293,14 @@ onMounted(() => {
   50% {
     transform: translateY(-15%);
   }
+}
+
+.section {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.section.show {
+  opacity: 1;
 }
 </style>

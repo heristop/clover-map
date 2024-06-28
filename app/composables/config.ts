@@ -1,8 +1,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Ajv from 'ajv'
 import { useStore } from '~/composables/store'
-import schema from '~/schema.json'
+import validate from '~/validator'
 import type { Section } from '~~/types'
 import { useSnackbar } from '#imports'
 
@@ -11,9 +10,6 @@ export function useConfig() {
   const store = useStore()
   const snackbar = useSnackbar()
   const fileInput = ref<HTMLInputElement | null>(null)
-
-  const ajv = new Ajv()
-  const validate = ajv.compile(schema)
 
   const validateSections = (sections: Section[]): boolean => {
     if (validate(sections)) {
@@ -68,31 +64,34 @@ export function useConfig() {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `trackerMap-${new Date().toISOString()}.json`
+    link.download = `tree-pulse-${new Date().toISOString()}.json`
     link.click()
     URL.revokeObjectURL(url)
   }
 
   const loadFromUrl = async (url: string): Promise<boolean> => {
-    const sections = await store.fetchSectionsFromUrl(url)
+    try {
+      const response = await fetch(url)
+      const sections = await response.json()
 
-    if (!sections) {
+      if (validateSections(sections)) {
+        store.setSections(sections)
+        router.push('/viewport')
+
+        return true
+      }
+      else {
+        displayInvalidDataError()
+        return false
+      }
+    }
+    catch (error) {
       snackbar.add({
         type: 'error',
         title: 'Error fetching data. Please check the URL and try again.',
       })
-
       return false
     }
-
-    if (validateSections(sections)) {
-      store.setSections(sections)
-      router.push('/viewport')
-
-      return true
-    }
-
-    return false
   }
 
   const loadFromUserInput = async (sample: string): Promise<boolean> => {
