@@ -65,6 +65,14 @@ const toggleDarkMode = () => {
   }
 }
 
+const openGitHub = () => {
+  window.open('https://github.com/heristop/tree-pulse', '_blank')
+}
+
+const openStackBlitz = () => {
+  window.open('https://stackblitz.com/~/github.com/heristop/tree-pulse', '_blank')
+}
+
 const observeSections = () => {
   const sections = document.querySelectorAll('.section')
   const observer = new IntersectionObserver(
@@ -86,6 +94,13 @@ const observeSections = () => {
   })
 }
 
+const scrollToSection = (sectionId: string) => {
+  const section = document.getElementById(sectionId)
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' })
+  }
+}
+
 onMounted(() => {
   if (store.darkMode) {
     document.documentElement.classList.add('dark')
@@ -105,10 +120,10 @@ onMounted(() => {
 <template>
   <div
     :class="{ dark: darkMode }"
-    class="relative w-full min-h-screen overflow-auto bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50"
+    class="relative w-full min-h-screen overflow-auto bg-stone-50 dark:bg-stone-900 text-stone-900 dark:text-stone-50"
   >
     <button
-      class="fixed top-4 right-4 p-2 bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-50 rounded z-50"
+      class="fixed top-4 right-4 p-2 bg-stone-200 dark:bg-stone-700 text-stone-900 dark:text-stone-50 rounded z-50"
       aria-label="dark mode"
       @click="toggleDarkMode"
     >
@@ -163,7 +178,7 @@ onMounted(() => {
       <div class="bg-lime-300 dark:bg-lime-700 rounded-lg opacity-30" />
     </div>
 
-    <div class="absolute h-full inset-0 z-10 bg-neutral-300 dark:bg-neutral-900 opacity-80 dark:opacity-90" />
+    <div class="absolute h-full inset-0 z-10 bg-stone-300 dark:bg-stone-800 opacity-80 dark:opacity-90" />
 
     <div
       v-if="!isLoading"
@@ -174,21 +189,70 @@ onMounted(() => {
         appear
       >
         <section class="text-center space-y-6">
-          <h1 class="text-4xl font-semibold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-blue-400 to-green-500 dark:from-red-300 dark:via-blue-300 dark:to-green-300">
+          <h1 class="text-4xl font-semibold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]">
             Welcome to TreePulse!
           </h1>
 
-          <h2 class="text-lg text-neutral-600 dark:text-neutral-300 max-w-3xl mx-auto">
+          <div class="text-lg text-stone-600 dark:text-stone-300 max-w-3xl mx-auto">
             It looks like you haven't loaded any configuration yet. Click one of the buttons below to load sample data and see TreePulse in action!
-          </h2>
+          </div>
+
+          <div class="flex justify-center space-x-4 p-6">
+            <TButton
+              aria-label="View on GitHub"
+              :is-active="false"
+              @click="openGitHub"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="icon flex-shrink-0 h-5 w-5 mr-2"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                />
+              </svg>
+              <span>View on GitHub</span>
+            </TButton>
+
+            <TButton
+              aria-label="Edit on StackBlitz"
+              :is-active="false"
+              @click="openStackBlitz"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="icon flex-shrink-0 h-5 w-5 mr-2"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12 0L1.75 6v12L12 24l10.25-6V6zm-1.775 18l1.08-4.657l-2.428-2.397L13.79 6l-1.082 4.665l2.414 2.384z"
+                />
+              </svg>
+              <span>Edit on StackBlitz</span>
+            </TButton>
+          </div>
 
           <div class="mt-8 animate-bounce">
             <svg
-              class="w-6 h-6 mx-auto"
+              class="w-6 h-6 mx-auto cursor-pointer text-stone-600 dark:text-stone-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              @click="scrollToSection('section-to-fade')"
             >
               <path
                 stroke-linecap="round"
@@ -212,29 +276,28 @@ onMounted(() => {
           class="min-h-screen section"
         >
           <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-            <h3 class="text-md font-bold">
+            <h2 class="text-lg font-bold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 dark:from-stone-400 dark:to-stone-200">
               Load Sample Data
-            </h3>
+            </h2>
 
             <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 text-center space-y-6 md:space-y-0">
               <TButton
-                class="bg-neutral-900 dark:bg-neutral-200 px-6 py-2 min-w-fit hover:bg-neutral-800 dark:hover:bg-neutral-300 text-sm dark:text-black"
                 aria-label="Load Project Migration Data"
                 :is-active="false"
                 @click="loadConfigFromApi('project-migration')"
               >
                 Project Migration
               </TButton>
+
               <TButton
-                class="bg-neutral-900 dark:bg-neutral-200 px-6 py-2 min-w-fit hover:bg-neutral-800 dark:hover:bg-neutral-300 text-sm dark:text-black"
                 aria-label="Load Bug Tracking Data"
                 :is-active="false"
                 @click="loadConfigFromApi('bug-tracking')"
               >
                 Bug Tracking
               </TButton>
+
               <TButton
-                class="bg-neutral-900 dark:bg-neutral-200 px-6 py-2 min-w-fit hover:bg-neutral-800 dark:hover:bg-neutral-300 text-sm dark:text-black"
                 aria-label="Load Recruitment Data"
                 :is-active="false"
                 @click="loadConfigFromApi('recruitment')"
@@ -245,9 +308,9 @@ onMounted(() => {
           </div>
 
           <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-            <h3 class="text-md font-bold">
+            <h2 class="text-lg font-bold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 dark:from-stone-400 dark:to-stone-200">
               Load Configuration
-            </h3>
+            </h2>
 
             <input
               ref="fileInput"
@@ -259,11 +322,28 @@ onMounted(() => {
 
             <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 space-y-6 md:space-y-0">
               <TButton
-                class="bg-neutral-900 dark:bg-neutral-200 px-6 py-2 min-w-fit hover:bg-neutral-800 dark:hover:bg-neutral-300 text-sm dark:text-black"
                 aria-label="Upload File"
                 :is-active="false"
                 @click="($refs.fileInput as HTMLInputElement).click()"
               >
+                <svg
+                  class="w-5 h-5 mx-auto cursor-pointer dark:text-stone-600 text-stone-100 mr-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"
+                  />
+                </svg>
+
                 Upload File
               </TButton>
             </div>
@@ -272,10 +352,9 @@ onMounted(() => {
               <input
                 v-model="url"
                 placeholder="https://"
-                class="bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-white px-4 py-2 rounded-md text-sm w-full md:w-2/3"
+                class="bg-stone-200 text-stone-900 dark:bg-stone-700 dark:text-white px-4 py-2 rounded-md text-sm w-full md:w-2/3"
               >
               <TButton
-                class="bg-neutral-900 dark:bg-neutral-200 px-6 py-2 w-full md:w-1/3 hover:bg-neutral-800 dark:hover:bg-neutral-300 text-sm dark:text-black disabled:cursor-not-allowed"
                 aria-label="Load Configuration from URL"
                 :is-active="false"
                 :disabled="!url"
@@ -287,17 +366,26 @@ onMounted(() => {
           </div>
 
           <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-            <h3 class="text-md font-bold">
+            <h2 class="text-lg font-bold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-500 dark:from-stone-400 dark:to-stone-200">
               Load Custom Configuration
-            </h3>
+            </h2>
 
-            <div class="bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-white p-4 rounded-md text-sm max-w-3xl">
+            <div class="bg-stone-200 text-stone-900 dark:bg-stone-700 dark:text-white p-4 rounded-md text-sm max-w-3xl">
+              <label
+                for="sample-config"
+                class="block text-sm font-medium text-stone-900 dark:text-stone-50"
+              >
+                Sample Configuration
+              </label>
+
               <textarea
+                id="sample-config"
                 v-model="sample"
-                class="w-full h-60 bg-neutral-200 text-sm p-2 dark:bg-neutral-700 dark:text-white"
+                class="w-full h-60 text-stone-500 bg-stone-200 text-sm p-2 dark:bg-stone-700 dark:text-stone-300 mt-1"
+                aria-label="Sample Configuration"
               />
 
-              <p class="text-neutral-600 mt-4 dark:text-neutral-300">
+              <p class="text-stone-600 mt-4 dark:text-stone-300">
                 <strong>key:</strong> Unique identifier for the section or task<br>
                 <strong>name:</strong> Name of the section or task<br>
                 <strong>status:</strong> Current status of the section or task<br>
@@ -305,7 +393,7 @@ onMounted(() => {
               </p>
 
               <TButton
-                class="bg-neutral-900 dark:bg-neutral-200 px-6 py-2 min-w-fit hover:bg-neutral-800 dark:hover:bg-neutral-300 text-sm mt-4 dark:text-black"
+                class="w-full mt-4"
                 aria-label="Load Sample Data"
                 :is-active="false"
                 @click="loadConfigFromUserInput"

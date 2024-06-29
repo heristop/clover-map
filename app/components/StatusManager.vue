@@ -67,18 +67,18 @@ function getNextColor() {
   <div
     v-for="(status, index) in statuses"
     :key="index"
-    class="flex items-center space-x-2 space-y-2 align-middle status-item text-neutral-800"
+    class="flex items-center space-x-2 space-y-2 align-middle status-item text-stone-800"
     :draggable="!inputFocused"
     @dragstart="startStatusDrag($event, index)"
     @dragover.prevent
     @drop="dropStatus($event, index)"
   >
-    <div class="text-neutral-400 w-20 text-xs">
+    <div class="text-stone-400 w-20 text-xs">
       {{ index + 1 }}.
     </div>
     <input
       v-model="status.name"
-      class="p-1 font-semibold rounded-sm w-full placeholder:text-neutral-300 text-xs"
+      class="p-1 font-semibold rounded-sm w-full placeholder:text-stone-300 text-xs"
       placeholder="status"
       @focus="disableStatusDrag"
       @blur="enableStatusDrag"
@@ -86,27 +86,27 @@ function getNextColor() {
     <input
       v-model="status.color"
       :style="{ backgroundColor: isValidColor(status.color) ? status.color : '#FFFFFF', color: isValidColor(status.color) ? getTextColor(status.color) : '#000000' }"
-      class="p-1 font-semibold rounded-sm w-full placeholder:text-neutral-300 text-xs"
+      class="p-1 font-semibold rounded-sm w-full placeholder:text-stone-300 text-xs"
       placeholder="color"
       @focus="disableStatusDrag"
       @blur="enableStatusDrag"
     >
     <button
       :disabled="statuses.length <= 1"
-      class="text-neutral-200 font-semibold w-[200px] disabled:text-neutral-500 text-xs"
+      class="text-stone-200 font-semibold w-[200px] disabled:text-stone-500 text-xs"
       @click="removeStatus(index)"
     >
       remove
     </button>
   </div>
 
-  <div class="flex items-center space-x-2 space-y-2 align-middle status-item text-neutral-600 mb-6">
-    <div class="text-neutral-400 w-20 text-sm">
+  <div class="flex items-center space-x-2 space-y-2 align-middle status-item text-stone-600 mb-6">
+    <div class="text-stone-400 w-20 text-sm">
       {{ statuses.length + 1 }}.
     </div>
     <input
       v-model="newStatus.name"
-      class="p-1 font-semibold rounded-sm w-full placeholder:text-neutral-400 text-xs"
+      class="p-1 font-semibold rounded-sm w-full placeholder:text-stone-400 text-xs"
       placeholder="status"
       @focus="disableStatusDrag"
       @blur="enableStatusDrag"
@@ -114,14 +114,14 @@ function getNextColor() {
     <input
       v-model="newStatus.color"
       :style="{ backgroundColor: isValidColor(newStatus.color) ? newStatus.color : '#FFFFFF', color: isValidColor(newStatus.color) ? getTextColor(newStatus.color) : '#000000' }"
-      class="p-1 font-semibold rounded-sm w-full placeholder:text-neutral-400 text-xs"
+      class="p-1 font-semibold rounded-sm w-full placeholder:text-stone-400 text-xs"
       :placeholder="getNextColor()"
       @focus="disableStatusDrag"
       @blur="enableStatusDrag"
     >
     <button
       :disabled="!newStatus.name || !newStatus.color"
-      class="text-neutral-200 font-semibold w-[200px] disabled:text-neutral-500 text-xs"
+      class="text-stone-200 font-semibold w-[200px] disabled:text-stone-500 text-xs"
       @click="addNewStatus"
     >
       add

@@ -39,11 +39,11 @@ onMounted(() => {
   <transition name="slide-fade">
     <div
       v-if="isPositioned"
-      class="fixed top-0 right-0 bg-opacity-80 bg-neutral-800 text-white rounded-l-md shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
+      class="fixed top-0 right-0 bg-opacity-80 bg-stone-800 text-white rounded-l-md shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
       :style="{ width: drawerMinimized ? '40px' : `${size.width}px`, height: drawerMinimized ? 'auto' : '100vh' }"
     >
       <div
-        class="header flex justify-between items-center rounded-l-md bg-neutral-800 px-2 py-1"
+        class="header flex justify-between items-center rounded-l-md bg-stone-800 px-2 py-1"
       >
         <h2
           v-if="!drawerMinimized"
@@ -86,16 +86,20 @@ onMounted(() => {
           <div class="flex items-center justify-between space-x-2 mb-3">
             <TButton
               :is-active="store.display === 'name'"
+              size="sm"
+              class="w-full"
               @click="setDisplay('name')"
             >
-              name
+              Name
             </TButton>
 
             <TButton
               :is-active="store.display === 'key'"
+              size="sm"
+              class="w-full"
               @click="setDisplay('key')"
             >
-              key
+              Key
             </TButton>
           </div>
         </div>
@@ -126,11 +130,12 @@ onMounted(() => {
           <div class="flex items-center justify-between space-x-2 mb-3">
             <TButton
               :is-active="false"
-              class="border-red-600 bg-red-700 hover:bg-red-600"
+              size="sm"
+              class="w-full"
               aria-label="reset"
               @click="resetConfiguration"
             >
-              reset
+              Reset
             </TButton>
           </div>
         </div>

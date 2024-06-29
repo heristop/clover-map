@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TButton from './ui/TButton.vue'
 import { useConfig } from '~/composables/config'
 import { useStore } from '~/composables/store'
 
@@ -16,19 +17,21 @@ const { fileInput, loadFromFile, saveToFile } = useConfig()
     @change="loadFromFile"
   >
   <div class="flex items-center justify-between space-x-2 mb-3">
-    <button
-      class="flex-1 font-semibold border-2 border-neutral-600 text-white px-2 py-1 rounded-md transition duration-300 bg-neutral-900 hover:bg-neutral-600"
+    <TButton
+      size="sm"
+      class="w-full py-1"
       @click="($refs.fileInput as HTMLInputElement).click()"
     >
-      upload
-    </button>
+      Upload
+    </TButton>
 
-    <button
-      class="flex-1 font-semibold border-2 border-neutral-600 text-white px-2 py-1 disabled:cursor-not-allowed rounded-md transition duration-300 bg-neutral-900 hover:bg-neutral-600"
+    <TButton
+      size="sm"
+      class="w-full py-1"
       :disabled="!store.configLoaded"
       @click="saveToFile"
     >
-      save
-    </button>
+      Save
+    </TButton>
   </div>
 </template>

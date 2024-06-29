@@ -36,7 +36,7 @@ onUnmounted(() => {
 <template>
   <div
     ref="container"
-    :class="['w-full', useFullHeight ? 'h-full' : 'h-screen', 'bg-neutral-600', 'text-white']"
+    :class="['w-full', useFullHeight ? 'h-full' : 'h-screen', 'bg-stone-600', 'text-white']"
   >
     <slot />
   </div>
