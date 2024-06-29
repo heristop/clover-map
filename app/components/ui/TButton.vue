@@ -13,8 +13,8 @@
 
 <script setup lang="ts">
 withDefaults(defineProps<{
-  isActive: boolean
-  size: 'sm' | 'md' | 'lg'
+  isActive?: boolean
+  size?: 'sm' | 'md' | 'lg'
 }>(), {
   isActive: false,
   size: 'md',

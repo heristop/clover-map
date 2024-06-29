@@ -425,16 +425,6 @@
         ]
       },
       {
-        "key": "fuel-order-page",
-        "name": "Fuel Order",
-        "children": []
-      },
-      {
-        "key": "fuel-order-confirmation-page",
-        "name": "Fuel Order Confirmation",
-        "children": []
-      },
-      {
         "key": "faq-page",
         "name": "FAQ",
         "children": []
