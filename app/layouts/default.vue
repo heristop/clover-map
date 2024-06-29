@@ -1,12 +1,3 @@
-<template>
-  <div
-    ref="container"
-    :class="['w-full', useFullHeight ? 'h-full' : 'h-screen', 'bg-neutral-600', 'text-white']"
-  >
-    <slot />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useStore } from '~/composables/store'
@@ -41,3 +32,12 @@ onUnmounted(() => {
   window.removeEventListener('resize', checkContentHeight)
 })
 </script>
+
+<template>
+  <div
+    ref="container"
+    :class="['w-full', useFullHeight ? 'h-full' : 'h-screen', 'bg-neutral-600', 'text-white']"
+  >
+    <slot />
+  </div>
+</template>

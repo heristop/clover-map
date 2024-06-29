@@ -17,17 +17,17 @@ const { fileInput, loadFromModel, loadFromFile, loadFromUrl, loadFromUserInput }
 const url = ref(`${useRuntimeConfig().public.apiBaseUrl}/configs/project-migration.json`)
 const sample = ref(`[
   {
-    "key": "project1",
+    "key": "project-1",
     "name": "Project 1",
     "children": [
       {
-        "key": "task1",
+        "key": "task-1",
         "name": "Task 1",
         "status": "In Progress",
         "children": []
       },
       {
-        "key": "task2",
+        "key": "task-2",
         "name": "Task 2",
         "status": "Done",
         "children": []
@@ -35,7 +35,7 @@ const sample = ref(`[
     ]
   },
   {
-    "key": "project2",
+    "key": "project-2",
     "name": "Project 2",
     "children": []
   }
@@ -260,7 +260,7 @@ onMounted(() => {
             <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 space-y-6 md:space-y-0">
               <TButton
                 class="bg-neutral-900 dark:bg-neutral-200 px-6 py-2 min-w-fit hover:bg-neutral-800 dark:hover:bg-neutral-300 text-sm dark:text-black"
-                aria-label="Load Project Migration Data"
+                aria-label="Upload File"
                 :is-active="false"
                 @click="($refs.fileInput as HTMLInputElement).click()"
               >

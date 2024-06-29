@@ -26,9 +26,15 @@ importers:
       '@pinia/nuxt':
         specifier: ^0.5.1
         version: 0.5.1(magicast@0.3.4)(rollup@4.18.0)(typescript@5.5.2)(vue@3.4.31(typescript@5.5.2))
+      '@playwright/test':
+        specifier: ^1.45.0
+        version: 1.45.0
       '@types/dom-to-image':
         specifier: ^2.6.7
         version: 2.6.7
+      '@types/node':
+        specifier: ^20.14.9
+        version: 20.14.9
       ajv:
         specifier: ^8.16.0
         version: 8.16.0
@@ -976,6 +982,11 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@playwright/test@1.45.0':
+    resolution: {integrity: sha512-TVYsfMlGAaxeUllNkywbwek67Ncf8FRGn8ZlRdO291OL3NjG9oMbfVhyP82HQF0CZLMrYsvesqoUekxdWuF9Qw==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   '@polka/url@1.0.0-next.25':
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
@@ -2392,6 +2403,11 @@ packages:
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
+  fsevents@2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -3455,6 +3471,11 @@ packages:
 
   playwright-core@1.45.0:
     resolution: {integrity: sha512-lZmHlFQ0VYSpAs43dRq1/nJ9G/6SiTI7VPqidld9TDefL9tX87bTKExWZZUF5PeRyqtXqd8fQi2qmfIedkwsNQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.45.0:
+    resolution: {integrity: sha512-4z3ac3plDfYzGB6r0Q3LF8POPR20Z8D0aXcxbJvmfMgSSq1hkcgvFRXJk9rUq5H/MJ0Ktal869hhOdI/zUTeLA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -5848,6 +5869,10 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
+  '@playwright/test@1.45.0':
+    dependencies:
+      playwright: 1.45.0
+
   '@polka/url@1.0.0-next.25': {}
 
   '@protobufjs/aspromise@1.1.2': {}
@@ -7453,6 +7478,9 @@ snapshots:
 
   fs.realpath@1.0.0: {}
 
+  fsevents@2.3.2:
+    optional: true
+
   fsevents@2.3.3:
     optional: true
 
@@ -8709,6 +8737,12 @@ snapshots:
       pathe: 1.1.2
 
   playwright-core@1.45.0: {}
+
+  playwright@1.45.0:
+    dependencies:
+      playwright-core: 1.45.0
+    optionalDependencies:
+      fsevents: 2.3.2
 
   pluralize@8.0.0: {}
 

@@ -1,51 +1,51 @@
 [
   {
     "key": "catalog",
-    "name": "catalog",
+    "name": "Catalog",
     "children": [
       {
         "key": "catalog-main-page",
-        "name": "catalog-main-page",
+        "name": "Catalog Main Page",
         "children": [
           {
             "key": "catalog-electronics-page",
-            "name": "catalog-electronics-page",
+            "name": "Electronics",
             "children": []
           },
           {
             "key": "catalog-fashion-page",
-            "name": "catalog-fashion-page",
+            "name": "Fashion",
             "children": [
               {
                 "key": "catalog-fashion-men-page",
-                "name": "catalog-fashion-men-page",
+                "name": "Men's Fashion",
                 "children": []
               },
               {
                 "key": "catalog-fashion-women-page",
-                "name": "catalog-fashion-women-page",
+                "name": "Women's Fashion",
                 "children": []
               },
               {
                 "key": "catalog-fashion-kids-page",
-                "name": "catalog-fashion-kids-page",
+                "name": "Kids' Fashion",
                 "children": []
               }
             ]
           },
           {
             "key": "catalog-home-page",
-            "name": "catalog-home-page",
+            "name": "Home",
             "children": []
           },
           {
             "key": "catalog-books-page",
-            "name": "catalog-books-page",
+            "name": "Books",
             "children": []
           },
           {
             "key": "catalog-sports-page",
-            "name": "catalog-sports-page",
+            "name": "Sports",
             "children": []
           }
         ]
@@ -54,399 +54,399 @@
   },
   {
     "key": "account",
-    "name": "account",
+    "name": "Account",
     "children": [
       {
         "key": "contact-details-page",
-        "name": "contact-details-page",
+        "name": "Contact Details",
         "children": []
       },
       {
         "key": "marketing-consents-page",
-        "name": "marketing-consents-page",
+        "name": "Marketing Consents",
         "children": [
           {
             "key": "newsletter-preferences-page",
-            "name": "newsletter-preferences-page",
+            "name": "Newsletter Preferences",
             "children": []
           }
         ]
       },
       {
         "key": "order-summary-page",
-        "name": "order-summary-page",
+        "name": "Order Summary",
         "children": [
           {
             "key": "online-order-detail-page",
-            "name": "online-order-detail-page",
+            "name": "Online Order Detail",
             "children": []
           },
           {
             "key": "store-order-detail-page",
-            "name": "store-order-detail-page",
+            "name": "Store Order Detail",
             "children": []
           },
           {
             "key": "reorder-page",
-            "name": "reorder-page",
+            "name": "Reorder",
             "children": []
           },
           {
             "key": "refund-order-page",
-            "name": "refund-order-page",
+            "name": "Refund Order",
             "children": []
           },
           {
             "key": "additional-orders-list-page",
-            "name": "additional-orders-list-page",
+            "name": "Additional Orders List",
             "children": []
           },
           {
             "key": "additional-orders-search-page",
-            "name": "additional-orders-search-page",
+            "name": "Additional Orders Search",
             "children": []
           }
         ]
       },
       {
         "key": "marketplace-thread-messages",
-        "name": "marketplace-thread-messages",
+        "name": "Marketplace Thread Messages",
         "children": []
       },
       {
         "key": "marketplace-contact-page",
-        "name": "marketplace-contact-page",
+        "name": "Marketplace Contact",
         "children": []
       },
       {
         "key": "account-loyalty-dashboard",
-        "name": "account-loyalty-dashboard",
+        "name": "Loyalty Dashboard",
         "children": [
           {
             "key": "loyalty-rewards-page",
-            "name": "loyalty-rewards-page",
+            "name": "Loyalty Rewards",
             "children": []
           },
           {
             "key": "user-coupons-page",
-            "name": "user-coupons-page",
+            "name": "User Coupons",
             "children": []
           },
           {
             "key": "loyalty-history-page",
-            "name": "loyalty-history-page",
+            "name": "Loyalty History",
             "children": []
           },
           {
             "key": "loyalty-secure-card-page",
-            "name": "loyalty-secure-card-page",
+            "name": "Secure Card",
             "children": []
           },
           {
             "key": "loyalty-change-pin-page",
-            "name": "loyalty-change-pin-page",
+            "name": "Change PIN",
             "children": []
           },
           {
             "key": "loyalty-merge-accounts-page",
-            "name": "loyalty-merge-accounts-page",
+            "name": "Merge Accounts",
             "children": []
           }
         ]
       },
       {
         "key": "loyalty-registration-page",
-        "name": "loyalty-registration-page",
+        "name": "Loyalty Registration",
         "children": []
       },
       {
         "key": "loyalty-attach-card-page",
-        "name": "loyalty-attach-card-page",
+        "name": "Attach Loyalty Card",
         "children": []
       },
       {
         "key": "frequent-purchases-page",
-        "name": "frequent-purchases-page",
+        "name": "Frequent Purchases",
         "children": []
       },
       {
         "key": "shopping-list-summary-page",
-        "name": "shopping-list-summary-page",
+        "name": "Shopping List Summary",
         "children": [
           {
             "key": "shopping-list-item-page",
-            "name": "shopping-list-item-page",
+            "name": "Shopping List Item",
             "children": []
           }
         ]
       },
       {
         "key": "recent-orders-page",
-        "name": "recent-orders-page",
+        "name": "Recent Orders",
         "children": []
       },
       {
         "key": "account-info-page",
-        "name": "account-info-page",
+        "name": "Account Info",
         "children": []
       },
       {
         "key": "user-credentials-page",
-        "name": "user-credentials-page",
+        "name": "User Credentials",
         "children": []
       },
       {
         "key": "manage-addresses-page",
-        "name": "manage-addresses-page",
+        "name": "Manage Addresses",
         "children": []
       },
       {
         "key": "payment-methods-page",
-        "name": "payment-methods-page",
+        "name": "Payment Methods",
         "children": []
       },
       {
         "key": "dissociation-page",
-        "name": "dissociation-page",
+        "name": "Dissociation",
         "children": []
       },
       {
         "key": "signup-page",
-        "name": "signup-page",
+        "name": "Signup",
         "children": []
       },
       {
         "key": "login-page",
-        "name": "login-page",
+        "name": "Login",
         "children": []
       }
     ]
   },
   {
     "key": "checkout",
-    "name": "checkout",
+    "name": "Checkout",
     "children": [
       {
         "key": "checkout-page",
-        "name": "checkout-page",
+        "name": "Checkout Page",
         "children": []
       },
       {
         "key": "checkout-confirmation-page",
-        "name": "checkout-confirmation-page",
+        "name": "Confirmation",
         "children": []
       },
       {
         "key": "checkout-confirmation-error-page",
-        "name": "checkout-confirmation-error-page",
+        "name": "Confirmation Error",
         "children": []
       },
       {
         "key": "partners-cart-page",
-        "name": "partners-cart-page",
+        "name": "Partners Cart",
         "children": []
       }
     ]
   },
   {
     "key": "contribution",
-    "name": "contribution",
+    "name": "Contribution",
     "children": [
       {
         "key": "editorial-page",
-        "name": "editorial-page",
+        "name": "Editorial",
         "children": []
       },
       {
         "key": "events-page",
-        "name": "events-page",
+        "name": "Events",
         "children": []
       },
       {
         "key": "content-preview-page",
-        "name": "content-preview-page",
+        "name": "Content Preview",
         "children": []
       }
     ]
   },
   {
     "key": "error",
-    "name": "error",
+    "name": "Error",
     "children": [
       {
         "key": "error404-page",
-        "name": "error404-page",
+        "name": "Error 404",
         "children": []
       },
       {
         "key": "error500-page",
-        "name": "error500-page",
+        "name": "Error 500",
         "children": []
       },
       {
         "key": "generic-error-page",
-        "name": "generic-error-page",
+        "name": "Generic Error",
         "children": []
       }
     ]
   },
   {
     "key": "home",
-    "name": "home",
+    "name": "Home",
     "children": [
       {
         "key": "home-page",
-        "name": "home-page",
+        "name": "Home Page",
         "children": []
       },
       {
         "key": "prehome-page",
-        "name": "prehome-page",
+        "name": "Pre-Home Page",
         "children": []
       }
     ]
   },
   {
     "key": "store",
-    "name": "store",
+    "name": "Store",
     "children": [
       {
         "key": "store-locator-page",
-        "name": "store-locator-page",
+        "name": "Store Locator",
         "children": []
       },
       {
         "key": "home-delivery-page",
-        "name": "home-delivery-page",
+        "name": "Home Delivery",
         "children": []
       },
       {
         "key": "store-page",
-        "name": "store-page",
+        "name": "Store Page",
         "children": [
           {
             "key": "store-drive-page",
-            "name": "store-drive-page",
+            "name": "Store Drive",
             "children": []
           },
           {
             "key": "store-news-page",
-            "name": "store-news-page",
+            "name": "Store News",
             "children": []
           }
         ]
       },
       {
         "key": "stores-list-page",
-        "name": "stores-list-page",
+        "name": "Stores List",
         "children": []
       },
       {
         "key": "store-detail-page",
-        "name": "store-detail-page",
+        "name": "Store Detail",
         "children": []
       },
       {
         "key": "exceptional-hours-page",
-        "name": "exceptional-hours-page",
+        "name": "Exceptional Hours",
         "children": []
       }
     ]
   },
   {
     "key": "product",
-    "name": "product",
+    "name": "Product",
     "children": [
       {
         "key": "search-list-page",
-        "name": "search-list-page",
+        "name": "Search List",
         "children": []
       },
       {
         "key": "promo-hub-page",
-        "name": "promo-hub-page",
+        "name": "Promo Hub",
         "children": []
       },
       {
         "key": "category-page",
-        "name": "category-page",
+        "name": "Category",
         "children": []
       },
       {
         "key": "search-results-page",
-        "name": "search-results-page",
+        "name": "Search Results",
         "children": []
       },
       {
         "key": "seller-products-page",
-        "name": "seller-products-page",
+        "name": "Seller Products",
         "children": []
       },
       {
         "key": "product-detail-page",
-        "name": "product-detail-page",
+        "name": "Product Detail",
         "children": []
       },
       {
         "key": "promotions-page",
-        "name": "promotions-page",
+        "name": "Promotions",
         "children": []
       },
       {
         "key": "quick-shop-page",
-        "name": "quick-shop-page",
+        "name": "Quick Shop",
         "children": []
       }
     ]
   },
   {
     "key": "service",
-    "name": "service",
+    "name": "Service",
     "children": [
       {
         "key": "invoice-generation-page",
-        "name": "invoice-generation-page",
+        "name": "Invoice Generation",
         "children": []
       },
       {
         "key": "help-desk-page",
-        "name": "help-desk-page",
+        "name": "Help Desk",
         "children": [
           {
             "key": "contact-form-page",
-            "name": "contact-form-page",
+            "name": "Contact Form",
             "children": []
           },
           {
             "key": "gdpr-form-page",
-            "name": "gdpr-form-page",
+            "name": "GDPR Form",
             "children": []
           }
         ]
       },
       {
         "key": "fuel-order-page",
-        "name": "fuel-order-page",
+        "name": "Fuel Order",
         "children": []
       },
       {
         "key": "fuel-order-confirmation-page",
-        "name": "fuel-order-confirmation-page",
+        "name": "Fuel Order Confirmation",
         "children": []
       },
       {
         "key": "faq-page",
-        "name": "faq-page",
+        "name": "FAQ",
         "children": []
       },
       {
         "key": "offers-page",
-        "name": "offers-page",
+        "name": "Offers",
         "children": []
       },
       {
         "key": "seller-legal-page",
-        "name": "seller-legal-page",
+        "name": "Seller Legal",
         "children": []
       }
     ]

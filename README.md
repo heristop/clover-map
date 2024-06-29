@@ -65,17 +65,17 @@ The JSON configuration file should follow this format:
 ```json
 [
   {
-    "key": "project1",
+    "key": "project-1",
     "name": "Project 1",
     "children": [
       {
-        "key": "task1",
+        "key": "task-1",
         "name": "Task 1",
         "status": "In Progress",
         "children": []
       },
       {
-        "key": "task2",
+        "key": "task-2",
         "name": "Task 2",
         "status": "Done",
         "children": []
@@ -83,7 +83,7 @@ The JSON configuration file should follow this format:
     ]
   },
   {
-    "key": "project2",
+    "key": "project-2",
     "name": "Project 2",
     "children": []
   }
