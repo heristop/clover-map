@@ -200,6 +200,7 @@ onMounted(() => {
           <div class="flex justify-center space-x-4 p-6">
             <TButton
               aria-label="View on GitHub"
+              class="w-full md:w-auto"
               :is-active="false"
               @click="openGitHub"
             >
@@ -223,6 +224,7 @@ onMounted(() => {
 
             <TButton
               aria-label="Edit on StackBlitz"
+              class="w-full md:w-auto"
               :is-active="false"
               @click="openStackBlitz"
             >
@@ -286,6 +288,24 @@ onMounted(() => {
                 :is-active="false"
                 @click="loadConfigFromApi('project-migration')"
               >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
+                  />
+                </svg>
+
                 Project Migration
               </TButton>
 
@@ -294,6 +314,24 @@ onMounted(() => {
                 :is-active="false"
                 @click="loadConfigFromApi('bug-tracking')"
               >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
+                  />
+                </svg>
+
                 Bug Tracking
               </TButton>
 
@@ -302,6 +340,24 @@ onMounted(() => {
                 :is-active="false"
                 @click="loadConfigFromApi('recruitment')"
               >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
+                  />
+                </svg>
+
                 Recruitment
               </TButton>
             </div>
@@ -327,7 +383,7 @@ onMounted(() => {
                 @click="($refs.fileInput as HTMLInputElement).click()"
               >
                 <svg
-                  class="w-5 h-5 mx-auto cursor-pointer dark:text-stone-600 text-stone-100 mr-2"
+                  class="w-5 h-5 mr-2"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -343,8 +399,7 @@ onMounted(() => {
                     d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"
                   />
                 </svg>
-
-                Upload File
+                <span>Upload File</span>
               </TButton>
             </div>
 
@@ -360,6 +415,24 @@ onMounted(() => {
                 :disabled="!url"
                 @click="loadConfigFromUrl(url)"
               >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
+                  />
+                </svg>
+
                 Load from URL
               </TButton>
             </div>
@@ -398,6 +471,24 @@ onMounted(() => {
                 :is-active="false"
                 @click="loadConfigFromUserInput"
               >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
+                  />
+                </svg>
+
                 Load Config
               </TButton>
             </div>
