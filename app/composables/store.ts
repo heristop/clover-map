@@ -37,6 +37,7 @@ export const useStore = defineStore('store', {
     minHeight: 10,
     display: 'name',
     statuses: ref<Status[]>(defaultStatus),
+    darkMode: false,
   }),
   persist: {
     storage: persistedState.localStorage,
