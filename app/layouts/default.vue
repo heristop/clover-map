@@ -24,7 +24,7 @@ onMounted(() => {
   }
 })
 
-watch(() => store.display, () => {
+watch(() => store.displayLabel, () => {
   nextTick(() => checkContentHeight())
 })
 

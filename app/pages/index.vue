@@ -473,7 +473,7 @@ onMounted(() => {
               Load Custom Configuration
             </h2>
 
-            <div class="bg-stone-200 text-stone-900 dark:bg-stone-700 dark:text-white p-4 rounded-md text-sm max-w-3xl">
+            <div class="bg-stone-200 text-stone-900 dark:bg-stone-700 dark:text-white p-4 rounded-md text-sm w-full md:w-1/2">
               <label
                 for="sample-config"
                 class="block text-sm font-medium text-stone-900 dark:text-stone-50"
@@ -489,10 +489,11 @@ onMounted(() => {
               />
 
               <p class="text-stone-600 mt-4 dark:text-stone-300">
-                <strong>key:</strong> Unique identifier for the section or task<br>
-                <strong>name:</strong> Name of the section or task<br>
-                <strong>status:</strong> Current status of the section or task<br>
-                <strong>children:</strong> Nested sections or tasks
+                <strong>key:</strong> Unique identifier for the section<br>
+                <strong>name:</strong> Name of the section<br>
+                <strong>status:</strong> Current status of the section<br>
+                <strong>children:</strong> Nested sections<br>
+                <strong>isCollapsed:</strong>  Optional flag to collapse the section
               </p>
 
               <TButton
@@ -523,14 +524,16 @@ onMounted(() => {
               </TButton>
             </div>
 
-            <NuxtSnackbar
-              bottom
-              right
-              shadow
-              success="#34d399"
-              error="#f87171"
-              info="#3b82f6"
-            />
+            <ClientOnly>
+              <NuxtSnackbar
+                bottom
+                right
+                shadow
+                success="#34d399"
+                error="#f87171"
+                info="#3b82f6"
+              />
+            </ClientOnly>
 
             <AppFooter />
           </div>

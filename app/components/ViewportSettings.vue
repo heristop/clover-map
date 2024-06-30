@@ -66,14 +66,13 @@ const captureTreeMap = () => {
           d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
         />
       </svg>
-
       Capture
     </TButton>
   </div>
 
   <div class="flex items-center space-x-4 mb-4 px-2">
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-xs font-bold text-stone-200">Width</span>
+      <span class="text-sm text-stone-400">Width</span>
       <input
         v-model="minWidth"
         type="range"
@@ -83,7 +82,7 @@ const captureTreeMap = () => {
       >
     </div>
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-xs font-bold text-stone-200">Height</span>
+      <span class="text-sm text-stone-400">Height</span>
       <input
         v-model="minHeight"
         type="range"

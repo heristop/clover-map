@@ -35,8 +35,9 @@ export const useStore = defineStore('store', {
     dialogMinimized: false,
     minWidth: 80,
     minHeight: 10,
-    display: 'name',
+    displayLabel: 'name',
     statuses: ref<Status[]>(defaultStatus),
+    viewMode: 'flex',
     darkMode: false,
   }),
   persist: {
@@ -71,7 +72,7 @@ export const useStore = defineStore('store', {
     },
     formatSections(sections: Section[]): Section[] {
       return sections.map((section: Section) => {
-        const { name, children, status, key } = section
+        const { name, key, children, status, isCollapsed } = section
         const formattedChildren = children ? this.formatSections(children) : []
 
         return {
@@ -79,6 +80,7 @@ export const useStore = defineStore('store', {
           name,
           children: formattedChildren,
           status: status || '',
+          isCollapsed: isCollapsed || false,
         }
       })
     },
@@ -132,10 +134,18 @@ export const useStore = defineStore('store', {
       }))
     },
     updateSectionStatus(key: string, status: string) {
-      const module = this.findProjectByKey(key, this.sections)
-      if (module) {
-        module.status = status
+      const section = this.findProjectByKey(key, this.sections)
+
+      if (section) {
+        section.status = status
         this.updateParentStatuses()
+      }
+    },
+    updateSectionCollapse(key: string) {
+      const section = this.findProjectByKey(key, this.sections)
+
+      if (section) {
+        section.isCollapsed = !section.isCollapsed
       }
     },
     findProjectByKey(key: string, sections: Section[]): Section | undefined {

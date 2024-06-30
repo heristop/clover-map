@@ -37,7 +37,7 @@ export function useConfig() {
           const sections = JSON.parse(e.target?.result as string) as Section[]
 
           if (!validateSections(sections)) {
-            return false
+            throw new Error('Invalid data format')
           }
 
           store.setSections(sections)

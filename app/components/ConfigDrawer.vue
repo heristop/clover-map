@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import ProgressBar from './ProgressBar.vue'
 import UploadDownload from './UploadDownload.vue'
 import StatusManager from './StatusManager.vue'
@@ -8,7 +7,6 @@ import ViewportSettings from './ViewportSettings.vue'
 import TButton from './ui/TButton.vue'
 import { useStore } from '~/composables/store'
 
-const router = useRouter()
 const store = useStore()
 const drawerMinimized = computed(() => store.dialogMinimized)
 
@@ -22,12 +20,11 @@ const toggleMinimize = () => {
 }
 
 const setDisplay = (value: string) => {
-  store.display = value
+  store.displayLabel = value
 }
 
-const resetConfiguration = () => {
-  store.clear()
-  router.push('/')
+const toggleViewMode = (mode: string) => {
+  store.viewMode = mode
 }
 
 onMounted(() => {
@@ -68,9 +65,9 @@ onMounted(() => {
           Progress
         </h3>
 
-        <ProgressBar class="mb-4" />
+        <ProgressBar class="mb-6" />
 
-        <div class="config-section">
+        <div class="config-section mb-6">
           <h3 class="text-md font-bold mb-3">
             Viewport
           </h3>
@@ -78,14 +75,14 @@ onMounted(() => {
           <ViewportSettings />
         </div>
 
-        <div class="config-section">
+        <div class="config-section mb-6">
           <h3 class="text-md font-bold mb-3">
             Display
           </h3>
 
           <div class="flex items-center justify-between space-x-2 mb-3">
             <TButton
-              :is-active="store.display === 'name'"
+              :is-active="store.displayLabel === 'name'"
               size="sm"
               class="w-full"
               @click="setDisplay('name')"
@@ -94,17 +91,66 @@ onMounted(() => {
             </TButton>
 
             <TButton
-              :is-active="store.display === 'key'"
+              :is-active="store.displayLabel === 'key'"
               size="sm"
               class="w-full"
               @click="setDisplay('key')"
             >
               Key
             </TButton>
+
+            <span class="text-stone-400 mx-4">|</span>
+
+            <TButton
+              :is-active="store.viewMode === 'flex'"
+              size="sm"
+              @click="toggleViewMode('flex')"
+            >
+              <svg
+                class="w-4 h-4 text-stone-800"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
+                />
+              </svg>
+            </TButton>
+
+            <TButton
+              :is-active="store.viewMode === 'grid'"
+              size="sm"
+              @click="toggleViewMode('grid')"
+            >
+              <svg
+                class="w-4 h-4 text-stone-800"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            </TButton>
           </div>
         </div>
 
-        <div class="config-section">
+        <div class="config-section mb-6">
           <h3 class="text-md font-bold mb-3">
             Flow
           </h3>
@@ -114,30 +160,12 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="config-section">
+        <div class="config-section mb-6">
           <h3 class="text-md font-bold mb-3">
-            Import/Export JSON
+            Configuration
           </h3>
 
           <UploadDownload />
-        </div>
-
-        <div class="config-section">
-          <h3 class="text-md font-bold mb-3">
-            Reset Configuration
-          </h3>
-
-          <div class="flex items-center justify-between space-x-2 mb-3">
-            <TButton
-              :is-active="false"
-              size="sm"
-              class="w-full"
-              aria-label="reset"
-              @click="resetConfiguration"
-            >
-              Reset
-            </TButton>
-          </div>
         </div>
       </div>
     </div>

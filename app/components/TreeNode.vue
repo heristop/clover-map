@@ -8,10 +8,9 @@ const emit = defineEmits(['status-updated'])
 const store = useStore()
 const isSuccessNode = ref(false)
 const nodeStatus = ref(props.node.status || store.statuses[0]?.name)
-const isCollapsed = ref(false)
 
 const displayContent = computed(() => {
-  return store.display === 'key' ? props.node.key : props.node.name
+  return store.displayLabel === 'key' ? props.node.key : props.node.name
 })
 
 const minWidth = computed(() => store.minWidth)
@@ -69,7 +68,8 @@ const darkenColor = (color: string, percent: number) => {
 
 const toggleCollapse = (event: MouseEvent) => {
   event.stopPropagation()
-  isCollapsed.value = !isCollapsed.value
+
+  store.updateSectionCollapse(props.node.key)
 }
 
 watchEffect(() => {
@@ -150,15 +150,15 @@ const applySuccessAnimation = (node: Section) => {
         class="collapse-icon"
         @click.stop="toggleCollapse"
       >
-        {{ isCollapsed ? '▶' : '▼' }}
+        {{ node.isCollapsed ? '▶' : '▼' }}
       </span>
       {{ displayContent }}
     </div>
 
     <div
-      v-if="node.children && node.children.length && !isCollapsed"
+      v-if="node.children && node.children.length && !node.isCollapsed"
+      :class="store.viewMode === 'flex' ? 'node-children-flex' : 'node-children-grid'"
       class="node-children"
-      style="display: flex; flex-wrap: wrap; justify-content: center;"
     >
       <TreeNode
         v-for="child in node.children"
@@ -207,6 +207,21 @@ const applySuccessAnimation = (node: Section) => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.node-children-flex {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  overflow: visible;
+  height: 100%;
+}
+
+.node-children-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
 .node-children .node-container:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -239,14 +254,6 @@ const applySuccessAnimation = (node: Section) => {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.node-children {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1 1 auto;
-  overflow: visible;
-  height: 100%;
 }
 
 .success-animation {

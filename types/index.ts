@@ -3,6 +3,7 @@ export interface Section {
   key: string
   status?: string
   children?: Section[]
+  isCollapsed?: boolean
 }
 
 export interface Status {

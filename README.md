@@ -45,22 +45,31 @@ To install and run **TreePulse** locally, follow these steps:
 
 ### Loading Configuration
 
-- **From Local Storage**: If there is a saved configuration in local storage, TreePulse will load it automatically.
-- **From API**: If no local configuration is found, you can load a sample configuration by clicking the "Load Sample Data" button.
+- **From Local Storage**: If a saved configuration is present in local storage, TreePulse will automatically load it upon startup. This ensures your previous session's data is readily available.
+- **From API**: If no local configuration is found, you can easily load a sample configuration by clicking the "Load Sample Data" button. This allows you to quickly start working with a predefined setup.
 
 ### Importing and Exporting Data
 
-- **Import**: Use the upload button in the configuration panel to import project data from a JSON file.
-- **Export**: Use the save button in the configuration panel to export the current project data to a JSON file.
+- **Import**:
+  - Navigate to the configuration panel.
+  - Click the upload button to import project data from a JSON file.
+  - Select your JSON file from the file dialog. The imported data will replace the current configuration, allowing you to seamlessly continue your work.
+- **Export**:
+  - In the configuration panel, click the save button.
+  - This will export the current project data to a JSON file, preserving your work and enabling easy sharing and backup.
 
 ### Managing Projects
 
-- **Adding/Updating Statuses**: In the configuration panel, you can add new statuses, update existing ones, or remove them.
-- **Updating Tasks**: Click on a task to cycle through its statuses.
+- **Adding/Updating Statuses**: 
+  - Open the configuration panel to manage statuses.
+  - You can add new statuses to categorize tasks more effectively, update existing ones to reflect changes in your workflow, or remove obsolete statuses.
+- **Updating Tasks**: 
+  - Click on any task to cycle through its statuses.
+  - This intuitive interface allows for quick updates, ensuring your project board accurately reflects the current state of each task.
 
 ### JSON Configuration Format
 
-The JSON configuration file should follow this format:
+The JSON configuration file should adhere to the following structure to be compatible with TreePulse:
 
 ```json
 [
@@ -90,10 +99,13 @@ The JSON configuration file should follow this format:
 ]
 ```
 
-- `key`: Unique identifier for the section or task
-- `name`: Name of the section or task
-- `status`: Current status of the section or task
-- `children`: Nested sections or tasks
+- `key`: A unique identifier for the section or task, ensuring each element is distinct.
+- `name`: The name of the section or task, providing a clear label for easy identification.
+- `status`: The current status of the section or task (e.g., "In Progress", "Done"), allowing for effective tracking and categorization.
+- `children`: An array of nested sections or tasks, supporting hierarchical project structures.
+- `isCollapsed` (optional): A boolean flag indicating whether the section should be collapsed, helping to manage the visibility of complex structures.
+
+By following this guide, you can effectively utilize TreePulse to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.
 
 ## 📄 License
 
@@ -103,6 +115,4 @@ This project is licensed under the MIT License.
 
 We welcome feedback and contributions! If you have any suggestions or encounter any issues, please feel free to open an issue or submit a pull request.
 
-🟥 🟧 🟨 🟩 🟦 🟪 🟫 ⬛ ⬜
-
-![Logo](/public/tree-pulse.webp)
+![Logo](/public/apple-touch-icon.png)

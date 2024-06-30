@@ -20,7 +20,8 @@
           "additionalProperties": false
         },
         "nullable": true
-      }
+      },
+      "isCollapsed": { "type": "boolean", "nullable": true }
     },
     "required": ["key", "name"],
     "additionalProperties": false

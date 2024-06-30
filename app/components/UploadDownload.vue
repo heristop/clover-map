@@ -1,11 +1,18 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import TButton from './ui/TButton.vue'
 import { useConfig } from '~/composables/config'
 import { useStore } from '~/composables/store'
 
 const store = useStore()
+const router = useRouter()
 
 const { fileInput, loadFromFile, saveToFile } = useConfig()
+
+const resetConfiguration = () => {
+  store.clear()
+  router.push('/')
+}
 </script>
 
 <template>
@@ -32,6 +39,17 @@ const { fileInput, loadFromFile, saveToFile } = useConfig()
       @click="saveToFile"
     >
       Save
+    </TButton>
+
+    <span class="text-stone-400 mx-4">|</span>
+
+    <TButton
+      size="sm"
+      class="w-full py-1"
+      :disabled="!store.configLoaded"
+      @click="resetConfiguration"
+    >
+      Reset
     </TButton>
   </div>
 </template>
