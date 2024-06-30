@@ -48,7 +48,7 @@ test.describe('TreePulse Page Tests', () => {
     // Add assertions to verify the configuration is loaded
     await expect(page.locator('html')).toHaveText(/▼ Catalog/, { timeout: 10000 })
 
-    const resetButton = page.locator('button[aria-label="reset"]')
+    const resetButton = page.locator('button[aria-label="Reset configuration"]')
     await resetButton.click()
   })
 
@@ -71,8 +71,8 @@ test.describe('TreePulse Page Tests', () => {
     // Add assertions to verify the file is uploaded and configuration is loaded
     await expect(page.locator('text=File Config')).toBeVisible({ timeout: 10000 });
 
-    const resetButton = page.locator('button[aria-label="reset"]');
-    await resetButton.click();
+    const resetButton = page.locator('button[aria-label="Reset configuration"]')
+    await resetButton.click()
     */
   })
 
@@ -86,7 +86,7 @@ test.describe('TreePulse Page Tests', () => {
     // This could include checking for specific text or elements that indicate the configuration has been loaded
     await expect(page.locator('text=Project 1')).toBeVisible()
 
-    const resetButton = page.locator('button[aria-label="reset"]')
+    const resetButton = page.locator('button[aria-label="Reset configuration"]')
     await resetButton.click()
   })
 })

@@ -47,6 +47,7 @@ const resetConfiguration = () => {
       size="sm"
       class="w-full py-1"
       :disabled="!store.configLoaded"
+      aria-label="Reset configuration"
       @click="resetConfiguration"
     >
       Reset
