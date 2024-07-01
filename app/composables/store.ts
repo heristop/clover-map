@@ -31,6 +31,7 @@ export const pastelColors = [
 export const useStore = defineStore('store', {
   state: () => ({
     sections: [] as Section[],
+    parentMap: {} as Record<string, string>,
     configLoaded: false,
     dialogMinimized: false,
     minWidth: 80,
@@ -53,6 +54,7 @@ export const useStore = defineStore('store', {
     async fetchSections(model: string): Promise<void> {
       const sections = await this.getSections(model)
       this.setSections(sections)
+      this.initializeParentMap(this.sections)
     },
     async getSections(model: string): Promise<Section[]> {
       return $fetch(`/api/config?model=${model}`, { method: 'get' })
@@ -161,40 +163,64 @@ export const useStore = defineStore('store', {
         section.name = newName
       }
     },
-    addSection(key: string, newSection: Section) {
-      const parentSection = this.findSectionByKey(key, this.sections)
-      if (parentSection) {
-        parentSection.children.push(newSection)
+    initializeParentMap(sections: Section[]) {
+      const buildParentMap = (sections: Section[], parentKey: string | null = null) => {
+        sections.forEach((section) => {
+          if (parentKey) {
+            this.parentMap[section.key] = parentKey
+          }
+          if (section.children) {
+            buildParentMap(section.children, section.key)
+          }
+        })
+      }
+      this.parentMap = {}
+      buildParentMap(sections)
+    },
+    addSection(parentKey: string, newSection: Section) {
+      const parent = this.findSectionByKey(parentKey, this.sections)
+      if (parent) {
+        parent.children = parent.children || []
+        parent.children.push(newSection)
+        this.parentMap[newSection.key] = parentKey
       }
     },
     addSiblingSection(key: string, newSection: Section) {
-      const parentSection = this.findParentSectionByKey(key, this.sections)
-      if (parentSection) {
-        parentSection.children.push(newSection)
+      const parentKey = this.parentMap[key]
+      if (parentKey) {
+        this.addSection(parentKey, newSection)
       }
       else {
         this.sections.push(newSection)
       }
     },
     deleteSection(key: string) {
-      const parentSection = this.findParentSectionByKey(key, this.sections)
-      if (parentSection) {
-        parentSection.children = parentSection.children.filter(child => child.key !== key)
+      const deleteRecursively = (sections: Section[], key: string): boolean => {
+        const index = sections.findIndex(section => section.key === key)
+        if (index !== -1) {
+          sections.splice(index, 1)
+          Reflect.deleteProperty(this.parentMap, key)
+          return true
+        }
+        return sections.some(section => section.children && deleteRecursively(section.children, key))
       }
-      else {
-        this.sections = this.sections.filter(section => section.key !== key)
-      }
+      deleteRecursively(this.sections, key)
     },
     swapSections(key1: string, key2: string) {
-      const parentSection1 = this.findParentSectionByKey(key1, this.sections)
-      const parentSection2 = this.findParentSectionByKey(key2, this.sections)
+      const parentKey1 = this.parentMap[key1]
+      const parentKey2 = this.parentMap[key2]
 
-      if (parentSection1 && parentSection2) {
-        const index1 = parentSection1.children.findIndex(child => child.key === key1)
-        const index2 = parentSection2.children.findIndex(child => child.key === key2)
+      if (parentKey1 && parentKey2) {
+        const parentSection1 = this.findSectionByKey(parentKey1, this.sections)
+        const parentSection2 = this.findSectionByKey(parentKey2, this.sections)
 
-        if (index1 !== -1 && index2 !== -1) {
-          [parentSection1.children[index1], parentSection2.children[index2]] = [parentSection2.children[index2], parentSection1.children[index1]]
+        if (parentSection1 && parentSection2) {
+          const index1 = parentSection1.children!.findIndex(child => child.key === key1)
+          const index2 = parentSection2.children!.findIndex(child => child.key === key2)
+
+          if (index1 !== -1 && index2 !== -1) {
+            [parentSection1.children![index1], parentSection2.children![index2]] = [parentSection2.children![index2], parentSection1.children![index1]]
+          }
         }
       }
       else {
@@ -207,37 +233,21 @@ export const useStore = defineStore('store', {
       }
     },
     findSectionByKey(key: string, sections: Section[]): Section | undefined {
-      for (const node of sections) {
-        if (node.key === key) {
-          return node
+      for (const section of sections) {
+        if (section.key === key) {
+          return section
         }
-
-        if (node.children) {
-          const found = this.findSectionByKey(key, node.children)
-
+        if (section.children) {
+          const found = this.findSectionByKey(key, section.children)
           if (found) {
             return found
           }
         }
       }
-
       return undefined
     },
-    findParentSectionByKey(key: string, sections: Section[]): Section | undefined {
-      for (const node of sections) {
-        if (node.children && node.children.some(child => child.key === key)) {
-          return node
-        }
-
-        if (node.children) {
-          const found = this.findParentSectionByKey(key, node.children)
-          if (found) {
-            return found
-          }
-        }
-      }
-
-      return undefined
+    hasParent(key: string): boolean {
+      return key in this.parentMap
     },
     updateParentStatuses() {
       const getStatusIndex = (status: string) => this.statuses.findIndex(s => s.name === status)

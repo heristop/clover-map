@@ -324,7 +324,6 @@ const applySuccessAnimation = (node: Section) => {
         v-model="displayContent"
         class="edit-input"
         @click.stop
-        @blur="store.updateSectionLabel(props.node.key, displayContent)"
       >
       <span v-else>{{ displayContent }}</span>
       <div
@@ -376,7 +375,8 @@ const applySuccessAnimation = (node: Section) => {
         </button>
 
         <button
-          class="p-1 rounded-full bg-black/10"
+          :disabled="store.sections.length === 1 && !store.hasParent(props.node.key)"
+          class="p-1 rounded-full bg-black/10 disabled:opacity-40"
           @click.stop="deleteNode"
         >
           <svg
