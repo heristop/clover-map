@@ -101,24 +101,24 @@ const captureTreeMap = () => {
 
   <div class="flex items-center space-x-4 mb-4 px-2">
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-sm text-stone-300">Width</span>
+      <span class="text-xs text-stone-500 dark:text-stone-300">Width</span>
       <input
         v-model="minWidth"
         type="range"
         min="0"
         max="500"
-        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+        class="w-full h-2 bg-stone-400 dark:bg-stone-200 rounded-lg appearance-none cursor-pointer"
       >
     </div>
 
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-sm text-stone-300">Height</span>
+      <span class="text-xs text-stone-500 dark:text-stone-300">Height</span>
       <input
         v-model="minHeight"
         type="range"
         min="0"
         max="500"
-        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+        class="w-full h-2 bg-stone-400 dark:bg-stone-200 rounded-lg appearance-none cursor-pointer"
       >
     </div>
   </div>

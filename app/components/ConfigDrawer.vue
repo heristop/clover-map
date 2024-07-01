@@ -36,7 +36,7 @@ onMounted(() => {
   <transition name="slide-fade">
     <div
       v-if="isPositioned"
-      class="fixed right-0 bg-opacity-80 bg-stone-600 text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
+      class="fixed right-0 bg-opacity-90 bg-stone-100 dark:bg-stone-600 text-stone-600 dark:text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
       :class="[drawerMinimized ? 'top-1 rounded-l-lg' : 'top-0 rounded-l-md']"
       :style="{ width: drawerMinimized ? '40px' : `${size.width}px`, height: drawerMinimized ? 'auto' : '100vh' }"
     >
@@ -46,7 +46,7 @@ onMounted(() => {
       >
         <h2
           v-if="!drawerMinimized"
-          class="text-base font-bold"
+          class="text-base text-stone-100 font-bold"
         >
           Config
         </h2>
@@ -134,7 +134,7 @@ onMounted(() => {
               Key
             </TButton>
 
-            <span class="text-stone-300 mx-4">|</span>
+            <span class="text-stone-500 dark:text-stone-300 mx-4">|</span>
 
             <TButton
               :is-active="store.viewMode === 'flex'"
