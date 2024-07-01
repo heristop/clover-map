@@ -6,15 +6,17 @@
 
 ## ✨ Features
 
-- **Migration Tracking**: Monitor the migration progress of your Information Systems or applications.
-- **Task Management**: Track tasks, subtasks, and their statuses.
-- **Bug Tracking**: Manage bug reports, assign them to developers, and monitor their resolution.
-- **Production Management**: Visualize production stages, quality control statuses, and inventory levels.
-- **Sales and Marketing**: Follow marketing campaigns, sales opportunities, and contracts.
-- **HR Management**: Track recruitment processes, employee training programs, and more.
-- **Customizable Statuses**: Define and customize statuses to fit your specific workflow.
-- **Import/Export**: Import project data from JSON files and export current project data for backup or sharing.
-- **And more...**
+- **Migration Tracking**: Effortlessly monitor the progress of migrations and transitions to ensure smooth operations.
+- **Task Management**: Efficiently track tasks, subtasks, and their statuses to keep your projects organized and on schedule.
+- **Customizable Statuses**: Define and customize statuses to fit your specific workflow, providing flexibility for various project needs.
+- **Import/Export**: Easily import project data from JSON files and export current project data for backup or sharing.
+- **Responsive Design**: Enjoy a seamless experience across desktops, tablets, and mobile devices with a fully responsive interface.
+- **Editing and Customization**: Edit node labels, add new nodes, and delete or move existing nodes to tailor your project structure.
+- **Drag and Drop**: Intuitively drag and drop nodes within the same level to reorder tasks and sections.
+- **Visual Indicators**: Use visual cues to represent statuses, progress, and other key project metrics.
+- **Real-Time Updates**: Receive instant updates as changes are made, ensuring all team members are on the same page.
+- **User-Friendly Interface**: Navigate through a clean, intuitive interface designed for ease of use and productivity.
+- **And More**: Discover additional features designed to optimize your project management experience.
 
 ## 🛠️ Installation
 

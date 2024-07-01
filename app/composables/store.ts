@@ -87,7 +87,7 @@ export const useStore = defineStore('store', {
     },
     applyDefaultStatus(sections: Section[], existingProjects: Section[]): Section[] {
       return sections.map((node) => {
-        const existingProject = this.findProjectByKey(node.key, existingProjects)
+        const existingProject = this.findSectionByKey(node.key, existingProjects)
 
         if (!node.status) {
           if (existingProject) {
@@ -135,7 +135,7 @@ export const useStore = defineStore('store', {
       }))
     },
     updateSectionStatus(key: string, status: string) {
-      const section = this.findProjectByKey(key, this.sections)
+      const section = this.findSectionByKey(key, this.sections)
 
       if (section) {
         section.status = status
@@ -143,52 +143,77 @@ export const useStore = defineStore('store', {
       }
     },
     updateSectionCollapse(key: string) {
-      const section = this.findProjectByKey(key, this.sections)
+      const section = this.findSectionByKey(key, this.sections)
 
       if (section) {
         section.isCollapsed = !section.isCollapsed
       }
     },
-    addSection(parentKey: string, newSection: Section) {
-      const parent = this.findProjectByKey(parentKey, this.sections)
-      if (parent) {
-        if (!parent.children) {
-          parent.children = []
-        }
-        parent.children.push(newSection)
+    updateSectionKey(key: string, newKey: string) {
+      const section = this.findSectionByKey(key, this.sections)
+      if (section) {
+        section.key = newKey
       }
     },
-    addSiblingSection(parentKey: string, newSection: Section) {
-      const parent = this.findParentByKey(parentKey, this.sections)
-
-      if (parent) {
-        parent.children.push(newSection)
-
-        return
+    updateSectionName(key: string, newName: string) {
+      const section = this.findSectionByKey(key, this.sections)
+      if (section) {
+        section.name = newName
       }
-
-      this.sections.push(newSection)
+    },
+    addSection(key: string, newSection: Section) {
+      const parentSection = this.findSectionByKey(key, this.sections)
+      if (parentSection) {
+        parentSection.children.push(newSection)
+      }
+    },
+    addSiblingSection(key: string, newSection: Section) {
+      const parentSection = this.findParentSectionByKey(key, this.sections)
+      if (parentSection) {
+        parentSection.children.push(newSection)
+      }
+      else {
+        this.sections.push(newSection)
+      }
     },
     deleteSection(key: string) {
-      const deleteRecursively = (sections: Section[], key: string): Section[] => {
-        return sections
-          .filter(section => section.key !== key)
-          .map(section => ({
-            ...section,
-            children: section.children ? deleteRecursively(section.children, key) : [],
-          }))
+      const parentSection = this.findParentSectionByKey(key, this.sections)
+      if (parentSection) {
+        parentSection.children = parentSection.children.filter(child => child.key !== key)
       }
-
-      this.sections = deleteRecursively(this.sections, key)
+      else {
+        this.sections = this.sections.filter(section => section.key !== key)
+      }
     },
-    findProjectByKey(key: string, sections: Section[]): Section | undefined {
+    swapSections(key1: string, key2: string) {
+      const parentSection1 = this.findParentSectionByKey(key1, this.sections)
+      const parentSection2 = this.findParentSectionByKey(key2, this.sections)
+
+      if (parentSection1 && parentSection2) {
+        const index1 = parentSection1.children.findIndex(child => child.key === key1)
+        const index2 = parentSection2.children.findIndex(child => child.key === key2)
+
+        if (index1 !== -1 && index2 !== -1) {
+          [parentSection1.children[index1], parentSection2.children[index2]] = [parentSection2.children[index2], parentSection1.children[index1]]
+        }
+      }
+      else {
+        const index1 = this.sections.findIndex(section => section.key === key1)
+        const index2 = this.sections.findIndex(section => section.key === key2)
+
+        if (index1 !== -1 && index2 !== -1) {
+          [this.sections[index1], this.sections[index2]] = [this.sections[index2], this.sections[index1]]
+        }
+      }
+    },
+    findSectionByKey(key: string, sections: Section[]): Section | undefined {
       for (const node of sections) {
         if (node.key === key) {
           return node
         }
 
         if (node.children) {
-          const found = this.findProjectByKey(key, node.children)
+          const found = this.findSectionByKey(key, node.children)
 
           if (found) {
             return found
@@ -198,18 +223,16 @@ export const useStore = defineStore('store', {
 
       return undefined
     },
-    findParentByKey(key: string, sections: Section[]): Section | undefined {
+    findParentSectionByKey(key: string, sections: Section[]): Section | undefined {
       for (const node of sections) {
-        if (node.children) {
-          for (const child of node.children) {
-            if (child.key === key) {
-              return node
-            }
-          }
-          const parent = this.findParentByKey(key, node.children)
+        if (node.children && node.children.some(child => child.key === key)) {
+          return node
+        }
 
-          if (parent) {
-            return parent
+        if (node.children) {
+          const found = this.findParentSectionByKey(key, node.children)
+          if (found) {
+            return found
           }
         }
       }
@@ -254,18 +277,6 @@ export const useStore = defineStore('store', {
     removeStatus(index: number) {
       this.statuses.splice(index, 1)
     },
-    updateSectionLabel(key: string, newLabel: string) {
-      const section = this.findProjectByKey(key, this.sections)
-      if (section) {
-        if (this.displayLabel === 'key') {
-          section.key = newLabel
-
-          return
-        }
-
-        section.name = newLabel
-      }
-    },
     toggleEditingMode() {
       this.isEditingMode = !this.isEditingMode
     },
@@ -273,6 +284,30 @@ export const useStore = defineStore('store', {
       this.sections = []
       this.statuses = defaultStatus
       this.configLoaded = false
+    },
+  },
+  getters: {
+    duplicateProjects(state): { sections: string[], keys: string[] } {
+      const sections: string[] = []
+      const keys: string[] = []
+
+      const checkDuplicates = (nodes: Section[]) => {
+        nodes.forEach((node) => {
+          sections.push(node.name)
+          keys.push(node.key ?? '')
+
+          if (node.children) {
+            checkDuplicates(node.children)
+          }
+        })
+      }
+
+      checkDuplicates(state.sections)
+
+      return {
+        sections: sections.filter((item, index) => sections.indexOf(item) !== index),
+        keys: keys.filter((item, index) => keys.indexOf(item) !== index),
+      }
     },
   },
 })

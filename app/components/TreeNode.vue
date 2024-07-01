@@ -152,6 +152,23 @@ const deleteNode = (event: MouseEvent) => {
   store.deleteSection(props.node.key)
 }
 
+const handleDragStart = (event: DragEvent) => {
+  event.stopPropagation()
+  event.dataTransfer?.setData('text/plain', props.node.key)
+}
+
+const handleDrop = (event: DragEvent) => {
+  event.stopPropagation()
+  const draggedKey = event.dataTransfer?.getData('text/plain')
+  if (draggedKey && draggedKey !== props.node.key) {
+    store.swapSections(props.node.key, draggedKey)
+  }
+}
+
+const handleDragOver = (event: DragEvent) => {
+  event.preventDefault()
+}
+
 watchEffect(() => {
   nodeStatus.value = props.node.status || store.statuses[0]?.name || ''
   checkIfSuccessNode(props.node)
@@ -225,7 +242,11 @@ const applySuccessAnimation = (node: Section) => {
     :class="{ 'success-animation': isSuccessNode }"
     :style="nodeStyle"
     :data-node-key="node.key"
+    draggable="true"
     @click="handleClick"
+    @dragstart="handleDragStart"
+    @drop="handleDrop"
+    @dragover="handleDragOver"
   >
     <div :class="['node-title', { 'center-title': !node.children || !node.children.length }]">
       <span

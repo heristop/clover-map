@@ -14,7 +14,8 @@
             "key": { "type": "string" },
             "name": { "type": "string" },
             "status": { "type": "string", "nullable": true },
-            "children": { "$ref": "#" }
+            "children": { "$ref": "#" },
+            "isCollapsed": { "type": "boolean", "nullable": true }
           },
           "required": ["key", "name"],
           "additionalProperties": false
