@@ -28,7 +28,7 @@ test.describe('TreeMapPulse Page Tests', () => {
     await expect(loadFromUrlButton).toBeVisible({ timeout: 10000 })
 
     // Set the URL input value
-    await urlInput.fill('http://localhost:3000/configs/ecom-migration.json')
+    await urlInput.fill('http://localhost:3000/configs/blank.json')
 
     // Intercept the network request to verify the request and response
     page.on('request', (request) => {
@@ -46,7 +46,7 @@ test.describe('TreeMapPulse Page Tests', () => {
     await page.waitForTimeout(5000)
 
     // Add assertions to verify the configuration is loaded
-    await expect(page.locator('html')).toHaveText(/Catalog/, { timeout: 10000 })
+    await expect(page.locator('html')).toHaveText(/Root/, { timeout: 10000 })
 
     const resetButton = page.locator('button[aria-label="Reset configuration"]')
     await resetButton.click()

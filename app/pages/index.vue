@@ -14,7 +14,7 @@ const darkMode = computed(() => store.darkMode)
 
 const { fileInput, loadFromModel, loadFromFile, loadFromUrl, loadFromUserInput } = useConfig()
 
-const url = ref(`${useRuntimeConfig().public.apiBaseUrl}/configs/ecom-migration.json`)
+const url = ref(`${useRuntimeConfig().public.apiBaseUrl}/configs/blank.json`)
 const sample = ref(`[
   {
     "key": "project-1",
@@ -23,18 +23,13 @@ const sample = ref(`[
       {
         "key": "task-1",
         "name": "Task 1",
-        "status": "Done",
+        "status": "In Progress",
         "children": []
       },
       {
         "key": "task-2",
         "name": "Task 2",
-        "status": "In Progress",
-        "children": []
-      },
-      {
-        "key": "task-3",
-        "name": "Task 3",
+        "status": "Done",
         "children": []
       }
     ]
@@ -314,6 +309,31 @@ onMounted(() => {
             </h2>
 
             <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 text-center space-y-6 md:space-y-0">
+              <TButton
+                aria-label="Load Project Project"
+                :is-active="false"
+                @click="loadConfigFromApi('blank')"
+              >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
+                  />
+                </svg>
+
+                Blank Project
+              </TButton>
+
               <TButton
                 aria-label="Load Project Migration Data"
                 :is-active="false"
