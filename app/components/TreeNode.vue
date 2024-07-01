@@ -9,15 +9,31 @@ const store = useStore()
 const isSuccessNode = ref(false)
 const nodeStatus = ref(props.node.status || store.statuses[0]?.name)
 
-const displayContent = computed(() => {
-  return store.displayLabel === 'key' ? props.node.key : props.node.name
+const displayContent = computed({
+  get: () => store.displayLabel === 'key' ? props.node.key : props.node.name,
+  set: (value) => {
+    if (store.displayLabel === 'key') {
+      updateNodeKey(value)
+    }
+    else {
+      updateNodeName(value)
+    }
+  },
 })
+
+const updateNodeKey = (newKey: string) => {
+  store.updateSectionKey(props.node.key, newKey)
+}
+
+const updateNodeName = (newName: string) => {
+  store.updateSectionName(props.node.key, newName)
+}
 
 const minWidth = computed(() => store.minWidth)
 const minHeight = computed(() => store.minHeight)
 
 const getNodeStyles = (node: Section, depth: number) => {
-  const statusObj = store.statuses.find(s => s.name === node.status)
+  const statusObj = store.statuses.find((s: { name: string | undefined }) => s.name === node.status)
   let backgroundColor = statusObj ? statusObj.color : '#D44D8'
   backgroundColor = darkenColor(backgroundColor, depth * 6)
 
@@ -41,7 +57,6 @@ const getNodeStyles = (node: Section, depth: number) => {
 const checkIfSuccessNode = (node: Section) => {
   if (store.statuses?.length > 0 && node.status === store.statuses[store.statuses.length - 1]?.name) {
     isSuccessNode.value = true
-
     return
   }
 
@@ -69,7 +84,50 @@ const darkenColor = (color: string, percent: number) => {
 const toggleCollapse = (event: MouseEvent) => {
   event.stopPropagation()
 
-  store.updateSectionCollapse(props.node.key)
+  if (document.startViewTransition) {
+    document.startViewTransition(() => {
+      store.updateSectionCollapse(props.node.key)
+    })
+  }
+  else {
+    store.updateSectionCollapse(props.node.key)
+  }
+}
+
+const addNode = (event: MouseEvent) => {
+  event.stopPropagation()
+
+  const newNode: Section = {
+    key: `${props.node.key}-${Date.now()}`,
+    name: 'New Section',
+    status: store.statuses[0]?.name || '',
+    children: [],
+    isCollapsed: false,
+  }
+
+  if (document.startViewTransition) {
+    document.startViewTransition(() => {
+      store.addSection(props.node.key, newNode)
+    })
+
+    return
+  }
+
+  store.addSection(props.node.key, newNode)
+}
+
+const deleteNode = (event: MouseEvent) => {
+  event.stopPropagation()
+
+  if (document.startViewTransition) {
+    document.startViewTransition(() => {
+      store.deleteSection(props.node.key)
+    })
+
+    return
+  }
+
+  store.deleteSection(props.node.key)
 }
 
 watchEffect(() => {
@@ -105,16 +163,19 @@ const handleClick = (event: MouseEvent) => {
 }
 
 const updateStatus = () => {
-  const newStatus = store.statuses.find(s => s.name === nodeStatus.value)
-  const nextStatusIndex = (store.statuses.indexOf(newStatus!) + 1) % store.statuses.length
-  const nextStatus = store.statuses[nextStatusIndex]?.name
-  nodeStatus.value = nextStatus
-  store.updateSectionStatus(props.node.key || '', nextStatus || '')
+  if (!store.isEditingMode) {
+    const newStatus = store.statuses.find((s: { name: string }) => s.name === nodeStatus.value)
+    const nextStatusIndex = (store.statuses.indexOf(newStatus!) + 1) % store.statuses.length
+    const nextStatus = store.statuses[nextStatusIndex]?.name
+    nodeStatus.value = nextStatus
+    store.updateSectionStatus(props.node.key || '', nextStatus || '')
 
-  if (store.statuses.length > 0 && nextStatus === store.statuses[store.statuses.length - 1]?.name) {
-    applySuccessAnimation(props.node)
+    if (store.statuses.length > 0 && nextStatus === store.statuses[store.statuses.length - 1]?.name) {
+      applySuccessAnimation(props.node)
+    }
+
+    updateParentStatus()
   }
-  updateParentStatus()
 }
 
 const applySuccessAnimation = (node: Section) => {
@@ -150,15 +211,105 @@ const applySuccessAnimation = (node: Section) => {
         class="collapse-icon"
         @click.stop="toggleCollapse"
       >
-        {{ node.isCollapsed ? '▶' : '▼' }}
+        <svg
+          v-if="node.isCollapsed"
+          class="w-5 h-5 text-stone-100"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.271 5.575C8.967 4.501 7 5.43 7 7.12v9.762c0 1.69 1.967 2.618 3.271 1.544l5.927-4.881a2 2 0 0 0 0-3.088l-5.927-4.88Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <svg
+          v-else
+          class="w-5 h-5 text-stone-100"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18.425 10.271C19.499 8.967 18.57 7 16.88 7H7.12c-1.69 0-2.618 1.967-1.544 3.271l4.881 5.927a2 2 0 0 0 3.088 0l4.88-5.927Z"
+            clip-rule="evenodd"
+          />
+        </svg>
       </span>
-      {{ displayContent }}
+
+      <input
+        v-if="store.isEditingMode"
+        v-model="displayContent"
+        class="edit-input"
+        @click.stop
+        @blur="store.updateSectionLabel(props.node.key, displayContent)"
+      >
+      <span v-else>{{ displayContent }}</span>
+      <div
+        v-if="store.isEditingMode"
+        class="flex ml-4 space-x-2"
+      >
+        <button
+          class="p-1 rounded-full bg-black/10"
+          @click.stop="addNode"
+        >
+          <svg
+            class="w-4 h-4 text-stone-200 hover:text-stone-100 transition-colors duration-200"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 12h14m-7 7V5"
+            />
+          </svg>
+        </button>
+
+        <button
+          class="p-1 rounded-full bg-black/10"
+          @click.stop="deleteNode"
+        >
+          <svg
+            class="w-4 h-4 text-stone-200 hover:text-stone-100 transition-colors duration-200"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div
       v-if="node.children && node.children.length && !node.isCollapsed"
       :class="store.viewMode === 'flex' ? 'node-children-flex' : 'node-children-grid'"
-      class="node-children"
+      class="node-children view-transition"
     >
       <TreeNode
         v-for="child in node.children"
@@ -220,6 +371,11 @@ const applySuccessAnimation = (node: Section) => {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
   margin-top: 16px;
+  justify-content: start !important;
+}
+
+.view-transition {
+  transition: all 0.3s ease-in-out;
 }
 
 .node-children .node-container:hover {
@@ -243,6 +399,20 @@ const applySuccessAnimation = (node: Section) => {
   align-items: center;
   justify-content: center;
   gap: 4px;
+}
+
+.edit-input {
+  text-align: center;
+  background: none;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+  outline: none;
+  transition: border-bottom 0.3s;
+}
+
+.edit-input:focus {
+  border-bottom: 2px solid white;
 }
 
 .collapse-icon {

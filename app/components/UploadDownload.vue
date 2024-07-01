@@ -41,7 +41,7 @@ const resetConfiguration = () => {
       Save
     </TButton>
 
-    <span class="text-stone-400 mx-4">|</span>
+    <span class="text-stone-300 mx-4">|</span>
 
     <TButton
       size="sm"

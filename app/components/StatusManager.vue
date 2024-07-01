@@ -56,7 +56,7 @@ const getTextColor = (backgroundColor: string) => {
 const isValidColor = (color: string) => /^#[0-9A-F]{6}$/i.test(color)
 
 function getNextColor() {
-  const currentColors = statuses.value.map(status => status.color)
+  const currentColors = statuses.value.map((status: { color: string }) => status.color)
   const availableColors = pastelColors.filter(color => !currentColors.includes(color))
 
   return availableColors.length > 0 ? availableColors[0] : pastelColors[0]
@@ -76,6 +76,7 @@ function getNextColor() {
     <div class="text-stone-300 w-20 text-xs mt-2">
       {{ index + 1 }}.
     </div>
+
     <input
       v-model="status.name"
       class="p-1 font-semibold rounded-sm w-full placeholder:text-stone-300 text-xs"

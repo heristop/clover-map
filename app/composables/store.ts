@@ -39,6 +39,7 @@ export const useStore = defineStore('store', {
     statuses: ref<Status[]>(defaultStatus),
     viewMode: 'flex',
     darkMode: false,
+    isEditingMode: false,
   }),
   persist: {
     storage: persistedState.localStorage,
@@ -85,24 +86,24 @@ export const useStore = defineStore('store', {
       })
     },
     applyDefaultStatus(sections: Section[], existingProjects: Section[]): Section[] {
-      return sections.map((module) => {
-        const existingProject = this.findProjectByKey(module.key, existingProjects)
+      return sections.map((node) => {
+        const existingProject = this.findProjectByKey(node.key, existingProjects)
 
-        if (!module.status) {
+        if (!node.status) {
           if (existingProject) {
-            module.status = existingProject.status
+            node.status = existingProject.status
           }
 
           if (!existingProject) {
-            module.status = this.statuses[0]?.name || ''
+            node.status = this.statuses[0]?.name || ''
           }
         }
 
-        if (module.children) {
-          module.children = this.applyDefaultStatus(module.children, existingProject?.children ?? [])
+        if (node.children) {
+          node.children = this.applyDefaultStatus(node.children, existingProject?.children ?? [])
         }
 
-        return module
+        return node
       })
     },
     extractStatuses(sections: Section[]): Status[] {
@@ -110,19 +111,19 @@ export const useStore = defineStore('store', {
       const statusColors: { [key: string]: string } = {}
       let colorIndex = 0
 
-      const traverse = (modules: Section[]) => {
-        modules.forEach((module) => {
-          if (module.status) {
-            statusSet.add(module.status)
+      const traverse = (nodes: Section[]) => {
+        nodes.forEach((node) => {
+          if (node.status) {
+            statusSet.add(node.status)
 
-            if (!statusColors[module.status]) {
-              statusColors[module.status] = pastelColors[colorIndex % pastelColors.length] as string
+            if (!statusColors[node.status]) {
+              statusColors[node.status] = pastelColors[colorIndex % pastelColors.length] as string
               colorIndex++
             }
           }
 
-          if (module.children) {
-            traverse(module.children)
+          if (node.children) {
+            traverse(node.children)
           }
         })
       }
@@ -148,14 +149,35 @@ export const useStore = defineStore('store', {
         section.isCollapsed = !section.isCollapsed
       }
     },
+    addSection(parentKey: string, newSection: Section) {
+      const parent = this.findProjectByKey(parentKey, this.sections)
+      if (parent) {
+        if (!parent.children) {
+          parent.children = []
+        }
+        parent.children.push(newSection)
+      }
+    },
+    deleteSection(key: string) {
+      const deleteRecursively = (sections: Section[], key: string): Section[] => {
+        return sections
+          .filter(section => section.key !== key)
+          .map(section => ({
+            ...section,
+            children: section.children ? deleteRecursively(section.children, key) : [],
+          }))
+      }
+
+      this.sections = deleteRecursively(this.sections, key)
+    },
     findProjectByKey(key: string, sections: Section[]): Section | undefined {
-      for (const module of sections) {
-        if (module.key === key) {
-          return module
+      for (const node of sections) {
+        if (node.key === key) {
+          return node
         }
 
-        if (module.children) {
-          const found = this.findProjectByKey(key, module.children)
+        if (node.children) {
+          const found = this.findProjectByKey(key, node.children)
 
           if (found) {
             return found
@@ -168,17 +190,17 @@ export const useStore = defineStore('store', {
     updateParentStatuses() {
       const getStatusIndex = (status: string) => this.statuses.findIndex(s => s.name === status)
 
-      const updateStatusRecursively = (module: Section) => {
-        if (!module.children || !module.children.length) {
+      const updateStatusRecursively = (node: Section) => {
+        if (!node.children || !node.children.length) {
           return
         }
 
-        module.children.forEach(updateStatusRecursively)
-        const statuses = module.children.map(child => child.status)
+        node.children.forEach(updateStatusRecursively)
+        const statuses = node.children.map(child => child.status)
         const uniqueStatuses = [...new Set(statuses)]
 
         if (uniqueStatuses.length === 1) {
-          module.status = uniqueStatuses[0]
+          node.status = uniqueStatuses[0]
 
           return
         }
@@ -186,7 +208,7 @@ export const useStore = defineStore('store', {
         const leastAdvancedStatus = uniqueStatuses.reduce((prev, curr) => {
           return getStatusIndex(curr || '') < getStatusIndex(prev || '') ? curr : prev || ''
         }, uniqueStatuses[0] || '')
-        module.status = leastAdvancedStatus
+        node.status = leastAdvancedStatus
       }
 
       this.sections.forEach(updateStatusRecursively)
@@ -203,34 +225,25 @@ export const useStore = defineStore('store', {
     removeStatus(index: number) {
       this.statuses.splice(index, 1)
     },
+    updateSectionLabel(key: string, newLabel: string) {
+      const section = this.findProjectByKey(key, this.sections)
+      if (section) {
+        if (this.displayLabel === 'key') {
+          section.key = newLabel
+
+          return
+        }
+
+        section.name = newLabel
+      }
+    },
+    toggleEditingMode() {
+      this.isEditingMode = !this.isEditingMode
+    },
     clear() {
       this.sections = []
       this.statuses = defaultStatus
       this.configLoaded = false
-    },
-  },
-  getters: {
-    duplicateProjects(state): { sections: string[], keys: string[] } {
-      const sections: string[] = []
-      const keys: string[] = []
-
-      const checkDuplicates = (modules: Section[]) => {
-        modules.forEach((module) => {
-          sections.push(module.name)
-          keys.push(module.key ?? '')
-
-          if (module.children) {
-            checkDuplicates(module.children)
-          }
-        })
-      }
-
-      checkDuplicates(state.sections)
-
-      return {
-        sections: sections.filter((item, index) => sections.indexOf(item) !== index),
-        keys: keys.filter((item, index) => keys.indexOf(item) !== index),
-      }
     },
   },
 })

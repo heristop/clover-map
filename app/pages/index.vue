@@ -33,11 +33,6 @@ const sample = ref(`[
         "children": []
       }
     ]
-  },
-  {
-    "key": "project-2",
-    "name": "Project 2",
-    "children": []
   }
 ]`)
 

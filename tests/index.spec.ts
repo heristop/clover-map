@@ -46,7 +46,7 @@ test.describe('TreeMapPulse Page Tests', () => {
     await page.waitForTimeout(5000)
 
     // Add assertions to verify the configuration is loaded
-    await expect(page.locator('html')).toHaveText(/▼ Catalog/, { timeout: 10000 })
+    await expect(page.locator('html')).toHaveText(/Catalog/, { timeout: 10000 })
 
     const resetButton = page.locator('button[aria-label="Reset configuration"]')
     await resetButton.click()

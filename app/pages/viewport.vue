@@ -20,7 +20,5 @@ onMounted(() => {
     class="h-full"
   >
     <TreeMap />
-
-    <ConfigDrawer />
   </div>
 </template>

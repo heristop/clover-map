@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, nextTick } from 'vue'
 import ProgressBar from './ProgressBar.vue'
 import UploadDownload from './UploadDownload.vue'
 import StatusManager from './StatusManager.vue'
@@ -36,11 +36,13 @@ onMounted(() => {
   <transition name="slide-fade">
     <div
       v-if="isPositioned"
-      class="fixed top-0 right-0 bg-opacity-80 bg-stone-800 text-white rounded-l-md shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
+      class="fixed right-0 bg-opacity-80 bg-stone-500 text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
+      :class="[drawerMinimized ? 'top-1 rounded-l-lg' : 'top-0 rounded-l-md']"
       :style="{ width: drawerMinimized ? '40px' : `${size.width}px`, height: drawerMinimized ? 'auto' : '100vh' }"
     >
       <div
-        class="header flex justify-between items-center rounded-l-md bg-stone-800 px-2 py-1"
+        class="header flex justify-between items-center bg-stone-700 px-2 py-1"
+        :class="[drawerMinimized ? 'rounded-l-lg' : 'rounded-l-md']"
       >
         <h2
           v-if="!drawerMinimized"
@@ -50,10 +52,40 @@ onMounted(() => {
         </h2>
 
         <button
-          class="text-white rounded-full text-lg font-bold h-8 w-8"
+          class="text-white rounded-full text-lg font-bold h-6 w-6"
           @click="toggleMinimize"
         >
-          {{ drawerMinimized ? '+' : '-' }}
+          <svg
+            v-if="drawerMinimized"
+            class="w-4 h-4 text-stone-100 hover:text-stone-50 transition duration-200"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
+          </svg>
+
+          <svg
+            v-else
+            class="w-4 h-4 text-stone-100 hover:text-stone-50 transition duration-200"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 12h14"
+            />
+          </svg>
         </button>
       </div>
 
@@ -99,7 +131,7 @@ onMounted(() => {
               Key
             </TButton>
 
-            <span class="text-stone-400 mx-4">|</span>
+            <span class="text-stone-300 mx-4">|</span>
 
             <TButton
               :is-active="store.viewMode === 'flex'"
@@ -107,7 +139,7 @@ onMounted(() => {
               @click="toggleViewMode('flex')"
             >
               <svg
-                class="w-4 h-4 text-stone-800"
+                class="w-4 h-4"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -130,7 +162,7 @@ onMounted(() => {
               @click="toggleViewMode('grid')"
             >
               <svg
-                class="w-4 h-4 text-stone-800"
+                class="w-4 h-4"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
