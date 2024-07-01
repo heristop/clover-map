@@ -317,7 +317,7 @@ onMounted(() => {
               <TButton
                 aria-label="Load Project Migration Data"
                 :is-active="false"
-                @click="loadConfigFromApi('project-migration')"
+                @click="loadConfigFromApi('ecom-migration')"
               >
                 <svg
                   class="w-5 h-5 mr-2"
