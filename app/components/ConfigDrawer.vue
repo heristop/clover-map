@@ -36,7 +36,7 @@ onMounted(() => {
   <transition name="slide-fade">
     <div
       v-if="isPositioned"
-      class="fixed right-0 bg-opacity-80 bg-stone-500 text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
+      class="fixed right-0 bg-opacity-80 bg-stone-600 text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
       :class="[drawerMinimized ? 'top-1 rounded-l-lg' : 'top-0 rounded-l-md']"
       :style="{ width: drawerMinimized ? '40px' : `${size.width}px`, height: drawerMinimized ? 'auto' : '100vh' }"
     >
@@ -53,6 +53,7 @@ onMounted(() => {
 
         <button
           class="text-white rounded-full text-lg font-bold h-6 w-6"
+          aria-label="Toggle minimize"
           @click="toggleMinimize"
         >
           <svg
@@ -115,6 +116,7 @@ onMounted(() => {
           <div class="flex items-center justify-between space-x-2 mb-3">
             <TButton
               :is-active="store.displayLabel === 'name'"
+              aria-label="Display name"
               size="sm"
               class="w-full"
               @click="setDisplay('name')"
@@ -124,6 +126,7 @@ onMounted(() => {
 
             <TButton
               :is-active="store.displayLabel === 'key'"
+              aria-label="Display key"
               size="sm"
               class="w-full"
               @click="setDisplay('key')"
@@ -135,6 +138,7 @@ onMounted(() => {
 
             <TButton
               :is-active="store.viewMode === 'flex'"
+              aria-label="Flex view mode"
               size="sm"
               @click="toggleViewMode('flex')"
             >
@@ -158,6 +162,7 @@ onMounted(() => {
 
             <TButton
               :is-active="store.viewMode === 'grid'"
+              aria-label="Grid view mode"
               size="sm"
               @click="toggleViewMode('grid')"
             >

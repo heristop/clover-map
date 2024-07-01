@@ -27,6 +27,7 @@ const resetConfiguration = () => {
     <TButton
       size="sm"
       class="w-full py-1"
+      aria-label="Upload configuration"
       @click="($refs.fileInput as HTMLInputElement).click()"
     >
       Upload
@@ -35,6 +36,7 @@ const resetConfiguration = () => {
     <TButton
       size="sm"
       class="w-full py-1"
+      aria-label="Save configuration"
       :disabled="!store.configLoaded"
       @click="saveToFile"
     >
