@@ -14,8 +14,6 @@
 - **Editing and Customization**: Edit node labels, add new nodes, and delete or move existing nodes to tailor your project structure.
 - **Drag and Drop**: Intuitively drag and drop nodes within the same level to reorder tasks and sections.
 - **Visual Indicators**: Use visual cues to represent statuses, progress, and other key project metrics.
-- **Real-Time Updates**: Receive instant updates as changes are made, ensuring all team members are on the same page.
-- **User-Friendly Interface**: Navigate through a clean, intuitive interface designed for ease of use and productivity.
 - **And More**: Discover additional features designed to optimize your project management experience.
 
 ## 🛠️ Installation
