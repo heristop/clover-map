@@ -31,15 +31,18 @@ const updateNodeName = (newName: string) => {
 
 const minWidth = computed(() => store.minWidth)
 const minHeight = computed(() => store.minHeight)
+const duplicateKeys = computed(() => store.duplicateProjects.keys)
 
 const getNodeStyles = (node: Section, depth: number) => {
   const statusObj = store.statuses.find((s: { name: string | undefined }) => s.name === node.status)
   let backgroundColor = statusObj ? statusObj.color : '#D44D8'
   backgroundColor = darkenColor(backgroundColor, depth * 6)
 
+  const isDuplicate = duplicateKeys.value.includes(node.key)
+
   return {
     backgroundColor: backgroundColor,
-    borderColor: backgroundColor,
+    borderColor: isDuplicate ? '#FF7B7B' : backgroundColor,
     minWidth: `${minWidth.value}px`,
     minHeight: `${minHeight.value}px`,
     margin: '4px',
@@ -51,6 +54,7 @@ const getNodeStyles = (node: Section, depth: number) => {
     boxSizing: 'border-box',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     transition: 'transform 0.2s, box-shadow 0.2s, background-color 0.3s',
+    borderStyle: isDuplicate ? 'dashed' : 'solid',
   } as StyleValue
 }
 
@@ -94,12 +98,36 @@ const toggleCollapse = (event: MouseEvent) => {
   }
 }
 
+const getUniqueKeyName = (base: string, type: 'key' | 'name') => {
+  let index = 1
+  let newName = `${base}${index}`
+  const allSections = []
+
+  const gatherSections = (sections: Section[]) => {
+    sections.forEach((section) => {
+      allSections.push(section)
+      if (section.children) {
+        gatherSections(section.children)
+      }
+    })
+  }
+  gatherSections(store.sections)
+
+  while (allSections.some((section: Section) => section[type] === newName)) {
+    index++
+    newName = `${base}${index}`
+  }
+  return newName
+}
+
 const addNode = (event: MouseEvent) => {
   event.stopPropagation()
 
+  const newNodeKey = getUniqueKeyName(`${props.node.key}-child-`, 'key')
+  const newNodeName = getUniqueKeyName(`${props.node.name} Child `, 'name')
   const newNode: Section = {
-    key: `${props.node.key}-${Date.now()}`,
-    name: 'New Section',
+    key: newNodeKey,
+    name: newNodeName,
     status: store.statuses[0]?.name || '',
     children: [],
     isCollapsed: false,
@@ -119,9 +147,11 @@ const addNode = (event: MouseEvent) => {
 const addSiblingNode = (event: MouseEvent) => {
   event.stopPropagation()
 
+  const newNodeKey = getUniqueKeyName(`${props.node.key}-sibling-`, 'key')
+  const newNodeName = getUniqueKeyName(`${props.node.name} Sibling `, 'name')
   const newNode: Section = {
-    key: `${Date.now()}`,
-    name: 'New Sibling Section',
+    key: newNodeKey,
+    name: newNodeName,
     status: store.statuses[0]?.name || '',
     children: [],
     isCollapsed: false,
