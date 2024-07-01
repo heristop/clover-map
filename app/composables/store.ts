@@ -158,6 +158,17 @@ export const useStore = defineStore('store', {
         parent.children.push(newSection)
       }
     },
+    addSiblingSection(parentKey: string, newSection: Section) {
+      const parent = this.findParentByKey(parentKey, this.sections)
+
+      if (parent) {
+        parent.children.push(newSection)
+
+        return
+      }
+
+      this.sections.push(newSection)
+    },
     deleteSection(key: string) {
       const deleteRecursively = (sections: Section[], key: string): Section[] => {
         return sections
@@ -181,6 +192,24 @@ export const useStore = defineStore('store', {
 
           if (found) {
             return found
+          }
+        }
+      }
+
+      return undefined
+    },
+    findParentByKey(key: string, sections: Section[]): Section | undefined {
+      for (const node of sections) {
+        if (node.children) {
+          for (const child of node.children) {
+            if (child.key === key) {
+              return node
+            }
+          }
+          const parent = this.findParentByKey(key, node.children)
+
+          if (parent) {
+            return parent
           }
         }
       }

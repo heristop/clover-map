@@ -88,6 +88,11 @@ The JSON configuration file should adhere to the following structure to be compa
         "name": "Task 2",
         "status": "Done",
         "children": []
+      },
+      {
+        "key": "task-3",
+        "name": "Task 3",
+        "children": []
       }
     ]
   }

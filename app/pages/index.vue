@@ -23,13 +23,18 @@ const sample = ref(`[
       {
         "key": "task-1",
         "name": "Task 1",
-        "status": "In Progress",
+        "status": "Done",
         "children": []
       },
       {
         "key": "task-2",
         "name": "Task 2",
-        "status": "Done",
+        "status": "In Progress",
+        "children": []
+      },
+      {
+        "key": "task-3",
+        "name": "Task 3",
         "children": []
       }
     ]
