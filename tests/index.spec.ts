@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('TreePulse Page Tests', () => {
+test.describe('TreeMapPulse Page Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
   })
@@ -28,7 +28,7 @@ test.describe('TreePulse Page Tests', () => {
     await expect(loadFromUrlButton).toBeVisible({ timeout: 10000 })
 
     // Set the URL input value
-    await urlInput.fill('http://localhost:3000/configs/project-migration.json')
+    await urlInput.fill('http://localhost:3000/configs/ecom-migration.json')
 
     // Intercept the network request to verify the request and response
     page.on('request', (request) => {

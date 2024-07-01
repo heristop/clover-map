@@ -1,6 +1,6 @@
 {
-    "name": "TreePulse",
-    "short_name": "TreePulse",
+    "name": "TreeMapPulse",
+    "short_name": "TreeMapPulse",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

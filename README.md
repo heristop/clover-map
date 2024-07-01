@@ -1,6 +1,6 @@
-# TreePulse
+# TreeMapPulse
 
-**TreePulse** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TreePulse** helps you visualize and monitor the status of your projects effectively.
+**TreeMapPulse** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TreeMapPulse** helps you visualize and monitor the status of your projects effectively.
 
 ![screenshot](/public/screenshot.png)
 
@@ -18,13 +18,13 @@
 
 ## 🛠️ Installation
 
-To install and run **TreePulse** locally, follow these steps:
+To install and run **TreeMapPulse** locally, follow these steps:
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/heristop/tree-pulse.git
-    cd tree-pulse
+    git clone https://github.com/heristop/tree-map-pulse.git
+    cd tree-map-pulse
     ```
 
 2. Install dependencies:
@@ -45,7 +45,7 @@ To install and run **TreePulse** locally, follow these steps:
 
 ### Loading Configuration
 
-- **From Local Storage**: If a saved configuration is present in local storage, TreePulse will automatically load it upon startup. This ensures your previous session's data is readily available.
+- **From Local Storage**: If a saved configuration is present in local storage, TreeMapPulse will automatically load it upon startup. This ensures your previous session's data is readily available.
 - **From API**: If no local configuration is found, you can easily load a sample configuration by clicking the "Load Sample Data" button. This allows you to quickly start working with a predefined setup.
 
 ### Importing and Exporting Data
@@ -60,16 +60,16 @@ To install and run **TreePulse** locally, follow these steps:
 
 ### Managing Projects
 
-- **Adding/Updating Statuses**: 
+- **Adding/Updating Statuses**:
   - Open the configuration panel to manage statuses.
   - You can add new statuses to categorize tasks more effectively, update existing ones to reflect changes in your workflow, or remove obsolete statuses.
-- **Updating Tasks**: 
+- **Updating Tasks**:
   - Click on any task to cycle through its statuses.
   - This intuitive interface allows for quick updates, ensuring your project board accurately reflects the current state of each task.
 
 ### JSON Configuration Format
 
-The JSON configuration file should adhere to the following structure to be compatible with TreePulse:
+The JSON configuration file should adhere to the following structure to be compatible with TreeMapPulse:
 
 ```json
 [
@@ -105,7 +105,7 @@ The JSON configuration file should adhere to the following structure to be compa
 - `children`: An array of nested sections or tasks, supporting hierarchical project structures.
 - `isCollapsed` (optional): A boolean flag indicating whether the section should be collapsed, helping to manage the visibility of complex structures.
 
-By following this guide, you can effectively utilize TreePulse to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.
+By following this guide, you can effectively utilize TreeMapPulse to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.
 
 ## 📄 License
 
@@ -115,4 +115,6 @@ This project is licensed under the MIT License.
 
 We welcome feedback and contributions! If you have any suggestions or encounter any issues, please feel free to open an issue or submit a pull request.
 
-![Logo](/public/apple-touch-icon.png)
+---
+
+![Logo](/public/logo-80x80.png)

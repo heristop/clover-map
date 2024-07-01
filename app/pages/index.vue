@@ -66,11 +66,11 @@ const toggleDarkMode = () => {
 }
 
 const openGitHub = () => {
-  window.open('https://github.com/heristop/tree-pulse', '_blank')
+  window.open('https://github.com/heristop/tree-map-pulse', '_blank')
 }
 
 const openStackBlitz = () => {
-  window.open('https://stackblitz.com/~/github.com/heristop/tree-pulse', '_blank')
+  window.open('https://stackblitz.com/~/github.com/heristop/tree-map-pulse', '_blank')
 }
 
 const observeSections = () => {
@@ -123,7 +123,7 @@ onMounted(() => {
     class="relative w-full min-h-screen overflow-auto bg-stone-50 dark:bg-stone-900 text-stone-900 dark:text-stone-50"
   >
     <button
-      class="fixed top-4 right-4 p-2 bg-stone-100 dark:bg-stone-700 text-stone-900 dark:text-stone-50 rounded shadow-sm z-50"
+      class="fixed top-4 right-4 p-2 bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-50 rounded shadow-sm z-50"
       aria-label="dark mode"
       @click="toggleDarkMode"
     >
@@ -221,11 +221,11 @@ onMounted(() => {
                 d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm14 18a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4ZM5 11a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5Zm14 2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4Z"
               />
             </svg>
-            Welcome to TreePulse!
+            Welcome to TreeMapPulse!
           </h1>
 
           <div class="text-lg text-stone-600 dark:text-stone-300 max-w-3xl mx-auto">
-            It looks like you haven't loaded any configuration yet. Click one of the buttons below to load sample data and see TreePulse in action!
+            It looks like you haven't loaded any configuration yet. Click one of the buttons below to load sample data and see TreeMapPulse in action!
           </div>
 
           <div class="flex justify-center space-x-4 p-6">
@@ -484,7 +484,7 @@ onMounted(() => {
               <textarea
                 id="sample-config"
                 v-model="sample"
-                class="w-full h-60 text-xs text-stone-500 bg-stone-200 rounded-md text-sm p-2 dark:bg-stone-600 dark:text-stone-300 mt-1 focus:border-stone-300 dark:focus:border-stone-600"
+                class="w-full h-60 text-xs text-stone-500 bg-stone-200 rounded-md p-2 dark:bg-stone-600 dark:text-stone-300 mt-1 focus:border-stone-300 dark:focus:border-stone-600"
                 aria-label="Sample Configuration"
               />
 
