@@ -1,124 +1,118 @@
 [
   {
-    "name": "Recruitment",
-    "key": "/recruitment",
+    "name": "Software Engineer",
+    "key": "/software-engineer",
     "children": [
       {
-        "name": "Software Engineer",
-        "key": "/recruitment/software-engineer",
+        "name": "Candidate 1",
+        "key": "/software-engineer/candidate1",
+        "status": "interview_scheduled",
         "children": [
           {
-            "name": "Candidate 1",
-            "key": "/recruitment/software-engineer/candidate1",
-            "status": "interview_scheduled",
-            "children": [
-              {
-                "name": "Resume Review",
-                "key": "/recruitment/software-engineer/candidate1/resume",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Technical Interview",
-                "key": "/recruitment/software-engineer/candidate1/interview",
-                "status": "scheduled",
-                "children": []
-              }
-            ]
+            "name": "Resume Review",
+            "key": "/software-engineer/candidate1/resume",
+            "status": "pending",
+            "children": []
           },
           {
-            "name": "Candidate 2",
-            "key": "/recruitment/software-engineer/candidate2",
-            "status": "application_received",
-            "children": [
-              {
-                "name": "Resume Review",
-                "key": "/recruitment/software-engineer/candidate2/resume",
-                "status": "in_progress",
-                "children": []
-              }
-            ]
+            "name": "Technical Interview",
+            "key": "/software-engineer/candidate1/interview",
+            "status": "scheduled",
+            "children": []
           }
         ]
       },
       {
-        "name": "Data Scientist",
-        "key": "/recruitment/data-scientist",
+        "name": "Candidate 2",
+        "key": "/software-engineer/candidate2",
+        "status": "application_received",
         "children": [
           {
-            "name": "Candidate 1",
-            "key": "/recruitment/data-scientist/candidate1",
-            "status": "offer_made",
-            "children": [
-              {
-                "name": "Resume Review",
-                "key": "/recruitment/data-scientist/candidate1/resume",
-                "status": "in_progress",
-                "children": []
-              },
-              {
-                "name": "Technical Interview",
-                "key": "/recruitment/data-scientist/candidate1/interview",
-                "status": "completed",
-                "children": []
-              },
-              {
-                "name": "Offer",
-                "key": "/recruitment/data-scientist/candidate1/offer",
-                "status": "sent",
-                "children": []
-              }
-            ]
+            "name": "Resume Review",
+            "key": "/software-engineer/candidate2/resume",
+            "status": "in_progress",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Data Scientist",
+    "key": "/data-scientist",
+    "children": [
+      {
+        "name": "Candidate 1",
+        "key": "/data-scientist/candidate1",
+        "status": "offer_made",
+        "children": [
+          {
+            "name": "Resume Review",
+            "key": "/data-scientist/candidate1/resume",
+            "status": "in_progress",
+            "children": []
+          },
+          {
+            "name": "Technical Interview",
+            "key": "/data-scientist/candidate1/interview",
+            "status": "completed",
+            "children": []
+          },
+          {
+            "name": "Offer",
+            "key": "/data-scientist/candidate1/offer",
+            "status": "sent",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Product Manager",
+    "key": "/product-manager",
+    "children": [
+      {
+        "name": "Candidate 1",
+        "key": "/product-manager/candidate1",
+        "status": "hired",
+        "children": [
+          {
+            "name": "Resume Review",
+            "key": "/product-manager/candidate1/resume",
+            "status": "completed",
+            "children": []
+          },
+          {
+            "name": "Technical Interview",
+            "key": "/product-manager/candidate1/interview",
+            "status": "scheduled",
+            "children": []
+          },
+          {
+            "name": "Offer",
+            "key": "/product-manager/candidate1/offer",
+            "status": "accepted",
+            "children": []
           }
         ]
       },
       {
-        "name": "Product Manager",
-        "key": "/recruitment/product-manager",
+        "name": "Candidate 2",
+        "key": "/product-manager/candidate2",
+        "status": "rejected",
         "children": [
           {
-            "name": "Candidate 1",
-            "key": "/recruitment/product-manager/candidate1",
-            "status": "hired",
-            "children": [
-              {
-                "name": "Resume Review",
-                "key": "/recruitment/product-manager/candidate1/resume",
-                "status": "completed",
-                "children": []
-              },
-              {
-                "name": "Technical Interview",
-                "key": "/recruitment/product-manager/candidate1/interview",
-                "status": "scheduled",
-                "children": []
-              },
-              {
-                "name": "Offer",
-                "key": "/recruitment/product-manager/candidate1/offer",
-                "status": "accepted",
-                "children": []
-              }
-            ]
+            "name": "Resume Review",
+            "key": "/product-manager/candidate2/resume",
+            "status": "pending",
+            "children": []
           },
           {
-            "name": "Candidate 2",
-            "key": "/recruitment/product-manager/candidate2",
-            "status": "rejected",
-            "children": [
-              {
-                "name": "Resume Review",
-                "key": "/recruitment/product-manager/candidate2/resume",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Technical Interview",
-                "key": "/recruitment/product-manager/candidate2/interview",
-                "status": "in_progress",
-                "children": []
-              }
-            ]
+            "name": "Technical Interview",
+            "key": "/product-manager/candidate2/interview",
+            "status": "in_progress",
+            "children": []
           }
         ]
       }

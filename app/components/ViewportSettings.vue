@@ -47,11 +47,11 @@ const captureTreeMap = () => {
       @click="captureTreeMap"
     >
       <svg
-        class="w-4 h-4 mr-2"
+        class="w-5 h-5 mr-2"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
-        viewBox="0 0 24 24"
+        viewBox="0 0 26 26"
       >
         <path
           stroke="currentColor"
@@ -72,7 +72,7 @@ const captureTreeMap = () => {
 
   <div class="flex items-center space-x-4 mb-4 px-2">
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-sm text-stone-400">Width</span>
+      <span class="text-sm text-stone-300">Width</span>
       <input
         v-model="minWidth"
         type="range"
@@ -82,7 +82,7 @@ const captureTreeMap = () => {
       >
     </div>
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-sm text-stone-400">Height</span>
+      <span class="text-sm text-stone-300">Height</span>
       <input
         v-model="minHeight"
         type="range"

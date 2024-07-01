@@ -28,6 +28,10 @@ watch(() => store.displayLabel, () => {
   nextTick(() => checkContentHeight())
 })
 
+watch(() => store.viewMode, () => {
+  nextTick(() => checkContentHeight())
+})
+
 onUnmounted(() => {
   window.removeEventListener('resize', checkContentHeight)
 })

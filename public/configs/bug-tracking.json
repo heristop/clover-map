@@ -1,253 +1,247 @@
 [
   {
-    "name": "Bug Tracking",
-    "key": "/bug-tracking",
+    "name": "Frontend",
+    "key": "/frontend",
+    "status": "open",
     "children": [
       {
-        "name": "Frontend",
-        "key": "/bug-tracking/frontend",
-        "status": "open",
+        "name": "Bug 1 - UI issue",
+        "key": "/frontend/bug1",
+        "status": "assigned",
         "children": [
           {
-            "name": "Bug 1 - UI issue",
-            "key": "/bug-tracking/frontend/bug1",
+            "name": "Bug Reported",
+            "key": "/frontend/bug1/report",
             "status": "assigned",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/frontend/bug1/report",
-                "status": "assigned",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/frontend/bug1/analysis",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Bug Fix",
-                "key": "/bug-tracking/frontend/bug1/fix",
-                "status": "scheduled",
-                "children": []
-              }
-            ]
+            "children": []
           },
           {
-            "name": "Bug 2 - CSS issue",
-            "key": "/bug-tracking/frontend/bug2",
-            "status": "new",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/frontend/bug2/report",
-                "status": "pending",
-                "children": []
-              }
-            ]
+            "name": "Bug Analysis",
+            "key": "/frontend/bug1/analysis",
+            "status": "pending",
+            "children": []
           },
           {
-            "name": "Bug 3 - JavaScript error",
-            "key": "/bug-tracking/frontend/bug3",
-            "status": "assigned",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/frontend/bug3/report",
-                "status": "assigned",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/frontend/bug3/analysis",
-                "status": "scheduled",
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "Bug 4 - Image loading issue",
-            "key": "/bug-tracking/frontend/bug4",
-            "status": "assigned",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/frontend/bug4/report",
-                "status": "pending",
-                "children": []
-              }
-            ]
+            "name": "Bug Fix",
+            "key": "/frontend/bug1/fix",
+            "status": "scheduled",
+            "children": []
           }
         ]
       },
       {
-        "name": "Backend",
-        "key": "/bug-tracking/backend",
-        "status": "open",
+        "name": "Bug 2 - CSS issue",
+        "key": "/frontend/bug2",
+        "status": "new",
         "children": [
           {
-            "name": "Bug 1 - API issue",
-            "key": "/bug-tracking/backend/bug1",
-            "status": "assigned",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/backend/bug1/report",
-                "status": "assigned",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/backend/bug1/analysis",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Bug Fix",
-                "key": "/bug-tracking/backend/bug1/fix",
-                "status": "scheduled",
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "Bug 2 - Database connection error",
-            "key": "/bug-tracking/backend/bug2",
-            "status": "new",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/backend/bug2/report",
-                "status": "assigned",
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "Bug 3 - Server timeout",
-            "key": "/bug-tracking/backend/bug3",
-            "status": "assigned",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/backend/bug3/report",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/backend/bug3/analysis",
-                "status": "assigned",
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "Bug 4 - Authentication failure",
-            "key": "/bug-tracking/backend/bug4",
-            "status": "assigned",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/backend/bug4/report",
-                "status": "scheduled",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/backend/bug4/analysis",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Bug Fix",
-                "key": "/bug-tracking/backend/bug4/fix",
-                "status": "scheduled",
-                "children": []
-              }
-            ]
+            "name": "Bug Reported",
+            "key": "/frontend/bug2/report",
+            "status": "pending",
+            "children": []
           }
         ]
       },
       {
-        "name": "Database",
-        "key": "/bug-tracking/database",
-        "status": "closed",
+        "name": "Bug 3 - JavaScript error",
+        "key": "/frontend/bug3",
+        "status": "assigned",
         "children": [
           {
-            "name": "Bug 1 - Query optimization",
-            "key": "/bug-tracking/database/bug1",
-            "status": "resolved",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/database/bug1/report",
-                "status": "completed",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/database/bug1/analysis",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Bug Fix",
-                "key": "/bug-tracking/database/bug1/fix",
-                "status": "assigned",
-                "children": []
-              },
-              {
-                "name": "Testing",
-                "key": "/bug-tracking/database/bug1/testing",
-                "status": "completed",
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "Bug 2 - Indexing issue",
-            "key": "/bug-tracking/database/bug2",
-            "status": "new",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/database/bug2/report",
-                "status": "assigned",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/database/bug2/analysis",
-                "status": "scheduled",
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "Bug 3 - Data inconsistency",
-            "key": "/bug-tracking/database/bug3",
+            "name": "Bug Reported",
+            "key": "/frontend/bug3/report",
             "status": "assigned",
-            "children": [
-              {
-                "name": "Bug Reported",
-                "key": "/bug-tracking/database/bug3/report",
-                "status": "pending",
-                "children": []
-              },
-              {
-                "name": "Bug Analysis",
-                "key": "/bug-tracking/database/bug3/analysis",
-                "status": "assigned",
-                "children": []
-              },
-              {
-                "name": "Bug Fix",
-                "key": "/bug-tracking/database/bug3/fix",
-                "status": "scheduled",
-                "children": []
-              }
-            ]
+            "children": []
+          },
+          {
+            "name": "Bug Analysis",
+            "key": "/frontend/bug3/analysis",
+            "status": "scheduled",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Bug 4 - Image loading issue",
+        "key": "/frontend/bug4",
+        "status": "assigned",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/frontend/bug4/report",
+            "status": "pending",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Backend",
+    "key": "/backend",
+    "status": "open",
+    "children": [
+      {
+        "name": "Bug 1 - API issue",
+        "key": "/backend/bug1",
+        "status": "assigned",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/backend/bug1/report",
+            "status": "assigned",
+            "children": []
+          },
+          {
+            "name": "Bug Analysis",
+            "key": "/backend/bug1/analysis",
+            "status": "pending",
+            "children": []
+          },
+          {
+            "name": "Bug Fix",
+            "key": "/backend/bug1/fix",
+            "status": "scheduled",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Bug 2 - Database connection error",
+        "key": "/backend/bug2",
+        "status": "new",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/backend/bug2/report",
+            "status": "assigned",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Bug 3 - Server timeout",
+        "key": "/backend/bug3",
+        "status": "assigned",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/backend/bug3/report",
+            "status": "pending",
+            "children": []
+          },
+          {
+            "name": "Bug Analysis",
+            "key": "/backend/bug3/analysis",
+            "status": "assigned",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Bug 4 - Authentication failure",
+        "key": "/backend/bug4",
+        "status": "assigned",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/backend/bug4/report",
+            "status": "scheduled",
+            "children": []
+          },
+          {
+            "name": "Bug Analysis",
+            "key": "/backend/bug4/analysis",
+            "status": "pending",
+            "children": []
+          },
+          {
+            "name": "Bug Fix",
+            "key": "/backend/bug4/fix",
+            "status": "scheduled",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Database",
+    "key": "/database",
+    "status": "closed",
+    "children": [
+      {
+        "name": "Bug 1 - Query optimization",
+        "key": "/database/bug1",
+        "status": "resolved",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/database/bug1/report",
+            "status": "completed",
+            "children": []
+          },
+          {
+            "name": "Bug Analysis",
+            "key": "/database/bug1/analysis",
+            "status": "pending",
+            "children": []
+          },
+          {
+            "name": "Bug Fix",
+            "key": "/database/bug1/fix",
+            "status": "assigned",
+            "children": []
+          },
+          {
+            "name": "Testing",
+            "key": "/database/bug1/testing",
+            "status": "completed",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Bug 2 - Indexing issue",
+        "key": "/database/bug2",
+        "status": "new",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/database/bug2/report",
+            "status": "assigned",
+            "children": []
+          },
+          {
+            "name": "Bug Analysis",
+            "key": "/database/bug2/analysis",
+            "status": "scheduled",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Bug 3 - Data inconsistency",
+        "key": "/database/bug3",
+        "status": "assigned",
+        "children": [
+          {
+            "name": "Bug Reported",
+            "key": "/database/bug3/report",
+            "status": "pending",
+            "children": []
+          },
+          {
+            "name": "Bug Analysis",
+            "key": "/database/bug3/analysis",
+            "status": "assigned",
+            "children": []
+          },
+          {
+            "name": "Bug Fix",
+            "key": "/database/bug3/fix",
+            "status": "scheduled",
+            "children": []
           }
         ]
       }

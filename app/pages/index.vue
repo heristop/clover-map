@@ -14,7 +14,7 @@ const darkMode = computed(() => store.darkMode)
 
 const { fileInput, loadFromModel, loadFromFile, loadFromUrl, loadFromUserInput } = useConfig()
 
-const url = ref(`${useRuntimeConfig().public.apiBaseUrl}/configs/project-migration.json`)
+const url = ref(`${useRuntimeConfig().public.apiBaseUrl}/configs/ecom-migration.json`)
 const sample = ref(`[
   {
     "key": "project-1",
@@ -123,7 +123,7 @@ onMounted(() => {
     class="relative w-full min-h-screen overflow-auto bg-stone-50 dark:bg-stone-900 text-stone-900 dark:text-stone-50"
   >
     <button
-      class="fixed top-4 right-4 p-2 bg-stone-200 dark:bg-stone-700 text-stone-900 dark:text-stone-50 rounded z-50"
+      class="fixed top-4 right-4 p-2 bg-stone-100 dark:bg-stone-700 text-stone-900 dark:text-stone-50 rounded shadow-sm z-50"
       aria-label="dark mode"
       @click="toggleDarkMode"
     >
@@ -178,7 +178,7 @@ onMounted(() => {
       <div class="bg-lime-300 dark:bg-lime-700 rounded-lg opacity-30" />
     </div>
 
-    <div class="absolute h-full inset-0 z-10 bg-stone-300 dark:bg-stone-800 opacity-80 dark:opacity-90" />
+    <div class="absolute h-full inset-0 z-10 bg-stone-200 dark:bg-stone-800 opacity-80 dark:opacity-90" />
 
     <div
       v-if="!isLoading"
@@ -437,7 +437,7 @@ onMounted(() => {
               <input
                 v-model="url"
                 placeholder="https://"
-                class="bg-stone-200 text-stone-900 dark:bg-stone-700 dark:text-white px-4 py-2 rounded-md text-sm w-full md:w-2/3"
+                class="bg-stone-100 text-stone-900 dark:bg-stone-700 dark:text-white px-4 py-2 rounded-md text-sm w-full md:w-2/3 shadow-sm"
               >
               <TButton
                 aria-label="Load Configuration from URL"
@@ -473,7 +473,7 @@ onMounted(() => {
               Load Custom Configuration
             </h2>
 
-            <div class="bg-stone-200 text-stone-900 dark:bg-stone-700 dark:text-white p-4 rounded-md text-sm w-full md:w-1/2">
+            <div class="bg-stone-100 text-stone-900 dark:bg-stone-700 dark:text-white p-4 rounded-md text-sm w-full md:w-1/2 shadow-sm">
               <label
                 for="sample-config"
                 class="block text-sm font-medium text-stone-900 dark:text-stone-50"
@@ -484,11 +484,11 @@ onMounted(() => {
               <textarea
                 id="sample-config"
                 v-model="sample"
-                class="w-full h-60 text-stone-500 bg-stone-200 text-sm p-2 dark:bg-stone-700 dark:text-stone-300 mt-1"
+                class="w-full h-60 text-xs text-stone-500 bg-stone-200 rounded-md text-sm p-2 dark:bg-stone-600 dark:text-stone-300 mt-1 focus:border-stone-300 dark:focus:border-stone-600"
                 aria-label="Sample Configuration"
               />
 
-              <p class="text-stone-600 mt-4 dark:text-stone-300">
+              <p class="text-stone-500 mt-4 dark:text-stone-300">
                 <strong>key:</strong> Unique identifier for the section<br>
                 <strong>name:</strong> Name of the section<br>
                 <strong>status:</strong> Current status of the section<br>

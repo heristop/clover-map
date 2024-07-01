@@ -73,7 +73,7 @@ function getNextColor() {
     @dragover.prevent
     @drop="dropStatus($event, index)"
   >
-    <div class="text-stone-400 w-20 text-xs">
+    <div class="text-stone-300 w-20 text-xs mt-2">
       {{ index + 1 }}.
     </div>
     <input
@@ -93,7 +93,7 @@ function getNextColor() {
     >
     <button
       :disabled="statuses.length <= 1"
-      class="text-stone-200 font-semibold w-[200px] disabled:text-stone-500 text-xs"
+      class="text-stone-200 hover:text-stone-100 font-semibold w-[200px] disabled:text-stone-500 text-xs"
       @click="removeStatus(index)"
     >
       remove
@@ -101,7 +101,7 @@ function getNextColor() {
   </div>
 
   <div class="flex items-center space-x-2 space-y-2 align-middle status-item text-stone-600 mb-6">
-    <div class="text-stone-400 w-20 text-sm">
+    <div class="text-stone-300 w-20 text-xs mt-2">
       {{ statuses.length + 1 }}.
     </div>
     <input
@@ -121,7 +121,7 @@ function getNextColor() {
     >
     <button
       :disabled="!newStatus.name || !newStatus.color"
-      class="text-stone-200 font-semibold w-[200px] disabled:text-stone-500 text-xs"
+      class="text-stone-100 font-semibold w-[200px] text-xs disabled:cursor-not-allowed disabled:opacity-50"
       @click="addNewStatus"
     >
       add
