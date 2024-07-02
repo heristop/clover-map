@@ -94,7 +94,7 @@ function getNextColor() {
     >
     <button
       :disabled="statuses.length <= 1"
-      class="text-stone-500 dark:text-stone-300 hover:text-stone-100 font-semibold w-[200px] disabled:text-stone-500 text-xs"
+      class="text-stone-500 dark:text-stone-300 hover:text-stone-400 dark:hover:text-stone-100 font-semibold w-[200px] disabled:text-stone-500 text-xs"
       @click="removeStatus(index)"
     >
       remove
@@ -122,7 +122,7 @@ function getNextColor() {
     >
     <button
       :disabled="!newStatus.name || !newStatus.color"
-      class="text-stone-500 dark:text-stone-300 font-semibold w-[200px] text-xs disabled:cursor-not-allowed disabled:opacity-50"
+      class="text-stone-500 dark:text-stone-300 hover:text-stone-400 dark:hover:text-stone-100 font-semibold w-[200px] text-xs disabled:cursor-not-allowed disabled:opacity-50"
       @click="addNewStatus"
     >
       add
