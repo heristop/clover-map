@@ -31,7 +31,7 @@ export const pastelColors = [
 export const useStore = defineStore('store', {
   state: () => ({
     sections: [] as Section[],
-    parentMap: {} as Record<string, string>,
+    parentMap: {} as { [key: string]: string | null },
     configLoaded: false,
     dialogMinimized: false,
     minWidth: 80,
@@ -185,15 +185,39 @@ export const useStore = defineStore('store', {
         this.parentMap[newSection.key] = parentKey
       }
     },
-    addSiblingSection(key: string, newSection: Section) {
-      const parentKey = this.parentMap[key]
-      if (parentKey) {
-        this.addSection(parentKey, newSection)
-      }
-      else {
-        this.sections.push(newSection)
+    addSiblingSection(parentKey: string, siblingKey: string, newSibling: Section) {
+      const parent = this.findSectionByKey(parentKey)
+      if (parent && parent.children) {
+        const index = parent.children.findIndex((child: Section) => child.key === siblingKey)
+        if (index !== -1) {
+          parent.children.splice(index + 1, 0, newSibling)
+          this.parentMap[newSibling.key] = parentKey
+        }
       }
     },
+    addRootSection(newSection: Section) {
+      this.sections.push(newSection)
+      this.parentMap[newSection.key] = null
+    },
+    findSectionByKey(key: string): Section | null {
+      const findRecursively = (sections: Section[]): Section | null => {
+        for (const section of sections) {
+          if (section.key === key) {
+            return section
+          }
+          if (section.children) {
+            const found = findRecursively(section.children)
+
+            if (found) {
+              return found
+            }
+          }
+        }
+        return null
+      }
+      return findRecursively(this.sections)
+    },
+
     deleteSection(key: string) {
       const deleteRecursively = (sections: Section[], key: string): boolean => {
         const index = sections.findIndex(section => section.key === key)
@@ -231,20 +255,6 @@ export const useStore = defineStore('store', {
           [this.sections[index1], this.sections[index2]] = [this.sections[index2], this.sections[index1]]
         }
       }
-    },
-    findSectionByKey(key: string, sections: Section[]): Section | undefined {
-      for (const section of sections) {
-        if (section.key === key) {
-          return section
-        }
-        if (section.children) {
-          const found = this.findSectionByKey(key, section.children)
-          if (found) {
-            return found
-          }
-        }
-      }
-      return undefined
     },
     hasParent(key: string): boolean {
       return key in this.parentMap

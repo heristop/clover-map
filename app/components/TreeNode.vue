@@ -157,15 +157,28 @@ const addSiblingNode = (event: MouseEvent) => {
     isCollapsed: false,
   }
 
-  if (document.startViewTransition) {
-    document.startViewTransition(() => {
-      store.addSiblingSection(props.node.key, newNode)
-    })
+  const parentKey = store.parentMap[props.node.key]
 
-    return
+  if (parentKey) {
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        store.addSiblingSection(parentKey, props.node.key, newNode)
+      })
+    }
+    else {
+      store.addSiblingSection(parentKey, props.node.key, newNode)
+    }
   }
-
-  store.addSiblingSection(props.node.key, newNode)
+  else {
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        store.addRootSection(newNode)
+      })
+    }
+    else {
+      store.addRootSection(newNode)
+    }
+  }
 }
 
 const deleteNode = (event: MouseEvent) => {
