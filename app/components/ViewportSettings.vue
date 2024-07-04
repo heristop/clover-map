@@ -17,7 +17,7 @@ const minHeight = computed({
 })
 
 const captureTreeMap = () => {
-  const projectMapElement = document.querySelector('.tree-map') as HTMLElement | null
+  const projectMapElement = document.querySelector('.treemap') as HTMLElement | null
 
   if (projectMapElement) {
     window.scrollTo(0, 0)
@@ -26,7 +26,7 @@ const captureTreeMap = () => {
         .then((dataUrl: string) => {
           const link = document.createElement('a')
           link.href = dataUrl
-          link.download = `tree-map-${Date.now()}.png`
+          link.download = `treemap-pulse-${Date.now()}.png`
           link.click()
         })
         .catch((error: Error) => {

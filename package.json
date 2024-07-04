@@ -1,5 +1,5 @@
 {
-  "name": "tree-map-pulse",
+  "name": "treemap-pulse",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.4.0",

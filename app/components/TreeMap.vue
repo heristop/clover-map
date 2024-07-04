@@ -15,7 +15,7 @@ const rootNodes = computed(() => store.sections)
 
   <div
     ref="chart"
-    class="tree-map flex flex-wrap w-full h-full bg-stone-50 dark:bg-stone-200 p-4 grid-container"
+    class="treemap flex flex-wrap w-full h-full bg-stone-50 dark:bg-stone-200 p-4 grid-container"
   >
     <ClientOnly>
       <TreeNode

@@ -23,8 +23,8 @@ To install and run **TreeMapPulse** locally, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/heristop/tree-map-pulse.git
-    cd tree-map-pulse
+    git clone https://github.com/heristop/treemap-pulse.git
+    cd treemap-pulse
     ```
 
 2. Install dependencies:
