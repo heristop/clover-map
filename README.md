@@ -1,6 +1,6 @@
-# TreeMapPulse
+# TreemapPulse
 
-**TreeMapPulse** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TreeMapPulse** helps you visualize and monitor the status of your projects effectively.
+**TreemapPulse** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TreemapPulse** helps you visualize and monitor the status of your projects effectively.
 
 ![screenshot](/public/screenshot.png)
 
@@ -18,7 +18,7 @@
 
 ## 🛠️ Installation
 
-To install and run **TreeMapPulse** locally, follow these steps:
+To install and run **TreemapPulse** locally, follow these steps:
 
 1. Clone the repository:
 
@@ -45,7 +45,7 @@ To install and run **TreeMapPulse** locally, follow these steps:
 
 ### Loading Configuration
 
-- **From Local Storage**: If a saved configuration is present in local storage, TreeMapPulse will automatically load it upon startup. This ensures your previous session's data is readily available.
+- **From Local Storage**: If a saved configuration is present in local storage, TreemapPulse will automatically load it upon startup. This ensures your previous session's data is readily available.
 - **From API**: If no local configuration is found, you can easily load a sample configuration by clicking the "Load Sample Data" button. This allows you to quickly start working with a predefined setup.
 
 ### Importing and Exporting Data
@@ -69,7 +69,7 @@ To install and run **TreeMapPulse** locally, follow these steps:
 
 ### JSON Configuration Format
 
-The JSON configuration file should adhere to the following structure to be compatible with TreeMapPulse:
+The JSON configuration file should adhere to the following structure to be compatible with TreemapPulse:
 
 ```json
 [
@@ -100,7 +100,7 @@ The JSON configuration file should adhere to the following structure to be compa
 - `children`: An array of nested sections or tasks, supporting hierarchical project structures.
 - `isCollapsed` (optional): A boolean flag indicating whether the section should be collapsed, helping to manage the visibility of complex structures.
 
-By following this guide, you can effectively utilize TreeMapPulse to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.
+By following this guide, you can effectively utilize TreemapPulse to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.
 
 ## 📄 License
 
