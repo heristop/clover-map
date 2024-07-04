@@ -58,7 +58,7 @@ export function useConfig() {
     return undefined
   }
 
-  const saveToFile = () => {
+  const exportToFile = () => {
     const sections = JSON.stringify(store.sections, null, 2)
     const blob = new Blob([sections], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
@@ -128,7 +128,7 @@ export function useConfig() {
     fileInput,
     loadFromModel,
     loadFromFile,
-    saveToFile,
+    exportToFile,
     loadFromUrl,
     loadFromUserInput,
   }

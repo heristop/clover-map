@@ -7,7 +7,7 @@ import { useStore } from '~/composables/store'
 const store = useStore()
 const router = useRouter()
 
-const { fileInput, loadFromFile, saveToFile } = useConfig()
+const { fileInput, loadFromFile, exportToFile } = useConfig()
 
 const resetConfiguration = () => {
   store.clear()
@@ -36,11 +36,11 @@ const resetConfiguration = () => {
     <TButton
       size="sm"
       class="w-full py-1"
-      aria-label="Save configuration"
+      aria-label="Export configuration"
       :disabled="!store.configLoaded"
-      @click="saveToFile"
+      @click="exportToFile"
     >
-      Save
+      Export
     </TButton>
 
     <span class="text-stone-500 dark:text-stone-300 mx-4">|</span>
