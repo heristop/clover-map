@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect, onMounted, type StyleValue } from 'vue'
+import { ref, computed, onMounted, type StyleValue } from 'vue'
 import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
 
@@ -8,18 +8,10 @@ const emit = defineEmits(['status-updated'])
 const store = useStore()
 const isSuccessNode = ref(false)
 const nodeStatus = ref(props.node.status || store.statuses[0]?.name)
+const isDragging = ref(false)
 
-const displayContent = computed({
-  get: () => store.displayLabel === 'key' ? props.node.key : props.node.name,
-  set: (value) => {
-    if (store.displayLabel === 'key') {
-      updateNodeKey(value)
-    }
-    else {
-      updateNodeName(value)
-    }
-  },
-})
+const localKey = ref(props.node.key)
+const localName = ref(props.node.name)
 
 const updateNodeKey = (newKey: string) => {
   store.updateSectionKey(props.node.key, newKey)
@@ -28,6 +20,20 @@ const updateNodeKey = (newKey: string) => {
 const updateNodeName = (newName: string) => {
   store.updateSectionName(props.node.key, newName)
 }
+
+const displayContent = computed({
+  get: () => store.displayLabel === 'key' ? localKey.value : localName.value,
+  set: (value) => {
+    if (store.displayLabel === 'key') {
+      localKey.value = value
+      updateNodeKey(value)
+    }
+    else {
+      localName.value = value
+      updateNodeName(value)
+    }
+  },
+})
 
 const minWidth = computed(() => store.minWidth)
 const minHeight = computed(() => store.minHeight)
@@ -196,11 +202,14 @@ const deleteNode = (event: MouseEvent) => {
 }
 
 const handleDragStart = (event: DragEvent) => {
+  if (isDragging.value) return
+
   event.stopPropagation()
   event.dataTransfer?.setData('text/plain', props.node.key)
 }
 
 const handleDrop = (event: DragEvent) => {
+  event.preventDefault()
   event.stopPropagation()
   const draggedKey = event.dataTransfer?.getData('text/plain')
   if (draggedKey && draggedKey !== props.node.key) {
@@ -237,11 +246,8 @@ const handleClick = (event: MouseEvent) => {
 
   if (!props.node.children || !props.node.children.length) {
     updateStatus()
-
     return
   }
-
-  toggleCollapse(event)
 }
 
 const updateStatus = () => {
@@ -286,10 +292,10 @@ const applySuccessAnimation = (node: Section) => {
     :style="nodeStyle"
     :data-node-key="node.key"
     draggable="true"
-    @click="handleClick"
     @dragstart="handleDragStart"
     @drop="handleDrop"
     @dragover="handleDragOver"
+    @click="handleClick"
   >
     <div :class="['node-title', { 'center-title': !node.children || !node.children.length }]">
       <span
@@ -337,6 +343,8 @@ const applySuccessAnimation = (node: Section) => {
         v-model="displayContent"
         class="edit-input"
         @click.stop
+        @focus="isDragging = true"
+        @blur="isDragging = false"
       >
       <span v-else>{{ displayContent }}</span>
       <div

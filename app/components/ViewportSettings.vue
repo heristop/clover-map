@@ -107,7 +107,7 @@ const captureTreeMap = () => {
         type="range"
         min="0"
         max="500"
-        class="w-full h-2 bg-stone-400 dark:bg-stone-200 rounded-lg appearance-none cursor-pointer"
+        class="w-full h-2 bg-stone-300 dark:bg-stone-200 rounded-lg appearance-none cursor-pointer"
       >
     </div>
 
@@ -118,7 +118,7 @@ const captureTreeMap = () => {
         type="range"
         min="0"
         max="500"
-        class="w-full h-2 bg-stone-400 dark:bg-stone-200 rounded-lg appearance-none cursor-pointer"
+        class="w-full h-2 bg-stone-300 dark:bg-stone-200 rounded-lg appearance-none cursor-pointer"
       >
     </div>
   </div>
