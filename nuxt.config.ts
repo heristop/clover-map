@@ -3,7 +3,9 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+
   devtools: { enabled: true },
+
   modules: [
     '@pinia/nuxt',
     '@nuxt/eslint',
@@ -12,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     'nuxt-snackbar',
   ],
+
   app: {
     head: {
       charset: 'utf-8',
@@ -64,11 +67,13 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   googleFonts: {
     families: {
       'Share Tech Mono': true,
     },
   },
+
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -79,6 +84,7 @@ export default defineNuxtConfig({
           : false,
     },
   },
+
   tailwindcss: {
     config: {
       darkMode: 'class', // or 'media'
@@ -89,11 +95,13 @@ export default defineNuxtConfig({
       },
     },
   },
+
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3000',
     },
   },
+
   // https://eslint.nuxt.com
   eslint: {
     config: {
@@ -102,4 +110,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  compatibilityDate: '2024-07-04',
 })
