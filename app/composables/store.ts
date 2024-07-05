@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 import type { Section, Status } from '~~/types'
+import { useStatusManagement } from '~/composables/status'
+import { useSectionManagement } from '~/composables/section'
 
 const defaultStatus = [
   { name: 'To Do', color: '#FFB3BA' },
@@ -28,8 +29,22 @@ export const pastelColors = [
   '#B19CD9', // Pastel Lilac
 ]
 
+type State = {
+  sections: Section[]
+  parentMap: { [key: string]: string | null }
+  configLoaded: boolean
+  dialogMinimized: boolean
+  minWidth: number
+  minHeight: number
+  displayLabel: string
+  statuses: Status[]
+  viewMode: string
+  darkMode: boolean
+  isEditingMode: boolean
+}
+
 export const useStore = defineStore('store', {
-  state: () => ({
+  state: (): State => ({
     sections: [] as Section[],
     parentMap: {} as { [key: string]: string | null },
     configLoaded: false,
@@ -37,7 +52,7 @@ export const useStore = defineStore('store', {
     minWidth: 80,
     minHeight: 10,
     displayLabel: 'name',
-    statuses: ref<Status[]>(defaultStatus),
+    statuses: defaultStatus,
     viewMode: 'flex',
     darkMode: false,
     isEditingMode: false,
@@ -60,6 +75,8 @@ export const useStore = defineStore('store', {
       return $fetch(`/api/config?model=${model}`, { method: 'get' })
     },
     setSections(sections: Section[]) {
+      const { updateParentStatuses } = useStatusManagement()
+
       const sectionArray = Object.values(sections)
       const extractedStatuses = this.extractStatuses(sectionArray)
 
@@ -69,8 +86,8 @@ export const useStore = defineStore('store', {
 
       const formattedSections = this.formatSections(sectionArray)
 
-      this.sections = this.applyDefaultStatus(formattedSections, this.sections)
-      this.updateParentStatuses()
+      this.sections = this.applyDefaultStatus(formattedSections)
+      updateParentStatuses()
       this.configLoaded = true
     },
     formatSections(sections: Section[]): Section[] {
@@ -87,9 +104,11 @@ export const useStore = defineStore('store', {
         }
       })
     },
-    applyDefaultStatus(sections: Section[], existingProjects: Section[]): Section[] {
+    applyDefaultStatus(sections: Section[]): Section[] {
+      const { findSectionByKey } = useSectionManagement()
+
       return sections.map((node) => {
-        const existingProject = this.findSectionByKey(node.key, existingProjects)
+        const existingProject = findSectionByKey(node.key)
 
         if (!node.status) {
           if (existingProject) {
@@ -102,7 +121,7 @@ export const useStore = defineStore('store', {
         }
 
         if (node.children) {
-          node.children = this.applyDefaultStatus(node.children, existingProject?.children ?? [])
+          node.children = this.applyDefaultStatus(node.children)
         }
 
         return node
@@ -136,31 +155,11 @@ export const useStore = defineStore('store', {
         color: statusColors[status] || '',
       }))
     },
-    updateSectionStatus(key: string, status: string) {
-      const section = this.findSectionByKey(key, this.sections)
-
-      if (section) {
-        section.status = status
-        this.updateParentStatuses()
-      }
-    },
     updateSectionCollapse(key: string) {
-      const section = this.findSectionByKey(key, this.sections)
+      const section = this.findSectionByKey(key)
 
       if (section) {
         section.isCollapsed = !section.isCollapsed
-      }
-    },
-    updateSectionKey(key: string, newKey: string) {
-      const section = this.findSectionByKey(key, this.sections)
-      if (section) {
-        section.key = newKey
-      }
-    },
-    updateSectionName(key: string, newName: string) {
-      const section = this.findSectionByKey(key, this.sections)
-      if (section) {
-        section.name = newName
       }
     },
     initializeParentMap(sections: Section[]) {
@@ -177,30 +176,8 @@ export const useStore = defineStore('store', {
       this.parentMap = {}
       buildParentMap(sections)
     },
-    addSection(parentKey: string, newSection: Section) {
-      const parent = this.findSectionByKey(parentKey, this.sections)
-      if (parent) {
-        parent.children = parent.children || []
-        parent.children.push(newSection)
-        this.parentMap[newSection.key] = parentKey
-      }
-    },
-    addSiblingSection(parentKey: string, siblingKey: string, newSibling: Section) {
-      const parent = this.findSectionByKey(parentKey)
-      if (parent && parent.children) {
-        const index = parent.children.findIndex((child: Section) => child.key === siblingKey)
-        if (index !== -1) {
-          parent.children.splice(index + 1, 0, newSibling)
-          this.parentMap[newSibling.key] = parentKey
-        }
-      }
-    },
-    addRootSection(newSection: Section) {
-      this.sections.push(newSection)
-      this.parentMap[newSection.key] = null
-    },
-    findSectionByKey(key: string): Section | null {
-      const findRecursively = (sections: Section[]): Section | null => {
+    findSectionByKey(key: string): Section | null | undefined {
+      const findRecursively = (sections: Section[]): Section | null | undefined => {
         for (const section of sections) {
           if (section.key === key) {
             return section
@@ -217,33 +194,25 @@ export const useStore = defineStore('store', {
       }
       return findRecursively(this.sections)
     },
-
-    deleteSection(key: string) {
-      const deleteRecursively = (sections: Section[], key: string): boolean => {
-        const index = sections.findIndex(section => section.key === key)
-        if (index !== -1) {
-          sections.splice(index, 1)
-          Reflect.deleteProperty(this.parentMap, key)
-          return true
-        }
-        return sections.some(section => section.children && deleteRecursively(section.children, key))
-      }
-      deleteRecursively(this.sections, key)
-    },
     swapSections(key1: string, key2: string) {
       const parentKey1 = this.parentMap[key1]
       const parentKey2 = this.parentMap[key2]
 
       if (parentKey1 && parentKey2) {
-        const parentSection1 = this.findSectionByKey(parentKey1, this.sections)
-        const parentSection2 = this.findSectionByKey(parentKey2, this.sections)
+        const parentSection1 = this.findSectionByKey(parentKey1)
+        const parentSection2 = this.findSectionByKey(parentKey2)
 
         if (parentSection1 && parentSection2) {
-          const index1 = parentSection1.children!.findIndex(child => child.key === key1)
-          const index2 = parentSection2.children!.findIndex(child => child.key === key2)
+          const index1 = parentSection1.children?.findIndex(child => child.key === key1) ?? -1
+          const index2 = parentSection2.children?.findIndex(child => child.key === key2) ?? -1
 
           if (index1 !== -1 && index2 !== -1) {
-            [parentSection1.children![index1], parentSection2.children![index2]] = [parentSection2.children![index2], parentSection1.children![index1]]
+            const child1 = parentSection1.children?.[index1]
+            const child2 = parentSection2.children?.[index2]
+
+            if (child1 && child2) {
+              [parentSection1.children![index1], parentSection2.children![index2]] = [child2, child1]
+            }
           }
         }
       }
@@ -252,50 +221,20 @@ export const useStore = defineStore('store', {
         const index2 = this.sections.findIndex(section => section.key === key2)
 
         if (index1 !== -1 && index2 !== -1) {
-          [this.sections[index1], this.sections[index2]] = [this.sections[index2], this.sections[index1]]
+          const section1 = this.sections[index1]
+          const section2 = this.sections[index2]
+
+          if (section1 && section2) {
+            [this.sections[index1], this.sections[index2]] = [section2, section1]
+          }
         }
       }
     },
     hasParent(key: string): boolean {
       return key in this.parentMap
     },
-    updateParentStatuses() {
-      const getStatusIndex = (status: string) => this.statuses.findIndex(s => s.name === status)
-
-      const updateStatusRecursively = (node: Section) => {
-        if (!node.children || !node.children.length) {
-          return
-        }
-
-        node.children.forEach(updateStatusRecursively)
-        const statuses = node.children.map(child => child.status)
-        const uniqueStatuses = [...new Set(statuses)]
-
-        if (uniqueStatuses.length === 1) {
-          node.status = uniqueStatuses[0]
-
-          return
-        }
-
-        const leastAdvancedStatus = uniqueStatuses.reduce((prev, curr) => {
-          return getStatusIndex(curr || '') < getStatusIndex(prev || '') ? curr : prev || ''
-        }, uniqueStatuses[0] || '')
-        node.status = leastAdvancedStatus
-      }
-
-      this.sections.forEach(updateStatusRecursively)
-    },
     toggleMinimize() {
       this.dialogMinimized = !this.dialogMinimized
-    },
-    addStatus(status: Status) {
-      this.statuses.push(status)
-    },
-    updateStatus(index: number, status: Status) {
-      this.statuses[index] = status
-    },
-    removeStatus(index: number) {
-      this.statuses.splice(index, 1)
     },
     toggleEditingMode() {
       this.isEditingMode = !this.isEditingMode

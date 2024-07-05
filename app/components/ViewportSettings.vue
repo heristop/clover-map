@@ -101,7 +101,7 @@ const captureTreeMap = () => {
 
   <div class="flex items-center space-x-4 mb-4 px-2">
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-xs text-stone-500 dark:text-stone-300">Width</span>
+      <span class="text-xs text-stone-600 dark:text-stone-300">Width</span>
       <input
         v-model="minWidth"
         type="range"
@@ -112,7 +112,7 @@ const captureTreeMap = () => {
     </div>
 
     <div class="flex flex-col items-start space-y-2">
-      <span class="text-xs text-stone-500 dark:text-stone-300">Height</span>
+      <span class="text-xs text-stone-600 dark:text-stone-300">Height</span>
       <input
         v-model="minHeight"
         type="range"

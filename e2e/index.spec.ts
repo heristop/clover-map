@@ -62,8 +62,7 @@ test.describe('TreemapPulse Page Tests', () => {
     await fileInput.setInputFiles('public/configs/bug-tracking.json')
 
     // Click the button to trigger the file upload
-    /*
-    await uploadFileButton.click();
+    /* await uploadFileButton.click();
 
     // Wait for a reasonable amount of time to ensure the file is uploaded and configuration is loaded
     await page.waitForTimeout(5000);
@@ -72,8 +71,7 @@ test.describe('TreemapPulse Page Tests', () => {
     await expect(page.locator('text=File Config')).toBeVisible({ timeout: 10000 });
 
     const resetButton = page.locator('button[aria-label="Reset configuration"]')
-    await resetButton.click()
-    */
+    await resetButton.click() */
   })
 
   test('Load custom configuration from user input', async ({ page }) => {

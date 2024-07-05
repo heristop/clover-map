@@ -221,10 +221,4 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
 }
-.status-item {
-  cursor: grab;
-}
-.status-item:active {
-  cursor: grabbing;
-}
 </style>
