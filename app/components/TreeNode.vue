@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, type StyleValue } from 'vue'
+import { ref, computed, onMounted, watchEffect } from 'vue'
 import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
+import { useSectionManagement } from '~/composables/section'
+import { useNodeOperations } from '~/composables/node'
+import { useNodeStyles } from '~/composables/style'
+import { useStatusManagement } from '~/composables/status'
 
 const props = defineProps<{ node: Section, depth: number }>()
 const emit = defineEmits(['status-updated'])
@@ -10,66 +14,33 @@ const isSuccessNode = ref(false)
 const nodeStatus = ref(props.node.status || store.statuses[0]?.name)
 const isDragging = ref(false)
 
+const { updateSectionKey, updateSectionName, deleteSection } = useSectionManagement()
+const { addSection, addSiblingSection, addRootSection } = useNodeOperations()
+const { getNodeStyles } = useNodeStyles()
+const { updateSectionStatus } = useStatusManagement()
+
 const localKey = ref(props.node.key)
 const localName = ref(props.node.name)
-
-const updateNodeKey = (newKey: string) => {
-  store.updateSectionKey(props.node.key, newKey)
-}
-
-const updateNodeName = (newName: string) => {
-  store.updateSectionName(props.node.key, newName)
-}
 
 const displayContent = computed({
   get: () => store.displayLabel === 'key' ? localKey.value : localName.value,
   set: (value) => {
     if (store.displayLabel === 'key') {
       localKey.value = value
-      updateNodeKey(value)
+      updateSectionKey(props.node.key, value)
     }
     else {
       localName.value = value
-      updateNodeName(value)
+      updateSectionName(props.node.key, value)
     }
   },
 })
-
-const minWidth = computed(() => store.minWidth)
-const minHeight = computed(() => store.minHeight)
-const duplicateKeys = computed(() => store.duplicateProjects.keys)
-
-const getNodeStyles = (node: Section, depth: number) => {
-  const statusObj = store.statuses.find((s: { name: string | undefined }) => s.name === node.status)
-  let backgroundColor = statusObj ? statusObj.color : '#D44D8'
-  backgroundColor = darkenColor(backgroundColor, depth * 6)
-
-  const isDuplicate = duplicateKeys.value.includes(node.key)
-
-  return {
-    backgroundColor: backgroundColor,
-    borderColor: isDuplicate ? '#FF7B7B' : backgroundColor,
-    minWidth: `${minWidth.value}px`,
-    minHeight: `${minHeight.value}px`,
-    margin: '4px',
-    padding: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '8px',
-    boxSizing: 'border-box',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    transition: 'transform 0.2s, box-shadow 0.2s, background-color 0.3s',
-    borderStyle: isDuplicate ? 'dashed' : 'solid',
-  } as StyleValue
-}
 
 const checkIfSuccessNode = (node: Section) => {
   if (store.statuses?.length > 0 && node.status === store.statuses[store.statuses.length - 1]?.name) {
     isSuccessNode.value = true
     return
   }
-
   isSuccessNode.value = false
 }
 
@@ -77,37 +48,15 @@ const updateParentStatus = () => {
   emit('status-updated')
 }
 
-const darkenColor = (color: string, percent: number) => {
-  if (!/^#[0-9A-F]{6}$/i.test(color)) {
-    return color
-  }
-
-  const num = parseInt(color.replace('#', ''), 16),
-    amt = Math.round(2.55 * percent),
-    R = Math.max((num >> 16) - amt, 0),
-    G = Math.max((num >> 8 & 0x00FF) - amt, 0),
-    B = Math.max((num & 0x0000FF) - amt, 0)
-
-  return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1).toUpperCase()
-}
-
 const toggleCollapse = (event: MouseEvent) => {
   event.stopPropagation()
-
-  if (document.startViewTransition) {
-    document.startViewTransition(() => {
-      store.updateSectionCollapse(props.node.key)
-    })
-  }
-  else {
-    store.updateSectionCollapse(props.node.key)
-  }
+  store.updateSectionCollapse(props.node.key)
 }
 
 const getUniqueKeyName = (base: string, type: 'key' | 'name') => {
   let index = 1
   let newName = `${base}${index}`
-  const allSections = []
+  const allSections: Section[] = []
 
   const gatherSections = (sections: Section[]) => {
     sections.forEach((section) => {
@@ -139,15 +88,7 @@ const addNode = (event: MouseEvent) => {
     isCollapsed: false,
   }
 
-  if (document.startViewTransition) {
-    document.startViewTransition(() => {
-      store.addSection(props.node.key, newNode)
-    })
-
-    return
-  }
-
-  store.addSection(props.node.key, newNode)
+  addSection(props.node.key, newNode)
 }
 
 const addSiblingNode = (event: MouseEvent) => {
@@ -166,43 +107,22 @@ const addSiblingNode = (event: MouseEvent) => {
   const parentKey = store.parentMap[props.node.key]
 
   if (parentKey) {
-    if (document.startViewTransition) {
-      document.startViewTransition(() => {
-        store.addSiblingSection(parentKey, props.node.key, newNode)
-      })
-    }
-    else {
-      store.addSiblingSection(parentKey, props.node.key, newNode)
-    }
+    addSiblingSection(parentKey, props.node.key, newNode)
   }
   else {
-    if (document.startViewTransition) {
-      document.startViewTransition(() => {
-        store.addRootSection(newNode)
-      })
-    }
-    else {
-      store.addRootSection(newNode)
-    }
+    addRootSection(newNode)
   }
 }
 
 const deleteNode = (event: MouseEvent) => {
   event.stopPropagation()
-
-  if (document.startViewTransition) {
-    document.startViewTransition(() => {
-      store.deleteSection(props.node.key)
-    })
-
-    return
-  }
-
-  store.deleteSection(props.node.key)
+  deleteSection(props.node.key)
 }
 
 const handleDragStart = (event: DragEvent) => {
-  if (isDragging.value) return
+  if (isDragging.value) {
+    return
+  }
 
   event.stopPropagation()
   event.dataTransfer?.setData('text/plain', props.node.key)
@@ -212,6 +132,7 @@ const handleDrop = (event: DragEvent) => {
   event.preventDefault()
   event.stopPropagation()
   const draggedKey = event.dataTransfer?.getData('text/plain')
+
   if (draggedKey && draggedKey !== props.node.key) {
     store.swapSections(props.node.key, draggedKey)
   }
@@ -246,6 +167,7 @@ const handleClick = (event: MouseEvent) => {
 
   if (!props.node.children || !props.node.children.length) {
     updateStatus()
+
     return
   }
 }
@@ -256,7 +178,7 @@ const updateStatus = () => {
     const nextStatusIndex = (store.statuses.indexOf(newStatus!) + 1) % store.statuses.length
     const nextStatus = store.statuses[nextStatusIndex]?.name
     nodeStatus.value = nextStatus
-    store.updateSectionStatus(props.node.key || '', nextStatus || '')
+    updateSectionStatus(props.node.key || '', nextStatus || '')
 
     if (store.statuses.length > 0 && nextStatus === store.statuses[store.statuses.length - 1]?.name) {
       applySuccessAnimation(props.node)
@@ -291,7 +213,7 @@ const applySuccessAnimation = (node: Section) => {
     :class="{ 'success-animation': isSuccessNode }"
     :style="nodeStyle"
     :data-node-key="node.key"
-    draggable="true"
+    :draggable="!store.isEditingMode"
     @dragstart="handleDragStart"
     @drop="handleDrop"
     @dragover="handleDragOver"
@@ -346,7 +268,9 @@ const applySuccessAnimation = (node: Section) => {
         @focus="isDragging = true"
         @blur="isDragging = false"
       >
+
       <span v-else>{{ displayContent }}</span>
+
       <div
         v-if="store.isEditingMode"
         class="flex ml-4 space-x-2"
@@ -506,6 +430,7 @@ const applySuccessAnimation = (node: Section) => {
   background-color: rgba(0, 0, 0, 0.25);
   pointer-events: auto;
   padding: 8px;
+  margin: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

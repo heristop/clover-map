@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/google-fonts',
     'nuxt-snackbar',
+    '@nuxt/test-utils',
   ],
 
   app: {

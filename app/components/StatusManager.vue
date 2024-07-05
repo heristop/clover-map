@@ -1,26 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, reactive } from 'vue'
 import { useStore, pastelColors } from '~/composables/store'
+import { useStatusManagement } from '~/composables/status'
 
+const { addStatus, removeStatus } = useStatusManagement()
 const store = useStore()
 const statuses = computed(() => store.statuses)
 const inputFocused = ref(false)
 
 const newStatus = reactive({
   name: '',
-  color: getNextColor() || '#FFFFFF', // Ensure it's always a string
+  color: getNextColor() || '#FFFFFF',
 })
 
 const addNewStatus = () => {
   if (newStatus.name && newStatus.color) {
-    store.addStatus({ name: newStatus.name, color: newStatus.color })
+    addStatus({ name: newStatus.name, color: newStatus.color })
     newStatus.name = ''
-    newStatus.color = getNextColor() || '#FFFFFF' // Ensure it's always a string
+    newStatus.color = getNextColor() || '#FFFFFF'
   }
-}
-
-const removeStatus = (index: number) => {
-  store.removeStatus(index)
 }
 
 const disableStatusDrag = () => {
@@ -67,13 +65,13 @@ function getNextColor() {
   <div
     v-for="(status, index) in statuses"
     :key="index"
-    class="flex items-center space-x-2 space-y-2 align-middle status-item text-stone-800"
+    class="flex items-center space-x-2 space-y-2 align-middle cursor-grab active:cursor-grabbing text-stone-800"
     :draggable="!inputFocused"
     @dragstart="startStatusDrag($event, index)"
     @dragover.prevent
     @drop="dropStatus($event, index)"
   >
-    <div class="text-stone-500 dark:text-stone-300 w-20 text-xs mt-2">
+    <div class="text-stone-600 dark:text-stone-300 w-20 text-xs mt-2">
       {{ index + 1 }}.
     </div>
 
@@ -94,7 +92,7 @@ function getNextColor() {
     >
     <button
       :disabled="statuses.length <= 1"
-      class="text-stone-500 dark:text-stone-300 hover:text-stone-400 dark:hover:text-stone-100 font-semibold w-[200px] disabled:text-stone-500 text-xs"
+      class="text-stone-600 dark:text-stone-300 hover:text-stone-400 dark:hover:text-stone-100 font-semibold w-[200px] disabled:text-stone-500 text-xs"
       @click="removeStatus(index)"
     >
       remove
@@ -102,7 +100,7 @@ function getNextColor() {
   </div>
 
   <div class="flex items-center space-x-2 space-y-2 align-middle status-item text-stone-600 mb-6">
-    <div class="text-stone-500 dark:text-stone-300 w-20 text-xs mt-2">
+    <div class="text-stone-600 dark:text-stone-300 w-20 text-xs mt-2">
       {{ statuses.length + 1 }}.
     </div>
     <input
@@ -122,19 +120,10 @@ function getNextColor() {
     >
     <button
       :disabled="!newStatus.name || !newStatus.color"
-      class="text-stone-500 dark:text-stone-300 hover:text-stone-400 dark:hover:text-stone-100 font-semibold w-[200px] text-xs disabled:cursor-not-allowed disabled:opacity-50"
+      class="text-stone-600 dark:text-stone-300 hover:text-stone-400 dark:hover:text-stone-100 font-semibold w-[200px] text-xs disabled:cursor-not-allowed disabled:opacity-50"
       @click="addNewStatus"
     >
       add
     </button>
   </div>
 </template>
-
-<style scoped>
-.status-item {
-  cursor: grab;
-}
-.status-item:active {
-  cursor: grabbing;
-}
-</style>
