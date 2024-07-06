@@ -4,7 +4,7 @@ import type { Section } from '~~/types'
 
 export function useNodeStyles() {
   const store = useStore()
-  const duplicateKeys = computed(() => store.duplicateProjects.keys)
+  const duplicateKeys = computed(() => store.duplicateSections.keys)
 
   const getNodeStyles = (node: Section, depth: number) => {
     const statusObj = store.statuses.find((s: { name: string | undefined }) => s.name === node.status)

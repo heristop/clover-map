@@ -1,3 +1,9 @@
+export interface Project {
+  id: string
+  name: string
+  sections: Section[]
+}
+
 export interface Section {
   name: string
   key: string
