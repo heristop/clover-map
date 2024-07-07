@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.4.0",
+  "author": {
+    "name": "heristop"
+  },
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
@@ -16,6 +19,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "date-fns": "^3.6.0",
     "dom-to-image": "^2.6.0",
     "nuxt": "^3.12.3",
     "nuxt-snackbar": "^1.0.4",
@@ -34,7 +38,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@playwright/test": "^1.45.1",
     "@types/dom-to-image": "^2.6.7",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "@vitest/coverage-v8": "^1.6.0",
     "ajv": "^8.16.0",
     "ajv-cli": "^5.0.0",

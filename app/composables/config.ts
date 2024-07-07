@@ -1,3 +1,4 @@
+import type { LocationQueryValue } from 'vue-router'
 import { validate } from '~/validator'
 import type { Section } from '~~/types'
 
@@ -12,6 +13,28 @@ export function useConfig() {
     addProject(name, sections)
   }
 
+  const loadProjectConfig = (id: string | LocationQueryValue[]) => {
+    const projects = store.projects
+
+    if (projects.length === 0) {
+      return
+    }
+
+    const project = projects.find(p => p.id === id)
+
+    if (project) {
+      createProject(project.name, project.sections)
+      router.push(`/projects/${project.id}`)
+
+      return
+    }
+
+    snackbar.add({
+      type: 'error',
+      title: 'Project not found in local storage.',
+    })
+  }
+
   const loadFromModel = async (model: string) => {
     try {
       const sections = await store.fetchSections(model) as Section[]
@@ -21,7 +44,7 @@ export function useConfig() {
       }
 
       createProject(model, sections)
-      router.push('/viewport')
+      router.push(`/projects/${store.currentProject?.id}`)
     }
     catch (error) {
       snackbar.add({
@@ -46,7 +69,7 @@ export function useConfig() {
           }
 
           createProject(file.name.replace('.json', ''), sections)
-          router.push('/viewport')
+          router.push(`/projects/${store.currentProject?.id}`)
 
           return true
         }
@@ -70,6 +93,7 @@ export function useConfig() {
         type: 'error',
         title: 'No project selected for export.',
       })
+
       return
     }
 
@@ -95,7 +119,7 @@ export function useConfig() {
       }
 
       createProject(new URL(url).pathname.split('/').pop() || 'URL Project', sections)
-      router.push('/viewport')
+      router.push(`/projects/${store.currentProject?.id}`)
 
       return true
     }
@@ -123,7 +147,7 @@ export function useConfig() {
 
     if (validate(data)) {
       createProject('User Input Project', data)
-      router.push('/viewport')
+      router.push(`/projects/${store.currentProject?.id}`)
 
       return true
     }
@@ -140,6 +164,7 @@ export function useConfig() {
 
   return {
     fileInput,
+    loadProjectConfig,
     loadFromModel,
     loadFromFile,
     exportToFile,

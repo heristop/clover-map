@@ -2,6 +2,7 @@ export interface Project {
   id: string
   name: string
   sections: Section[]
+  createdAt: Date
 }
 
 export interface Section {

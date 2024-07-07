@@ -6,7 +6,7 @@ import type { Section } from '~~/types'
 const store = useStore()
 const statuses = computed(() => store.statuses)
 
-const totalModules: ComputedRef<number> = computed(() => {
+const totalModules = computed(() => {
   const count = (modules: Section[]): number => {
     return modules.reduce((acc: number, module: Section) => {
       acc++

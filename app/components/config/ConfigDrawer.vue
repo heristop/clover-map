@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, nextTick } from 'vue'
 import ProgressBar from './ProgressBar.vue'
-import UploadDownload from './UploadDownload.vue'
 import StatusManager from './StatusManager.vue'
 import ViewportSettings from './ViewportSettings.vue'
-import TButton from './ui/TButton.vue'
+import TButton from '~/components/ui/TButton.vue'
+import DarkModeToggle from '~/components/ui/DarkModeToggle.vue'
 import { useStore } from '~/composables/store'
 
 const store = useStore()
-const drawerMinimized = computed(() => store.dialogMinimized)
+const drawerMinimized = computed(() => store.drawerMinimized)
 
 const size = reactive({ width: 320 })
 const isPositioned = ref(false)
@@ -36,13 +36,13 @@ onMounted(() => {
   <transition name="slide-fade">
     <div
       v-if="isPositioned"
-      class="fixed right-0 bg-opacity-90 bg-stone-100 dark:bg-stone-600 text-stone-600 dark:text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
-      :class="[drawerMinimized ? 'top-1 rounded-l-lg' : 'top-0 rounded-l-md']"
+      class="fixed right-0 bg-opacity-90 bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
+      :class="[drawerMinimized ? 'top-1 rounded-l-lg dark:bg-stone-700' : 'top-0 rounded-l-md']"
       :style="{ width: drawerMinimized ? '40px' : `${size.width}px`, height: drawerMinimized ? 'auto' : '100vh' }"
     >
       <div
-        class="header flex justify-between items-center bg-stone-700 px-2 py-1"
-        :class="[drawerMinimized ? 'rounded-l-lg' : 'rounded-l-md']"
+        class="header flex justify-between items-center px-2 py-1 rounded-l-md"
+        :class="[drawerMinimized ? 'bg-transparent' : 'bg-stone-700 dark:bg-stone-800']"
       >
         <h2
           v-if="!drawerMinimized"
@@ -58,7 +58,7 @@ onMounted(() => {
         >
           <svg
             v-if="drawerMinimized"
-            class="w-4 h-4 text-stone-100 hover:text-stone-50 transition duration-200"
+            class="w-4 h-4 text-stone-600 hover:text-stone-500 dark:text-stone-100 transition duration-200"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -94,6 +94,14 @@ onMounted(() => {
         v-show="!drawerMinimized"
         class="px-4 max-h-[calc(100vh-64px)] overflow-y-auto"
       >
+        <div class="w-full pr-6 text-right">
+          <DarkModeToggle
+            class="fixed"
+            transparent
+            size="sm"
+          />
+        </div>
+
         <h3 class="text-md font-bold mb-3">
           Progress
         </h3>
@@ -109,7 +117,7 @@ onMounted(() => {
         </div>
 
         <div class="config-section mb-6">
-          <h3 class="text-md font-bold mb-3">
+          <h3 class="flex text-md font-bold mb-3">
             Display
           </h3>
 
@@ -142,22 +150,24 @@ onMounted(() => {
               size="sm"
               @click="toggleViewMode('flex')"
             >
-              <svg
-                class="w-4 h-4"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
-                />
-              </svg>
+              <template #icon>
+                <svg
+                  class="w-4 h-4"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
+                  />
+                </svg>
+              </template>
             </TButton>
 
             <TButton
@@ -166,23 +176,25 @@ onMounted(() => {
               size="sm"
               @click="toggleViewMode('grid')"
             >
-              <svg
-                class="w-4 h-4"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
-                />
-              </svg>
+              <template #icon>
+                <svg
+                  class="w-4 h-4"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+                  />
+                </svg>
+              </template>
             </TButton>
           </div>
         </div>
@@ -195,14 +207,6 @@ onMounted(() => {
           <div>
             <StatusManager />
           </div>
-        </div>
-
-        <div class="config-section mb-6">
-          <h3 class="text-md font-bold mb-3">
-            Configuration
-          </h3>
-
-          <UploadDownload />
         </div>
       </div>
     </div>

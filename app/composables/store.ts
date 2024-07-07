@@ -32,8 +32,8 @@ type State = {
   currentProjectId: string | null
   sections: Section[]
   parentMap: { [key: string]: string | null }
-  configLoaded: boolean
-  dialogMinimized: boolean
+  panelCollapsed: boolean
+  drawerMinimized: boolean
   minWidth: number
   minHeight: number
   displayLabel: string
@@ -49,8 +49,8 @@ export const useStore = defineStore('store', {
     currentProjectId: null,
     sections: [] as Section[],
     parentMap: {} as { [key: string]: string | null },
-    configLoaded: false,
-    dialogMinimized: false,
+    panelCollapsed: false,
+    drawerMinimized: false,
     minWidth: 80,
     minHeight: 10,
     displayLabel: 'name',
@@ -85,7 +85,7 @@ export const useStore = defineStore('store', {
     },
 
     setSections(sections: Section[]) {
-      const sectionArray = Object.values(sections)
+      const sectionArray = JSON.parse(JSON.stringify(sections))
       const extractedStatuses = this.extractStatuses(sectionArray)
 
       if (extractedStatuses.length > 0) {
@@ -96,7 +96,6 @@ export const useStore = defineStore('store', {
       this.sections = this.applyDefaultStatus(formattedSections)
       this.updateCurrentProjectSections(this.sections)
       this.updateParentStatuses()
-      this.configLoaded = true
     },
 
     extractStatuses(sections: Section[]): Status[] {
@@ -337,8 +336,12 @@ export const useStore = defineStore('store', {
       return key in this.parentMap
     },
 
+    toggleCollapse() {
+      this.panelCollapsed = !this.panelCollapsed
+    },
+
     toggleMinimize() {
-      this.dialogMinimized = !this.dialogMinimized
+      this.drawerMinimized = !this.drawerMinimized
     },
 
     toggleEditingMode() {
@@ -347,8 +350,8 @@ export const useStore = defineStore('store', {
 
     clear() {
       this.sections = []
+      this.currentProjectId = null
       this.statuses = defaultStatus
-      this.configLoaded = false
     },
   },
   getters: {

@@ -17,7 +17,7 @@ describe('useNodeStyles', () => {
       { name: 'To Do', color: '#FFB3BA' },
       { name: 'In Progress', color: '#FFDFBA' },
     ]
-    store.duplicateProjects.keys = []
+    store.duplicateSections.keys = []
 
     const { getNodeStyles } = useNodeStyles()
     const node: Section = { key: '1', name: 'Section 1', status: 'To Do', children: [] }
@@ -57,7 +57,7 @@ describe('useNodeStyles', () => {
       { name: 'To Do', color: '#FFB3BA' },
       { name: 'In Progress', color: '#FFDFBA' },
     ]
-    store.duplicateProjects.keys = ['1']
+    store.duplicateSections.keys = ['1']
 
     const { getNodeStyles } = useNodeStyles()
     const node: Section = { key: '1', name: 'Section 1', status: 'To Do', children: [] }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
 import { useSectionManagement } from '~/composables/section'
@@ -21,6 +21,13 @@ const { updateSectionStatus } = useStatusManagement()
 
 const localKey = ref(props.node.key)
 const localName = ref(props.node.name)
+
+watch(() => props.node, (newNode) => {
+  localKey.value = newNode.key
+  localName.value = newNode.name
+  nodeStatus.value = newNode.status || store.statuses[0]?.name || ''
+  checkIfSuccessNode(newNode)
+}, { deep: true })
 
 const displayContent = computed({
   get: () => store.displayLabel === 'key' ? localKey.value : localName.value,
@@ -142,10 +149,10 @@ const handleDragOver = (event: DragEvent) => {
   event.preventDefault()
 }
 
-watchEffect(() => {
+watch(() => [props.node.status, store.statuses], () => {
   nodeStatus.value = props.node.status || store.statuses[0]?.name || ''
   checkIfSuccessNode(props.node)
-})
+}, { immediate: true })
 
 onMounted(() => {
   updateParentStatus()
@@ -197,6 +204,7 @@ const applySuccessAnimation = (node: Section) => {
         nodeElement.classList.add('success-animation')
       }
     }
+
     if (currentNode.children) {
       currentNode.children.forEach(child => applyToParents(child))
     }
@@ -285,15 +293,13 @@ const applySuccessAnimation = (node: Section) => {
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
-            fill="none"
+            fill="currentColor"
             viewBox="0 0 24 24"
           >
             <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h14m-7 7V5"
+              fill-rule="evenodd"
+              d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857ZM18 14a1 1 0 1 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0-2h-2v-2Z"
+              clip-rule="evenodd"
             />
           </svg>
         </button>
@@ -326,19 +332,16 @@ const applySuccessAnimation = (node: Section) => {
         >
           <svg
             class="w-4 h-4 text-stone-200 hover:text-stone-100 transition-colors duration-200"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
             fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke="currentColor"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
             />
           </svg>
         </button>
