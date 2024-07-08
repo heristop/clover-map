@@ -1,30 +1,35 @@
-# TreemapPulse
+# TreemapFlow
 
-**TreemapPulse** is a versatile project management tool designed to track the progress of various types of projects and processes. Initially created for monitoring the migration of Information Systems or applications, **TreemapPulse** helps you visualize and monitor the status of your projects effectively.
+**TreemapFlow** is an intuitive project management tool that uses treemap visualization to help you track, manage, and optimize various projects and workflows. Originally conceived for monitoring Information System migrations, TreemapFlow has evolved into a versatile solution for visualizing and managing complex hierarchical data structures across multiple domains.
 
 ![screenshot](/public/screenshot.png)
 
 ## ✨ Features
 
-- **Migration Tracking**: Effortlessly monitor the progress of migrations and transitions to ensure smooth operations.
-- **Task Management**: Efficiently track tasks, subtasks, and their statuses to keep your projects organized and on schedule.
-- **Customizable Statuses**: Define and customize statuses to fit your specific workflow, providing flexibility for various project needs.
-- **Import/Export**: Easily import project data from JSON files and export current project data for backup or sharing.
-- **Responsive Design**: Enjoy a seamless experience across desktops, tablets, and mobile devices with a fully responsive interface.
-- **Editing and Customization**: Edit node labels, add new nodes, and delete or move existing nodes to tailor your project structure.
-- **Drag and Drop**: Intuitively drag and drop nodes within the same level to reorder tasks and sections.
-- **Visual Indicators**: Use visual cues to represent statuses, progress, and other key project metrics.
+- **Hierarchical Visualization**: Utilize treemap structures to represent complex project hierarchies, providing an at-a-glance view of your entire project landscape.
+- **Dynamic Status Management**: Create, customize, and manage project statuses with ease, allowing for flexible workflow adaptation across different project types.
+- **Interactive Project Navigation**: Seamlessly navigate through different levels of your project structure, from high-level overviews to granular task details.
+- **Real-time Status Updates**: Instantly update and visualize the status of tasks and sections with a simple click, ensuring your project view is always current.
+- **Multi-project Support**: Manage and switch between multiple projects effortlessly, keeping all your workflows organized in one place.
+- **Responsive Design**: Enjoy a consistent and intuitive experience across desktop and mobile devices, allowing for project management on-the-go.
+- **Data Import/Export**: Easily import project structures from JSON files and export your project data for backup or sharing purposes.
+- **Drag-and-Drop Functionality**: Intuitively reorganize your project structure by dragging and dropping sections and tasks within the treemap.
+- **Collapsible Sections**: Streamline your view by collapsing and expanding sections of your project, focusing on the most relevant information.
+- **Project Editing Tools**: Add, rename, or delete sections and tasks directly within the interface, allowing for dynamic project structure modifications.
+- **Visual Progress Indicators**: Quickly assess project progress through color-coded status indicators and intuitive visual cues.
+- **Customizable View Options**: Toggle between different view modes (e.g., by name or key) to suit your project management style.
+- **No Databasing**: No need to set up a database or server to use TreemapFlow. All data is stored locally in your browser's local storage.
 - **And More**: Discover additional features designed to optimize your project management experience.
 
 ## 🛠️ Installation
 
-To install and run **TreemapPulse** locally, follow these steps:
+To install and run **TreemapFlow** locally, follow these steps:
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/heristop/treemap-pulse.git
-    cd treemap-pulse
+    git clone https://github.com/heristop/treemap-flow.git
+    cd treemap-flow
     ```
 
 2. Install dependencies:
@@ -43,64 +48,33 @@ To install and run **TreemapPulse** locally, follow these steps:
 
 ## 📚 Usage
 
-### Loading Configuration
+### Getting Started
 
-- **From Local Storage**: If a saved configuration is present in local storage, TreemapPulse will automatically load it upon startup. This ensures your previous session's data is readily available.
-- **From API**: If no local configuration is found, you can easily load a sample configuration by clicking the "Load Sample Data" button. This allows you to quickly start working with a predefined setup.
+1. **Load a Project**:
+   - On first launch, click "Load Sample Data" to start with a pre-configured project.
+   - Or, use the "Upload" button to import your own JSON project file.
 
-### Importing and Exporting Data
+2. **Navigate the Treemap**:
+   - Click on sections to expand/collapse them.
+   - Use the zoom and pan features to focus on specific areas.
 
-- **Import**:
-  - Navigate to the configuration panel.
-  - Click the upload button to import project data from a JSON file.
-  - Select your JSON file from the file dialog. The imported data will replace the current configuration, allowing you to seamlessly continue your work.
-- **Export**:
-  - In the configuration panel, click the save button.
-  - This will export the current project data to a JSON file, preserving your work and enabling easy sharing and backup.
+### Managing Your Project
 
-### Managing Projects
+- **Update Statuses**: Click on a task to cycle through available statuses.
+- **Edit Structure**: Use the edit mode to add, rename, or delete sections and tasks.
+- **Customize Workflow**: Modify statuses in the configuration panel to match your process.
 
-- **Adding/Updating Statuses**:
-  - Open the configuration panel to manage statuses.
-  - You can add new statuses to categorize tasks more effectively, update existing ones to reflect changes in your workflow, or remove obsolete statuses.
-- **Updating Tasks**:
-  - Click on any task to cycle through its statuses.
-  - This intuitive interface allows for quick updates, ensuring your project board accurately reflects the current state of each task.
+### Data Management
 
-### JSON Configuration Format
+- **Import**: Click the "Upload" button to load a project from a JSON file.
+- **Export**: Use the "Export" button to save your current project as a JSON file.
 
-The JSON configuration file should adhere to the following structure to be compatible with TreemapPulse:
+> [!TIP]
+> - Toggle between dark and light modes for comfortable viewing.
+> - Use the collapse/expand feature in the project panel for a cleaner interface.
+> - Regularly export your project to backup your work.
 
-```json
-[
-  {
-    "key": "project-1",
-    "name": "Project 1",
-    "children": [
-      {
-        "key": "task-1",
-        "name": "Task 1",
-        "status": "In Progress",
-        "children": []
-      },
-      {
-        "key": "task-2",
-        "name": "Task 2",
-        "status": "Done",
-        "children": []
-      }
-    ]
-  }
-]
-```
-
-- `key`: A unique identifier for the section or task, ensuring each element is distinct.
-- `name`: The name of the section or task, providing a clear label for easy identification.
-- `status`: The current status of the section or task (e.g., "In Progress", "Done"), allowing for effective tracking and categorization.
-- `children`: An array of nested sections or tasks, supporting hierarchical project structures.
-- `isCollapsed` (optional): A boolean flag indicating whether the section should be collapsed, helping to manage the visibility of complex structures.
-
-By following this guide, you can effectively utilize TreemapPulse to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.
+For more detailed information on JSON structure and advanced features, please refer to our [documentation](docs/config.md).
 
 ## 📄 License
 
@@ -108,8 +82,6 @@ This project is licensed under the MIT License.
 
 ## 💬 Feedback and Contributions
 
-We welcome feedback and contributions! If you have any suggestions or encounter any issues, please feel free to open an issue or submit a pull request.
-
----
+We welcome feedback, bug reports, and contributions! If you have suggestions for improvements or encounter any issues, please don't hesitate to open an issue or submit a pull request on our GitHub repository.
 
 ![Logo](/public/logo-80x80.png)

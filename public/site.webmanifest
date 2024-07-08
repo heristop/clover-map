@@ -1,6 +1,6 @@
 {
-    "name": "TreemapPulse",
-    "short_name": "TreemapPulse",
+    "name": "TreemapFlow",
+    "short_name": "TreemapFlow",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

@@ -1,29 +1,57 @@
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from '~/composables/store'
-import validate from '~/validator'
+import type { LocationQueryValue } from 'vue-router'
+import { validate } from '~/validator'
 import type { Section } from '~~/types'
-import { useSnackbar } from '#imports'
 
 export function useConfig() {
   const router = useRouter()
   const store = useStore()
+  const { addProject } = useProjects()
   const snackbar = useSnackbar()
   const fileInput = ref<HTMLInputElement | null>(null)
 
-  const validateSections = (sections: Section[]): boolean => {
-    if (validate(sections)) {
-      return true
+  const createProject = (name: string, sections: Section[]) => {
+    addProject(name, sections)
+  }
+
+  const loadProjectConfig = (id: string | LocationQueryValue[]) => {
+    const projects = store.projects
+
+    if (projects.length === 0) {
+      return
     }
 
-    displayInvalidDataError()
+    const project = projects.find(p => p.id === id)
 
-    return false
+    if (project) {
+      createProject(project.name, project.sections)
+      router.push(`/projects/${project.id}`)
+
+      return
+    }
+
+    snackbar.add({
+      type: 'error',
+      title: 'Project not found in local storage.',
+    })
   }
 
   const loadFromModel = async (model: string) => {
-    await store.fetchSections(model)
-    router.push('/viewport')
+    try {
+      const sections = await store.fetchSections(model) as Section[]
+
+      if (!validate(sections)) {
+        throw new Error('Invalid data format')
+      }
+
+      createProject(model, sections)
+      router.push(`/projects/${store.currentProject?.id}`)
+    }
+    catch (error) {
+      snackbar.add({
+        type: 'error',
+        title: 'Error loading data from model.',
+      })
+    }
   }
 
   const loadFromFile = async (event: Event): Promise<boolean | undefined> => {
@@ -36,12 +64,12 @@ export function useConfig() {
         try {
           const sections = JSON.parse(e.target?.result as string) as Section[]
 
-          if (!validateSections(sections)) {
+          if (!validate(sections)) {
             throw new Error('Invalid data format')
           }
 
-          store.setSections(sections)
-          router.push('/viewport')
+          createProject(file.name.replace('.json', ''), sections)
+          router.push(`/projects/${store.currentProject?.id}`)
 
           return true
         }
@@ -59,12 +87,22 @@ export function useConfig() {
   }
 
   const exportToFile = () => {
-    const sections = JSON.stringify(store.sections, null, 2)
+    const currentProject = store.currentProject
+    if (!currentProject) {
+      snackbar.add({
+        type: 'error',
+        title: 'No project selected for export.',
+      })
+
+      return
+    }
+
+    const sections = JSON.stringify(currentProject.sections, null, 2)
     const blob = new Blob([sections], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `treemap-pulse-${new Date().toISOString()}.json`
+    link.download = `${currentProject.name}-${new Date().toISOString()}.json`
     link.click()
     URL.revokeObjectURL(url)
   }
@@ -74,14 +112,14 @@ export function useConfig() {
       const response = await fetch(url)
       const sections = await response.json()
 
-      if (!validateSections(sections)) {
+      if (!validate(sections)) {
         displayInvalidDataError()
 
         return false
       }
 
-      store.setSections(sections)
-      router.push('/viewport')
+      createProject(new URL(url).pathname.split('/').pop() || 'URL Project', sections)
+      router.push(`/projects/${store.currentProject?.id}`)
 
       return true
     }
@@ -107,9 +145,9 @@ export function useConfig() {
       return false
     }
 
-    if (validateSections(data)) {
-      store.setSections(data)
-      router.push('/viewport')
+    if (validate(data)) {
+      createProject('User Input Project', data)
+      router.push(`/projects/${store.currentProject?.id}`)
 
       return true
     }
@@ -126,6 +164,7 @@ export function useConfig() {
 
   return {
     fileInput,
+    loadProjectConfig,
     loadFromModel,
     loadFromFile,
     exportToFile,

@@ -19,8 +19,7 @@ describe('useStore', () => {
     const store = useStore()
     expect(store.sections).toEqual([])
     expect(store.parentMap).toEqual({})
-    expect(store.configLoaded).toBe(false)
-    expect(store.dialogMinimized).toBe(false)
+    expect(store.drawerMinimized).toBe(false)
     expect(store.minWidth).toBe(80)
     expect(store.minHeight).toBe(10)
     expect(store.displayLabel).toBe('name')
@@ -49,7 +48,6 @@ describe('useStore', () => {
 
     expect(store.getSections).toHaveBeenCalledWith('model1')
     expect(store.setSections).toHaveBeenCalledWith(sections)
-    expect(store.configLoaded).toBe(true)
   })
 
   it('should update section collapse state', () => {
@@ -100,23 +98,21 @@ describe('useStore', () => {
   it('should clear store state', () => {
     const store = useStore()
     store.sections = [{ key: '1', name: 'Section 1' }] as Section[]
-    store.configLoaded = true
 
     store.clear()
     expect(store.sections).toEqual([])
     expect(store.statuses).toEqual(defaultStatus)
-    expect(store.configLoaded).toBe(false)
   })
 
   it('should toggle dialog minimized state', () => {
     const store = useStore()
-    store.dialogMinimized = false
+    store.drawerMinimized = false
 
     store.toggleMinimize()
-    expect(store.dialogMinimized).toBe(true)
+    expect(store.drawerMinimized).toBe(true)
 
     store.toggleMinimize()
-    expect(store.dialogMinimized).toBe(false)
+    expect(store.drawerMinimized).toBe(false)
   })
 
   it('should toggle editing mode state', () => {
@@ -139,7 +135,7 @@ describe('useStore', () => {
 
     store.sections = sections
 
-    const duplicates = store.duplicateProjects
+    const duplicates = store.duplicateSections
     expect(duplicates.sections).toEqual(['Section 1'])
     expect(duplicates.keys).toEqual([])
   })
