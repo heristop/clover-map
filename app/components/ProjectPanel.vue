@@ -14,13 +14,13 @@ const snackbar = useSnackbar()
 const router = useRouter()
 const { loadFromFile, exportToFile } = useConfig()
 
-const currentProjectId = computed(() => store.currentProjectId)
 const confirmDelete = ref(false)
 const projectToDelete = ref<string | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
+const isPositioned = ref(false)
 
+const currentProjectId = computed(() => store.currentProjectId)
 const panelCollapsed = computed(() => store.panelCollapsed)
-
 const sortedProjects = computed(() => {
   return [...projects.value].sort((a, b) => parseInt(b.id) - parseInt(a.id))
 })
@@ -81,6 +81,8 @@ const cancelDelete = () => {
 
 const toggleCollapse = () => {
   store.toggleCollapse()
+
+  nextTick(() => isPositioned.value = true)
 }
 
 const goToHome = () => {
@@ -104,12 +106,17 @@ const handleExport = () => {
     title: 'No project selected for export.',
   })
 }
+
+onMounted(() => {
+  nextTick(() => isPositioned.value = true)
+})
 </script>
 
 <template>
   <div
-    class="fixed md:relative project-panel bg-stone-100 dark:bg-stone-700 h-full overflow-y-auto transition-all duration-300 ease-in-out flex flex-col"
-    :class="[panelCollapsed ? 'w-16' : 'w-64']"
+    v-if="isPositioned"
+    class="project-panel bg-stone-100 dark:bg-stone-700 h-full overflow-y-auto transition-all duration-300 ease-in-out flex flex-col"
+    :class="[panelCollapsed ? 'w-16 relative' : 'w-64 fixed md:relative']"
   >
     <div class="flex justify-between items-center p-4 border-b border-stone-200 dark:border-stone-600">
       <svg
