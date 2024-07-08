@@ -174,7 +174,7 @@ onMounted(() => {
                 d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm14 18a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4ZM5 11a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5Zm14 2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4Z"
               />
             </svg>
-            Welcome to TreemapPulse!
+            Welcome to TreemapFlow!
           </h1>
 
           <h2 class="text-lg text-stone-600 dark:text-stone-200 max-w-3xl mx-auto">
@@ -183,7 +183,7 @@ onMounted(() => {
 
           <div class="text-base text-stone-500 dark:text-stone-300 max-w-3xl mx-auto space-y-2">
             <p v-if="store.projects.length === 0">
-              It looks like you haven't created any project yet. Scroll down and click one of the buttons below to load sample data and see TreemapPulse in action!
+              It looks like you haven't created any project yet. Scroll down and click one of the buttons below to load sample data and see TreemapFlow in action!
             </p>
 
             <div
@@ -196,7 +196,7 @@ onMounted(() => {
               </p>
 
               <p>
-                Or scroll down to load sample data and see TreemapPulse in action!
+                Or scroll down to load sample data and see TreemapFlow in action!
               </p>
             </div>
           </div>
@@ -514,7 +514,7 @@ onMounted(() => {
                 :is-active="false"
                 aria-label="View on GitHub"
                 class="w-full md:w-auto border-2"
-                @click="openExternalLink('https://github.com/heristop/treemap-pulse')"
+                @click="openExternalLink('https://github.com/heristop/treemap-flow')"
               >
                 <template #icon>
                   <svg
@@ -541,7 +541,7 @@ onMounted(() => {
                 :is-active="false"
                 aria-label="Edit on StackBlitz"
                 class="w-full md:w-auto border-2"
-                @click="openExternalLink('https://stackblitz.com/~/github.com/heristop/treemap-pulse')"
+                @click="openExternalLink('https://stackblitz.com/~/github.com/heristop/treemap-flow')"
               >
                 <template #icon>
                   <svg

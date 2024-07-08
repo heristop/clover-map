@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'TreemapPulse',
+      title: 'TreemapFlow',
       htmlAttrs: {
         lang: 'en',
       },
@@ -33,12 +33,12 @@ export default defineNuxtConfig({
         {
           hid: 'apple-mobile-web-app-title',
           name: 'apple-mobile-web-app-title',
-          content: 'TreemapPulse',
+          content: 'TreemapFlow',
         },
         {
           hid: 'application-name',
           name: 'application-name',
-          content: 'TreemapPulse',
+          content: 'TreemapFlow',
         },
         {
           hid: 'msapplication-TileColor',

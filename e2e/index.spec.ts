@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('TreemapPulse Page Tests', () => {
+test.describe('TreemapFlow Page Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
   })

@@ -149,7 +149,7 @@ const handleExport = () => {
         v-if="!panelCollapsed"
         class="flex flex-col items-center justify-center text-center text-xl font-semibold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]"
       >
-        TreemapPulse
+        TreemapFlow
       </h2>
 
       <button
