@@ -72,6 +72,10 @@ export const useStore = defineStore('store', {
       }
     },
 
+    setStatuses(statuses: Status[]) {
+      this.statuses = statuses
+    },
+
     setCurrentProjectId(projectId: string) {
       this.currentProjectId = projectId
     },

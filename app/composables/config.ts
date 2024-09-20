@@ -1,6 +1,6 @@
 import type { LocationQueryValue } from 'vue-router'
 import { validate } from '~/validator'
-import type { Section } from '~~/types'
+import type { Project, Section, Status } from '~~/types'
 
 export function useConfig() {
   const router = useRouter()
@@ -9,8 +9,12 @@ export function useConfig() {
   const snackbar = useSnackbar()
   const fileInput = ref<HTMLInputElement | null>(null)
 
-  const createProject = (name: string, sections: Section[]) => {
+  const createProject = (name: string, sections: Section[], statuses?: Status[]) => {
     addProject(name, sections)
+
+    if (statuses) {
+      store.setStatuses(statuses)
+    }
   }
 
   const loadProjectConfig = (id: string | LocationQueryValue[]) => {
@@ -62,13 +66,15 @@ export function useConfig() {
 
       reader.onload = async (e) => {
         try {
-          const sections = JSON.parse(e.target?.result as string) as Section[]
+          const project = JSON.parse(e.target?.result as string) as Project
+          const sections = project.sections
+          const statuses = project.statuses
 
           if (!validate(sections)) {
             throw new Error('Invalid data format')
           }
 
-          createProject(file.name.replace('.json', ''), sections)
+          createProject(file.name.replace('.json', ''), sections, statuses)
           router.push(`/projects/${store.currentProject?.id}`)
 
           return true
@@ -97,7 +103,8 @@ export function useConfig() {
       return
     }
 
-    const sections = JSON.stringify(currentProject.sections, null, 2)
+    const statuses = store.statuses;
+    const sections = JSON.stringify({ ...currentProject, statuses: { ...statuses } }, null, 2)
     const blob = new Blob([sections], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')

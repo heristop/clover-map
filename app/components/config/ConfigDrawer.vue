@@ -36,67 +36,61 @@ onMounted(() => {
   <transition name="slide-fade">
     <div
       v-if="isPositioned"
-      class="fixed right-0 bg-opacity-90 bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-white shadow-lg space-y-4 text-sm border-white border-opacity-20 border-2 z-50"
-      :class="[drawerMinimized ? 'top-1 rounded-l-lg dark:bg-stone-700' : 'top-0 rounded-l-md']"
-      :style="{ width: drawerMinimized ? '40px' : `${size.width}px`, height: drawerMinimized ? 'auto' : '100vh' }"
+      class=" bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-white shadow-lg text-sm border-r border-white border-opacity-20 transition-all duration-300 flex flex-col"
+      :class="[drawerMinimized ? 'w-12' : 'w-80']"
     >
       <div
-        class="header flex justify-between items-center px-2 py-1 rounded-l-md"
-        :class="[drawerMinimized ? 'bg-transparent' : 'bg-stone-700 dark:bg-stone-800']"
+        class="header flex items-center px-2 py-3 bg-stone-700 dark:bg-stone-800"
+        :class="{ 'justify-center': drawerMinimized, 'justify-between': !drawerMinimized }"
       >
-        <h2
-          v-if="!drawerMinimized"
-          class="text-base text-stone-100 font-bold"
-        >
-          Config
-        </h2>
-
-        <button
-          class="text-white rounded-full text-lg font-bold h-6 w-6"
-          aria-label="Toggle minimize"
-          @click="toggleMinimize"
-        >
-          <svg
-            v-if="drawerMinimized"
-            class="w-4 h-4 text-stone-600 hover:text-stone-500 dark:text-stone-100 transition duration-200"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            viewBox="0 0 24 24"
+        <template v-if="drawerMinimized">
+          <button
+            class="text-white rounded-full text-lg font-bold h-8 w-8 flex items-center justify-center"
+            aria-label="Expand config"
+            @click="toggleMinimize"
           >
-            <path d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
-          </svg>
-
-          <svg
-            v-else
-            class="w-4 h-4 text-stone-100 hover:text-stone-50 transition duration-200"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
+            <svg
+              class="w-5 h-5 text-stone-100 hover:text-stone-50 transition duration-200"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h14"
-            />
-          </svg>
-        </button>
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
+        </template>
+        <template v-else>
+          <h2 class="text-base text-stone-100 font-bold px-2">
+            Config
+          </h2>
+          <button
+            class="text-white rounded-full text-lg font-bold h-8 w-8 flex items-center justify-center"
+            aria-label="Minimize config"
+            @click="toggleMinimize"
+          >
+            <svg
+              class="w-4 h-4 text-stone-100 hover:text-stone-50 transition duration-200"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        </template>
       </div>
 
       <div
         v-show="!drawerMinimized"
-        class="px-4 max-h-[calc(100vh-64px)] overflow-y-auto"
+        class="flex-grow overflow-y-auto px-4 py-4"
       >
-        <div class="w-full pr-6 text-right">
+        <div class="mb-4 flex justify-end">
           <DarkModeToggle
-            class="fixed"
             transparent
             size="sm"
           />
@@ -121,81 +115,87 @@ onMounted(() => {
             Display
           </h3>
 
-          <div class="flex items-center justify-between space-x-2 mb-3">
-            <TButton
-              :is-active="store.displayLabel === 'name'"
-              aria-label="Display name"
-              size="sm"
-              class="w-full"
-              @click="setDisplay('name')"
-            >
-              Name
-            </TButton>
+          <div class="flex flex-col space-y-2">
+            <div class="flex space-x-2">
+              <TButton
+                :is-active="store.displayLabel === 'name'"
+                aria-label="Display name"
+                size="sm"
+                class="w-full"
+                @click="setDisplay('name')"
+              >
+                Name
+              </TButton>
 
-            <TButton
-              :is-active="store.displayLabel === 'key'"
-              aria-label="Display key"
-              size="sm"
-              class="w-full"
-              @click="setDisplay('key')"
-            >
-              Key
-            </TButton>
+              <TButton
+                :is-active="store.displayLabel === 'key'"
+                aria-label="Display key"
+                size="sm"
+                class="w-full"
+                @click="setDisplay('key')"
+              >
+                Key
+              </TButton>
+            </div>
 
-            <span class="text-stone-500 dark:text-stone-300 mx-4">|</span>
+            <div class="flex space-x-2">
+              <TButton
+                :is-active="store.viewMode === 'flex'"
+                aria-label="Flex view mode"
+                size="sm"
+                class="w-full"
+                @click="toggleViewMode('flex')"
+              >
+                <template #icon>
+                  <svg
+                    class="w-4 h-4 mr-1"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
+                    />
+                  </svg>
+                </template>
+                Flex
+              </TButton>
 
-            <TButton
-              :is-active="store.viewMode === 'flex'"
-              aria-label="Flex view mode"
-              size="sm"
-              @click="toggleViewMode('flex')"
-            >
-              <template #icon>
-                <svg
-                  class="w-4 h-4"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
-                  />
-                </svg>
-              </template>
-            </TButton>
-
-            <TButton
-              :is-active="store.viewMode === 'grid'"
-              aria-label="Grid view mode"
-              size="sm"
-              @click="toggleViewMode('grid')"
-            >
-              <template #icon>
-                <svg
-                  class="w-4 h-4"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
-                  />
-                </svg>
-              </template>
-            </TButton>
+              <TButton
+                :is-active="store.viewMode === 'grid'"
+                aria-label="Grid view mode"
+                size="sm"
+                class="w-full"
+                @click="toggleViewMode('grid')"
+              >
+                <template #icon>
+                  <svg
+                    class="w-4 h-4 mr-1"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+                    />
+                  </svg>
+                </template>
+                Grid
+              </TButton>
+            </div>
           </div>
         </div>
 
@@ -215,14 +215,10 @@ onMounted(() => {
 
 <style scoped>
 .slide-fade-enter-active, .slide-fade-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
+  transition: opacity 0.3s, transform 0.3s;
 }
 .slide-fade-enter-from, .slide-fade-leave-to {
   opacity: 0;
-  transform: translateX(100%);
-}
-.minimized .header {
-  display: flex;
-  justify-content: flex-end;
+  transform: translateX(-100%);
 }
 </style>

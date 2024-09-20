@@ -71,7 +71,7 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      'Share Tech Mono': true,
+      'Nunito': true,
     },
   },
 

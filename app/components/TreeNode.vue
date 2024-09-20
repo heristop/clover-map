@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
 import { useSectionManagement } from '~/composables/section'
@@ -13,6 +13,7 @@ const store = useStore()
 const isSuccessNode = ref(false)
 const nodeStatus = ref(props.node.status || store.statuses[0]?.name)
 const isDragging = ref(false)
+const isEditing = ref(false)
 
 const { updateSectionKey, updateSectionName, deleteSection } = useSectionManagement()
 const { addSection, addSiblingSection, addRootSection } = useNodeOperations()
@@ -121,6 +122,21 @@ const addSiblingNode = (event: MouseEvent) => {
   }
 }
 
+const startEditing = (event: MouseEvent) => {
+  event.stopPropagation()
+  isEditing.value = true
+
+  nextTick(() => {
+    const input = event.target as HTMLInputElement
+    input.focus()
+    input.select()
+  })
+}
+
+const finishEditing = () => {
+  isEditing.value = false
+}
+
 const deleteNode = (event: MouseEvent) => {
   event.stopPropagation()
   deleteSection(props.node.key)
@@ -221,7 +237,7 @@ const applySuccessAnimation = (node: Section) => {
     :class="{ 'success-animation': isSuccessNode }"
     :style="nodeStyle"
     :data-node-key="node.key"
-    :draggable="!store.isEditingMode"
+    :draggable="!store.isEditingMode && !isEditing"
     @dragstart="handleDragStart"
     @drop="handleDrop"
     @dragover="handleDragOver"
@@ -269,18 +285,24 @@ const applySuccessAnimation = (node: Section) => {
       </span>
 
       <input
-        v-if="store.isEditingMode"
+        v-if="isEditing"
         v-model="displayContent"
         class="edit-input"
         @click.stop
-        @focus="isDragging = true"
-        @blur="isDragging = false"
+        @blur="finishEditing"
+        @keyup.enter="finishEditing"
       >
 
-      <span v-else>{{ displayContent }}</span>
+      <span 
+        v-else 
+        class="node-text"
+        @click="startEditing"
+      >
+        {{ displayContent }}
+      </span>
 
       <div
-        v-if="store.isEditingMode"
+        v-if="store.isEditingMode && !isEditing"
         class="flex ml-4 space-x-2"
       >
         <button
@@ -442,21 +464,33 @@ const applySuccessAnimation = (node: Section) => {
   align-items: center;
   justify-content: center;
   gap: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.node-text {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .edit-input {
   text-align: center;
-  background: none;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   border-bottom: 1px solid white;
   color: white;
   outline: none;
-  transition: border-bottom 0.3s;
+  transition: all 0.3s;
+  padding: 2px 4px;
+  border-radius: 2px;
 }
 
 .edit-input:focus {
+  background: rgba(255, 255, 255, 0.2);
   border-bottom: 2px solid white;
   outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .collapse-icon {

@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, toRaw } from 'vue'
 import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
 
@@ -7,7 +7,11 @@ export function useNodeStyles() {
   const duplicateKeys = computed(() => store.duplicateSections.keys)
 
   const getNodeStyles = (node: Section, depth: number) => {
-    const statusObj = store.statuses.find((s: { name: string | undefined }) => s.name === node.status)
+    const statuses = toRaw(store.statuses)
+    console.log('statuses',statuses)
+    const statusObj = Array.isArray(statuses) 
+      ? statuses.find((s: { name: string | undefined }) => s.name === node.status)
+      : null
     let backgroundColor = statusObj ? statusObj.color : '#D44D8'
     backgroundColor = darkenColor(backgroundColor, depth * 6)
 
