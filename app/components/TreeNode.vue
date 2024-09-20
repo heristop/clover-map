@@ -32,7 +32,7 @@ watch(() => props.node, (newNode) => {
 
 const displayContent = computed({
   get: () => store.displayLabel === 'key' ? localKey.value : localName.value,
-  set: (value) => {
+  set: (value: string) => {
     if (store.displayLabel === 'key') {
       localKey.value = value
       updateSectionKey(props.node.key, value)
@@ -122,21 +122,6 @@ const addSiblingNode = (event: MouseEvent) => {
   }
 }
 
-const startEditing = (event: MouseEvent) => {
-  event.stopPropagation()
-  isEditing.value = true
-
-  nextTick(() => {
-    const input = event.target as HTMLInputElement
-    input.focus()
-    input.select()
-  })
-}
-
-const finishEditing = () => {
-  isEditing.value = false
-}
-
 const deleteNode = (event: MouseEvent) => {
   event.stopPropagation()
   deleteSection(props.node.key)
@@ -163,6 +148,19 @@ const handleDrop = (event: DragEvent) => {
 
 const handleDragOver = (event: DragEvent) => {
   event.preventDefault()
+}
+
+const handleLabelUpdate = (newValue: string) => {
+  if (store.displayLabel === 'key') {
+    updateSectionKey(props.node.key, newValue)
+  }
+  else {
+    updateSectionName(props.node.key, newValue)
+  }
+}
+
+const handleTitleClick = (event: MouseEvent) => {
+  event.stopPropagation()
 }
 
 watch(() => [props.node.status, store.statuses], () => {
@@ -243,7 +241,10 @@ const applySuccessAnimation = (node: Section) => {
     @dragover="handleDragOver"
     @click="handleClick"
   >
-    <div :class="['node-title', { 'center-title': !node.children || !node.children.length }]">
+    <div
+      :class="['node-title', { 'center-title': !node.children || !node.children.length }]"
+      @click="handleTitleClick"
+    >
       <span
         v-if="node.children && node.children.length"
         class="collapse-icon"
@@ -284,22 +285,12 @@ const applySuccessAnimation = (node: Section) => {
         </svg>
       </span>
 
-      <input
-        v-if="isEditing"
-        v-model="displayContent"
-        class="edit-input"
-        @click.stop
-        @blur="finishEditing"
-        @keyup.enter="finishEditing"
-      >
-
-      <span
-        v-else
-        class="node-text cursor-text"
-        @click="startEditing"
-      >
-        {{ displayContent }}
-      </span>
+      <EditableLabel
+        :value="displayContent"
+        :is-editing="isEditing"
+        @update:value="handleLabelUpdate"
+        @update:is-editing="isEditing = $event"
+      />
 
       <div
         v-if="store.isEditingMode && !isEditing"
@@ -465,7 +456,7 @@ const applySuccessAnimation = (node: Section) => {
   font-size: 0.875rem;
   font-weight: bold;
   color: white;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.15);
   pointer-events: auto;
   padding: 8px;
   margin: 2px;
