@@ -2,7 +2,7 @@
   "name": "treemap-flow",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@9.4.0",
+  "packageManager": "pnpm@9.11.0",
   "author": {
     "name": "heristop"
   },
@@ -11,7 +11,7 @@
     "build": "nuxi build",
     "start": "nuxi start",
     "test": "vitest",
-    "test:coverage": "vitest --run --coverage",
+    "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:precommit": "vitest --run",
     "postinstall": "nuxt prepare",
