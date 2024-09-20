@@ -295,7 +295,7 @@ const applySuccessAnimation = (node: Section) => {
 
       <span
         v-else
-        class="node-text"
+        class="node-text cursor-text"
         @click="startEditing"
       >
         {{ displayContent }}
@@ -372,8 +372,11 @@ const applySuccessAnimation = (node: Section) => {
 
     <div
       v-if="node.children && node.children.length && !node.isCollapsed"
-      :class="store.viewMode === 'flex' ? 'node-children-flex' : 'node-children-grid'"
-      class="node-children view-transition"
+      :class="[
+        'node-children',
+        'view-transition',
+        store.viewMode === 'flex' ? 'node-children-flex' : 'node-children-grid',
+      ]"
     >
       <TreeNode
         v-for="child in node.children"
@@ -422,20 +425,30 @@ const applySuccessAnimation = (node: Section) => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.node-children-flex {
+.node-children {
   display: flex;
-  flex-wrap: wrap;
-  flex: 1 1 auto;
+  flex-direction: column;
+  flex: 1;
   overflow: visible;
-  height: 100%;
+}
+
+.node-children-flex {
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .node-children-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
-  margin-top: 16px;
-  justify-content: start !important;
+  align-content: start;
+  justify-content: start;
+  padding-top: 16px;
+}
+
+.node-children-grid > .node-container {
+  height: auto;
+  min-height: 0;
 }
 
 .view-transition {
