@@ -293,8 +293,8 @@ const applySuccessAnimation = (node: Section) => {
         @keyup.enter="finishEditing"
       >
 
-      <span 
-        v-else 
+      <span
+        v-else
         class="node-text"
         @click="startEditing"
       >

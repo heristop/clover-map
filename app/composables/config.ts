@@ -103,7 +103,7 @@ export function useConfig() {
       return
     }
 
-    const statuses = store.statuses;
+    const statuses = store.statuses
     const sections = JSON.stringify({ ...currentProject, statuses: { ...statuses } }, null, 2)
     const blob = new Blob([sections], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
