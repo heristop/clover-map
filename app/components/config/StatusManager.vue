@@ -3,10 +3,14 @@ import { ref, computed, reactive } from 'vue'
 import { useStore, pastelColors } from '~/composables/store'
 import { useStatusManagement } from '~/composables/status'
 
-const { addStatus, removeStatus } = useStatusManagement()
+const { removeStatus } = useStatusManagement()
 const store = useStore()
-const statuses = computed(() => store.statuses)
+const { statuses } = storeToRefs(store)
 const inputFocused = ref(false)
+
+const safeStatuses = computed(() => {
+  return Array.isArray(statuses.value) ? statuses.value : []
+})
 
 const newStatus = reactive({
   name: '',
@@ -15,9 +19,10 @@ const newStatus = reactive({
 
 const addNewStatus = () => {
   if (newStatus.name && newStatus.color) {
-    addStatus({ name: newStatus.name, color: newStatus.color })
+    const updatedStatuses = [...safeStatuses.value, { name: newStatus.name, color: newStatus.color }]
+    store.setStatuses(updatedStatuses)
     newStatus.name = ''
-    newStatus.color = getNextColor() || '#FFFFFF'
+    newStatus.color = getNextColor()
   }
 }
 

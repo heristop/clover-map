@@ -6,7 +6,7 @@ import ConfigDrawer from '~/components/config/ConfigDrawer.vue'
 import { useStore } from '~/composables/store'
 import { useProjects } from '~/composables/project'
 
-const chart = ref<HTMLElement | null>(null)
+const chart = ref < HTMLElement | null > (null)
 const store = useStore()
 const { currentProject, renameProject } = useProjects()
 
@@ -42,9 +42,9 @@ const cancelEdit = () => {
       class="z-10"
     />
 
-    <div class="flex-grow overflow-hidden">
-      <ConfigDrawer />
+    <ConfigDrawer />
 
+    <div class="flex-grow overflow-hidden">
       <div
         v-if="currentProject"
         class="p-4 bg-stone-200 dark:bg-stone-600 text-stone-800 dark:text-stone-200 flex items-center drop-shadow-sm"

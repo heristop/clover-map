@@ -7,7 +7,9 @@ export function useNodeStyles() {
   const duplicateKeys = computed(() => store.duplicateSections.keys)
 
   const getNodeStyles = (node: Section, depth: number) => {
-    const statusObj = store.statuses.find((s: { name: string | undefined }) => s.name === node.status)
+    const statusObj = Array.isArray(store.statuses)
+      ? store.statuses.find((s: { name: string | undefined }) => s.name === node.status)
+      : null
     let backgroundColor = statusObj ? statusObj.color : '#D44D8'
     backgroundColor = darkenColor(backgroundColor, depth * 6)
 

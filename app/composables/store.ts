@@ -72,6 +72,15 @@ export const useStore = defineStore('store', {
       }
     },
 
+    setStatuses(statuses: Status[] | Record<number, Status>) {
+      if (Array.isArray(statuses)) {
+        this.statuses = statuses
+      }
+      else {
+        this.statuses = Object.values(statuses).filter(status => typeof status === 'object' && status !== null)
+      }
+    },
+
     setCurrentProjectId(projectId: string) {
       this.currentProjectId = projectId
     },

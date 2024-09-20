@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from '~/composables/store'
 import type { Section } from '~~/types'
 import { useSectionManagement } from '~/composables/section'
@@ -13,6 +13,7 @@ const store = useStore()
 const isSuccessNode = ref(false)
 const nodeStatus = ref(props.node.status || store.statuses[0]?.name)
 const isDragging = ref(false)
+const isEditing = ref(false)
 
 const { updateSectionKey, updateSectionName, deleteSection } = useSectionManagement()
 const { addSection, addSiblingSection, addRootSection } = useNodeOperations()
@@ -31,7 +32,7 @@ watch(() => props.node, (newNode) => {
 
 const displayContent = computed({
   get: () => store.displayLabel === 'key' ? localKey.value : localName.value,
-  set: (value) => {
+  set: (value: string) => {
     if (store.displayLabel === 'key') {
       localKey.value = value
       updateSectionKey(props.node.key, value)
@@ -149,6 +150,19 @@ const handleDragOver = (event: DragEvent) => {
   event.preventDefault()
 }
 
+const handleLabelUpdate = (newValue: string) => {
+  if (store.displayLabel === 'key') {
+    updateSectionKey(props.node.key, newValue)
+  }
+  else {
+    updateSectionName(props.node.key, newValue)
+  }
+}
+
+const handleTitleClick = (event: MouseEvent) => {
+  event.stopPropagation()
+}
+
 watch(() => [props.node.status, store.statuses], () => {
   nodeStatus.value = props.node.status || store.statuses[0]?.name || ''
   checkIfSuccessNode(props.node)
@@ -221,13 +235,16 @@ const applySuccessAnimation = (node: Section) => {
     :class="{ 'success-animation': isSuccessNode }"
     :style="nodeStyle"
     :data-node-key="node.key"
-    :draggable="!store.isEditingMode"
+    :draggable="!store.isEditingMode && !isEditing"
     @dragstart="handleDragStart"
     @drop="handleDrop"
     @dragover="handleDragOver"
     @click="handleClick"
   >
-    <div :class="['node-title', { 'center-title': !node.children || !node.children.length }]">
+    <div
+      :class="['node-title', { 'center-title': !node.children || !node.children.length }]"
+      @click="handleTitleClick"
+    >
       <span
         v-if="node.children && node.children.length"
         class="collapse-icon"
@@ -268,19 +285,15 @@ const applySuccessAnimation = (node: Section) => {
         </svg>
       </span>
 
-      <input
-        v-if="store.isEditingMode"
-        v-model="displayContent"
-        class="edit-input"
-        @click.stop
-        @focus="isDragging = true"
-        @blur="isDragging = false"
-      >
-
-      <span v-else>{{ displayContent }}</span>
+      <EditableLabel
+        :value="displayContent"
+        :is-editing="isEditing"
+        @update:value="handleLabelUpdate"
+        @update:is-editing="isEditing = $event"
+      />
 
       <div
-        v-if="store.isEditingMode"
+        v-if="store.isEditingMode && !isEditing"
         class="flex ml-4 space-x-2"
       >
         <button
@@ -350,8 +363,11 @@ const applySuccessAnimation = (node: Section) => {
 
     <div
       v-if="node.children && node.children.length && !node.isCollapsed"
-      :class="store.viewMode === 'flex' ? 'node-children-flex' : 'node-children-grid'"
-      class="node-children view-transition"
+      :class="[
+        'node-children',
+        'view-transition',
+        store.viewMode === 'flex' ? 'node-children-flex' : 'node-children-grid',
+      ]"
     >
       <TreeNode
         v-for="child in node.children"
@@ -400,20 +416,30 @@ const applySuccessAnimation = (node: Section) => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.node-children-flex {
+.node-children {
   display: flex;
-  flex-wrap: wrap;
-  flex: 1 1 auto;
+  flex-direction: column;
+  flex: 1;
   overflow: visible;
-  height: 100%;
+}
+
+.node-children-flex {
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .node-children-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
-  margin-top: 16px;
-  justify-content: start !important;
+  align-content: start;
+  justify-content: start;
+  padding-top: 16px;
+}
+
+.node-children-grid > .node-container {
+  height: auto;
+  min-height: 0;
 }
 
 .view-transition {
@@ -430,7 +456,7 @@ const applySuccessAnimation = (node: Section) => {
   font-size: 0.875rem;
   font-weight: bold;
   color: white;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.15);
   pointer-events: auto;
   padding: 8px;
   margin: 2px;
@@ -442,21 +468,33 @@ const applySuccessAnimation = (node: Section) => {
   align-items: center;
   justify-content: center;
   gap: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.node-text {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .edit-input {
   text-align: center;
-  background: none;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   border-bottom: 1px solid white;
   color: white;
   outline: none;
-  transition: border-bottom 0.3s;
+  transition: all 0.3s;
+  padding: 2px 4px;
+  border-radius: 2px;
 }
 
 .edit-input:focus {
+  background: rgba(255, 255, 255, 0.2);
   border-bottom: 2px solid white;
   outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .collapse-icon {

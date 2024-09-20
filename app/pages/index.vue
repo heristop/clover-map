@@ -111,7 +111,7 @@ onMounted(() => {
 <template>
   <div
     :class="{ dark: darkMode }"
-    class="relative w-full min-h-screen overflow-auto bg-stone-50 dark:bg-stone-900 text-stone-900 dark:text-stone-50"
+    class="relative w-full min-h-screen overflow-auto bg-stone-200 dark:bg-stone-900 text-stone-900 dark:text-stone-50"
   >
     <DarkModeToggle
       fixed
@@ -207,6 +207,7 @@ onMounted(() => {
           >
             <TButton
               :is-active="false"
+              class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
               aria-label="View My Projects"
               @click="() => navigateToLastCreatedProject()"
             >
@@ -269,6 +270,7 @@ onMounted(() => {
             <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 text-center space-y-6 md:space-y-0">
               <TButton
                 :is-active="false"
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                 aria-label="Load Project Project"
                 @click="loadConfigFromApi('blank')"
               >
@@ -294,6 +296,7 @@ onMounted(() => {
 
               <TButton
                 :is-active="false"
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                 aria-label="Load Project Migration Data"
                 @click="loadConfigFromApi('ecom-migration')"
               >
@@ -320,6 +323,7 @@ onMounted(() => {
 
               <TButton
                 :is-active="false"
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                 aria-label="Load Bug Tracking Data"
                 @click="loadConfigFromApi('bug-tracking')"
               >
@@ -346,6 +350,7 @@ onMounted(() => {
 
               <TButton
                 :is-active="false"
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                 aria-label="Load Recruitment Data"
                 @click="loadConfigFromApi('recruitment')"
               >
@@ -387,6 +392,7 @@ onMounted(() => {
             <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 space-y-6 md:space-y-0">
               <TButton
                 :is-active="false"
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                 aria-label="Upload File"
                 @click="($refs.fileInput as HTMLInputElement).click()"
               >
@@ -423,6 +429,7 @@ onMounted(() => {
               <TButton
                 :is-active="false"
                 :disabled="!url"
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                 aria-label="Load Configuration from URL"
                 @click="loadConfigFromUrl(url)"
               >
@@ -481,7 +488,8 @@ onMounted(() => {
 
               <TButton
                 :is-active="false"
-                class="w-full mt-4 border-2"
+                full-width
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400 mt-4"
                 aria-label="Load Sample Data"
                 @click="loadConfigFromUserInput"
               >
@@ -513,6 +521,7 @@ onMounted(() => {
               <TButton
                 :is-active="false"
                 aria-label="View on GitHub"
+                full-width
                 class="w-full md:w-auto border-2"
                 @click="openExternalLink('https://github.com/heristop/treemap-flow')"
               >
@@ -540,6 +549,7 @@ onMounted(() => {
               <TButton
                 :is-active="false"
                 aria-label="Edit on StackBlitz"
+                full-width
                 class="w-full md:w-auto border-2"
                 @click="openExternalLink('https://stackblitz.com/~/github.com/heristop/treemap-flow')"
               >

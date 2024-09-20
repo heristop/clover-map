@@ -3,6 +3,7 @@ export interface Project {
   name: string
   sections: Section[]
   createdAt: Date
+  statuses?: Status[]
 }
 
 export interface Section {
