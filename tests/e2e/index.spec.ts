@@ -21,9 +21,9 @@ test.describe('TreemapFlow Page Tests', () => {
     await expect(htmlElement).not.toHaveClass(/dark/, { timeout: 10000 })
   })
 
-  test('Load configuration from URL', async ({ page }) => {
+  test('Load configuration', async ({ page }) => {
     const urlInput = page.locator('input[placeholder="https://"]')
-    const loadFromUrlButton = page.locator('button[aria-label="Load Configuration from URL"]')
+    const loadFromUrlButton = page.locator('button[aria-label="Load Configuration"]')
 
     await expect(loadFromUrlButton).toBeVisible({ timeout: 10000 })
 
@@ -49,7 +49,7 @@ test.describe('TreemapFlow Page Tests', () => {
     await expect(page.locator('html')).toHaveText(/Root/, { timeout: 10000 })
 
     // Click the button to go back to home
-    const resetButton = page.locator('button[aria-label="Go to home"]')
+    const resetButton = page.locator('button[aria-label="Go to Homepage"]')
     await resetButton.click()
   })
 
