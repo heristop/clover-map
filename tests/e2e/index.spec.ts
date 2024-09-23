@@ -21,9 +21,9 @@ test.describe('TreemapFlow Page Tests', () => {
     await expect(htmlElement).not.toHaveClass(/dark/, { timeout: 10000 })
   })
 
-  test('Load configuration', async ({ page }) => {
+  test('Load configuration from URL', async ({ page }) => {
     const urlInput = page.locator('input[placeholder="https://"]')
-    const loadFromUrlButton = page.locator('button[aria-label="Load Configuration"]')
+    const loadFromUrlButton = page.locator('button[aria-label="Load from URL"]')
 
     await expect(loadFromUrlButton).toBeVisible({ timeout: 10000 })
 
