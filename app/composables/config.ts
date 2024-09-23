@@ -145,18 +145,21 @@ export function useConfig() {
 
     try {
       data = JSON.parse(sample)
-    }
-    catch (error) {
-      displayInvalidDataError()
 
-      return false
-    }
+      if (!validate(data)) {
+        throw new Error('Unvalidated JSON')
+      }
 
-    if (validate(data)) {
       createProject('User Input Project', data)
       router.push(`/projects/${store.currentProject?.id}`)
 
       return true
+    }
+    catch (error) {
+      console.log(error)
+      displayInvalidDataError()
+
+      return false
     }
 
     return false

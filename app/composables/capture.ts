@@ -57,7 +57,7 @@ export function useTreemapCapture() {
 
       const link = document.createElement('a')
       link.href = dataUrl
-      link.download = `treemap-flow-${Date.now()}.png`
+      link.download = `clover-map-${Date.now()}.png`
       link.click()
     }
     catch (error) {

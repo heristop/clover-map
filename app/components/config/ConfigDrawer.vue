@@ -3,7 +3,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import ProgressBar from './ProgressBar.vue'
 import StatusManager from './StatusManager.vue'
 import ViewportSettings from './ViewportSettings.vue'
-import TButton from '~/components/ui/TButton.vue'
+import CloverButton from '~/components/ui/CloverButton.vue'
 import DarkModeToggle from '~/components/ui/DarkModeToggle.vue'
 import { useStore } from '~/composables/store'
 
@@ -132,7 +132,7 @@ onMounted(() => {
 
           <div class="flex flex-col space-y-2">
             <div class="flex space-x-2">
-              <TButton
+              <CloverButton
                 :is-active="store.displayLabel === 'name'"
                 aria-label="Display name"
                 size="sm"
@@ -140,9 +140,9 @@ onMounted(() => {
                 @click="setDisplay('name')"
               >
                 Name
-              </TButton>
+              </CloverButton>
 
-              <TButton
+              <CloverButton
                 :is-active="store.displayLabel === 'key'"
                 aria-label="Display key"
                 size="sm"
@@ -150,11 +150,11 @@ onMounted(() => {
                 @click="setDisplay('key')"
               >
                 Key
-              </TButton>
+              </CloverButton>
             </div>
 
             <div class="flex space-x-2">
-              <TButton
+              <CloverButton
                 :is-active="store.viewMode === 'flex'"
                 aria-label="Flex view mode"
                 size="sm"
@@ -180,9 +180,9 @@ onMounted(() => {
                   </svg>
                 </template>
                 Flex
-              </TButton>
+              </CloverButton>
 
-              <TButton
+              <CloverButton
                 :is-active="store.viewMode === 'grid'"
                 aria-label="Grid view mode"
                 size="sm"
@@ -209,7 +209,7 @@ onMounted(() => {
                   </svg>
                 </template>
                 Grid
-              </TButton>
+              </CloverButton>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@ onMounted(() => {
           </h3>
 
           <div>
-            <StatusManager />
+            <StatusManager draggable />
           </div>
         </div>
       </div>

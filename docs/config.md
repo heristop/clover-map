@@ -1,6 +1,6 @@
 # JSON Configuration Format
 
-The JSON configuration file should adhere to the following structure to be compatible with TreemapFlow:
+The JSON configuration file should adhere to the following structure to be compatible with CloverMap:
 
 ```json
 [
@@ -31,4 +31,4 @@ The JSON configuration file should adhere to the following structure to be compa
 - `children`: An array of nested sections or tasks, supporting hierarchical project structures.
 - `isCollapsed` (optional): A boolean flag indicating whether the section should be collapsed, helping to manage the visibility of complex structures.
 
-By following this guide, you can effectively utilize TreemapFlow to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.
+By following this guide, you can effectively utilize CloverMap to manage your projects, import/export data seamlessly, and maintain a well-organized JSON configuration.

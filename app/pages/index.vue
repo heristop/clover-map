@@ -3,8 +3,9 @@ import { ref, computed, nextTick, onMounted } from 'vue'
 import { useStore } from '~/composables/store'
 import { useConfig } from '~/composables/config'
 import { useProjects } from '~/composables/project'
-import TButton from '~/components/ui/TButton.vue'
+import CloverButton from '~/components/ui/CloverButton.vue'
 import DarkModeToggle from '~/components/ui/DarkModeToggle.vue'
+import ProjectForm from '~/components/project/ProjectForm.vue'
 import { useRuntimeConfig, navigateTo } from '#imports'
 
 const store = useStore()
@@ -12,32 +13,11 @@ const { setCurrentProject } = useProjects()
 const isLoading = ref<boolean>(true)
 const darkMode = computed(() => store.darkMode)
 
-const { fileInput, loadFromModel, loadFromFile, loadFromUrl, loadFromUserInput } = useConfig()
+const { fileInput, loadFromModel, loadFromFile, loadFromUrl } = useConfig()
 
 const url = ref(`${useRuntimeConfig().public.apiBaseUrl}/configs/blank.json`)
-const sample = ref(`[
-  {
-    "key": "project-1",
-    "name": "Project 1",
-    "children": [
-      {
-        "key": "task-1",
-        "name": "Task 1",
-        "status": "In Progress",
-        "children": []
-      },
-      {
-        "key": "task-2",
-        "name": "Task 2",
-        "status": "Done",
-        "children": []
-      }
-    ]
-  }
-]`)
 
 const isConfigLoading = ref(false)
-const sampleError = ref('')
 
 const loadConfigFromApi = async (model: string) => {
   isConfigLoading.value = true
@@ -56,17 +36,6 @@ const loadConfigFromUrl = async (inputUrl: string) => {
   }
   finally {
     isConfigLoading.value = false
-  }
-}
-
-const loadConfigFromUserInput = async () => {
-  try {
-    JSON.parse(sample.value)
-    await loadFromUserInput(sample.value)
-    sampleError.value = ''
-  }
-  catch (error) {
-    sampleError.value = 'Invalid JSON format'
   }
 }
 
@@ -116,10 +85,6 @@ const navigateToLastCreatedProject = () => {
 
 const activeTab = ref('sample')
 
-definePageMeta({
-  middleware: 'project',
-})
-
 onMounted(() => {
   if (store.darkMode) {
     document.documentElement.classList.add('dark')
@@ -140,9 +105,8 @@ onMounted(() => {
     <!-- Header -->
     <header>
       <DarkModeToggle
-        fixed
-        :position="'top-4 right-4'"
-        class="fixed z-20"
+        position="absolute top-8 right-8"
+        class="z-50"
       />
     </header>
 
@@ -150,19 +114,19 @@ onMounted(() => {
     <main class="pt-0">
       <!-- Background Grid -->
       <div class="background-grid fixed inset-0 z-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        <div class="bg-purple-300 dark:bg-purple-700 rounded-lg opacity-30" />
-        <div class="bg-yellow-300 dark:bg-yellow-700 rounded-lg opacity-30" />
-        <div class="bg-blue-300 dark:bg-blue-700 col-span-2 opacity-30" />
-        <div class="bg-pink-300 dark:bg-pink-700 col-span-2 opacity-30" />
-        <div class="bg-green-300 dark:bg-green-700 rounded-lg opacity-30" />
-        <div class="bg-red-300 dark:bg-red-700 rounded-lg opacity-30" />
-        <div class="bg-indigo-300 dark:bg-indigo-700 rounded-lg opacity-30" />
-        <div class="bg-teal-300 dark:bg-teal-700 rounded-lg opacity-30" />
-        <div class="bg-orange-300 dark:bg-orange-700 rounded-lg opacity-30" />
-        <div class="bg-lime-300 dark:bg-lime-700 rounded-lg opacity-30" />
+        <div class=" bg-purple-900 rounded-lg opacity-30" />
+        <div class="bg-yellow-900 rounded-lg opacity-30" />
+        <div class="bg-blue-900 col-span-2 opacity-30" />
+        <div class="bg-pink-900 col-span-2 opacity-30" />
+        <div class="bg-green-900 rounded-lg opacity-30" />
+        <div class="bg-red-900 rounded-lg opacity-30" />
+        <div class="bg-indigo-900 rounded-lg opacity-30" />
+        <div class="bg-teal-900 rounded-lg opacity-30" />
+        <div class="bg-orange-900 rounded-lg opacity-30" />
+        <div class="bg-lime-900 rounded-lg opacity-30" />
       </div>
 
-      <div class="absolute h-full inset-0 z-10 bg-stone-200 dark:bg-stone-800 opacity-80 dark:opacity-90" />
+      <div class="absolute h-full inset-0 z-10 bg-stone-200 dark:bg-stone-800 opacity-90 dark:opacity-60" />
 
       <!-- Welcome Section -->
       <section
@@ -205,7 +169,7 @@ onMounted(() => {
                   d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm14 18a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4ZM5 11a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5Zm14 2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4Z"
                 />
               </svg>
-              Welcome to TreemapFlow!
+              Welcome to CloverMap!
             </h1>
 
             <h2 class="text-xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto font-light">
@@ -240,11 +204,11 @@ onMounted(() => {
             </div>
 
             <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 p-6">
-              <TButton
+              <CloverButton
                 v-if="store.projects.length > 0"
                 :is-active="false"
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400 transition-all duration-300 transform hover:scale-105"
-                aria-label="View My Projects"
+                class="bg-stone-50 dark:bg-stone-600 hover:bg-stone-50/75 dark:hover:bg-stone-500 border-stone-200 dark:border-stone-500 transition-all duration-300 transform hover:scale-105"
+                aria-label="View my Projects"
                 @click="navigateToLastCreatedProject"
               >
                 <template #icon>
@@ -264,11 +228,11 @@ onMounted(() => {
                   </svg>
                 </template>
                 View My Projects
-              </TButton>
+              </CloverButton>
 
-              <TButton
+              <CloverButton
                 :is-active="false"
-                class="bg-gradient-to-r from-[#DD5E89] to-[#F7BB97] hover:from-[#F7BB97] hover:to-[#DD5E89] text-white border-none transition-all duration-300 transform hover:scale-105"
+                class="bg-gradient-to-r from-[#DD5E89] to-[#F7BB97] text-white border-none transition-all duration-300 transform hover:scale-105"
                 aria-label="Create New Project"
                 @click="scrollToSection('create-project')"
               >
@@ -289,7 +253,7 @@ onMounted(() => {
                   </svg>
                 </template>
                 Create New Project
-              </TButton>
+              </CloverButton>
             </div>
 
             <div class="mt-12 animate-bounce">
@@ -323,7 +287,7 @@ onMounted(() => {
           appear
         >
           <div class="relative z-20 flex flex-col justify-center items-center min-h-screen p-6 max-w-6xl mx-auto section">
-            <h2 class="text-3xl font-bold mb-8 text-stone-700 dark:text-stone-300">
+            <h2 class="text-3xl font-semibold mb-8 text-stone-700 dark:text-stone-300">
               Create Your Project
             </h2>
 
@@ -332,10 +296,10 @@ onMounted(() => {
               <div class="flex flex-col md:flex-row md:space-x-4 mb-6">
                 <button
                   :class="[
-                    'flex-1 py-2 px-4 rounded-t-lg font-medium transition-colors duration-200',
+                    ' flex-1 py-2 px-4 rounded-t-lg font-medium transition-colors duration-200',
                     activeTab === 'sample'
-                      ? 'bg-stone-200 dark:bg-stone-600'
-                      : 'border border-dashed border-stone-200/75 hover:bg-stone-100 dark:hover:bg-stone-800',
+                      ? 'text-white bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]'
+                      : 'border border-dashed border-stone-300 dark:border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800',
                   ]"
                   @click="activeTab = 'sample'"
                 >
@@ -345,8 +309,8 @@ onMounted(() => {
                   :class="[
                     'flex-1 py-2 px-4 rounded-t-lg font-medium transition-colors duration-200',
                     activeTab === 'custom'
-                      ? 'bg-stone-200 dark:bg-stone-600'
-                      : 'border border-dashed border-stone-200/75 hover:bg-stone-100 dark:hover:bg-stone-800',
+                      ? 'text-white bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]'
+                      : 'border border-dashed border-stone-300 dark:border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800',
                   ]"
                   aria-label="Custom Configuration"
                   @click="activeTab = 'custom'"
@@ -362,10 +326,10 @@ onMounted(() => {
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <!-- Sample Data Buttons -->
-                  <TButton
+                  <CloverButton
                     :is-active="false"
                     :disabled="isConfigLoading"
-                    class="bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-300 dark:border-stone-500 transition-all duration-300"
+                    class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                     aria-label="Load Blank Project"
                     @click="loadConfigFromApi('blank')"
                   >
@@ -408,9 +372,9 @@ onMounted(() => {
                     </template>
                     <span v-if="!isConfigLoading">Blank Project</span>
                     <span v-else>Loading...</span>
-                  </TButton>
+                  </CloverButton>
 
-                  <TButton
+                  <CloverButton
                     :is-active="false"
                     class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                     aria-label="Load Project Migration Data"
@@ -437,9 +401,9 @@ onMounted(() => {
                     </template>
 
                     E-com Migration
-                  </TButton>
+                  </CloverButton>
 
-                  <TButton
+                  <CloverButton
                     :is-active="false"
                     class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                     aria-label="Load Bug Tracking Data"
@@ -466,9 +430,9 @@ onMounted(() => {
                     </template>
 
                     Bug Tracking
-                  </TButton>
+                  </CloverButton>
 
-                  <TButton
+                  <CloverButton
                     :is-active="false"
                     class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
                     aria-label="Load Recruitment Data"
@@ -494,7 +458,7 @@ onMounted(() => {
                     </template>
 
                     Recruitment
-                  </TButton>
+                  </CloverButton>
                 </div>
 
                 <!-- Load Configuration Section -->
@@ -519,7 +483,7 @@ onMounted(() => {
                         class="hidden"
                         @change="loadFromFile"
                       >
-                      <TButton
+                      <CloverButton
                         :is-active="false"
                         :disabled="isConfigLoading"
                         class="mt-4 md:mt-0 bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500border-stone-300 dark:border-stone-500 transition-all duration-300"
@@ -566,7 +530,7 @@ onMounted(() => {
                         </template>
                         <span v-if="!isConfigLoading">Select File</span>
                         <span v-else>Loading...</span>
-                      </TButton>
+                      </CloverButton>
                     </div>
 
                     <p class="text-xs text-stone-500 dark:text-stone-400">
@@ -587,11 +551,11 @@ onMounted(() => {
                         id="url-input"
                         v-model="url"
                         placeholder="https://"
-                        class="flex-grow bg-stone-100 dark:bg-stone-600 text-stone-900 dark:text-white
+                        class="flex-grow bg-stone-50 dark:bg-stone-600 text-stone-900 dark:text-white
           px-4 py-2 rounded-md text-sm shadow-sm border border-stone-300 dark:border-stone-500
           focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-300 focus:border-transparent"
                       >
-                      <TButton
+                      <CloverButton
                         :is-active="false"
                         :disabled="!url || isConfigLoading"
                         class="mt-4 md:mt-0 bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500
@@ -639,7 +603,7 @@ onMounted(() => {
                         </template>
                         <span v-if="!isConfigLoading">Load</span>
                         <span v-else>Loading...</span>
-                      </TButton>
+                      </CloverButton>
                     </div>
 
                     <p class="text-xs text-stone-500 dark:text-stone-400">
@@ -654,95 +618,17 @@ onMounted(() => {
                 v-if="activeTab === 'custom'"
                 class="space-y-4"
               >
-                <h3 class="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">
-                  Custom Configuration
-                </h3>
-                <div class="space-y-2">
-                  <label
-                    for="sample-config"
-                    class="block text-sm font-medium text-stone-700 dark:text-stone-300"
-                  >
-                    JSON Configuration
-                  </label>
-                  <textarea
-                    id="sample-config"
-                    v-model="sample"
-                    class="w-full h-60 text-sm text-stone-700 bg-stone-100 rounded-md p-2 dark:bg-stone-600 dark:text-stone-300 border border-stone-300 dark:border-stone-500 focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-300 focus:border-transparent"
-                    aria-label="Sample Configuration"
-                  />
-                  <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">
-                    <strong>key:</strong> Unique identifier for the section<br>
-                    <strong>name:</strong> Name of the section<br>
-                    <strong>status:</strong> Current status of the section<br>
-                    <strong>children:</strong> Nested sections<br>
-                    <strong>isCollapsed:</strong> Optional flag to collapse the section
-                  </p>
-                  <p
-                    v-if="sampleError"
-                    class="text-red-500 text-sm"
-                  >
-                    {{ sampleError }}
-                  </p>
-                </div>
-                <TButton
-                  :is-active="false"
-                  :disabled="isConfigLoading"
-                  full-width
-                  class="bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-300 dark:border-stone-500 transition-all duration-300"
-                  aria-label="Load Custom Configuration"
-                  @click="loadConfigFromUserInput"
-                >
-                  <template #icon>
-                    <svg
-                      v-if="!isConfigLoading"
-                      class="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
-                      />
-                    </svg>
-                    <svg
-                      v-else
-                      class="w-5 h-5 animate-spin"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        class="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        stroke-width="4"
-                      />
-                      <path
-                        class="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8v8z"
-                      />
-                    </svg>
-                  </template>
-                  <span v-if="!isConfigLoading">Load Custom Configuration</span>
-                  <span v-else>Loading...</span>
-                </TButton>
+                <ProjectForm />
               </div>
             </div>
 
             <!-- External Links -->
             <div class="mt-12 flex justify-center space-x-4">
-              <TButton
+              <CloverButton
                 :is-active="false"
                 aria-label="View on GitHub"
-                class="bg-stone-100/50 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-200 dark:border-stone-500 transition-all duration-300"
-                @click="openExternalLink('https://github.com/heristop/treemap-flow')"
+                class="bg-stone-50 dark:bg-stone-600 hover:bg-stone-50/75 dark:hover:bg-stone-500 border-stone-200 dark:border-stone-500 transition-all duration-300"
+                @click="openExternalLink('https://github.com/heristop/clover-map')"
               >
                 <template #icon>
                   <!-- GitHub Icon -->
@@ -758,13 +644,13 @@ onMounted(() => {
                   </svg>
                 </template>
                 View on GitHub
-              </TButton>
+              </CloverButton>
 
-              <TButton
+              <CloverButton
                 :is-active="false"
                 aria-label="Edit on StackBlitz"
-                class="bg-stone-100/50 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-200 dark:border-stone-500 transition-all duration-300"
-                @click="openExternalLink('https://stackblitz.com/~/github.com/heristop/treemap-flow')"
+                class="bg-stone-50 dark:bg-stone-600 hover:bg-stone-50/75 dark:hover:bg-stone-500 border-stone-200 dark:border-stone-500 transition-all duration-300"
+                @click="openExternalLink('https://stackblitz.com/~/github.com/heristop/clover-map')"
               >
                 <template #icon>
                   <!-- StackBlitz Icon -->
@@ -780,21 +666,10 @@ onMounted(() => {
                   </svg>
                 </template>
                 Edit on StackBlitz
-              </TButton>
+              </CloverButton>
             </div>
 
-            <!-- Snackbar and Footer -->
-            <ClientOnly>
-              <NuxtSnackbar
-                bottom
-                right
-                shadow
-                success="#34d399"
-                error="#f87171"
-                info="#3b82f6"
-              />
-            </ClientOnly>
-
+            <!-- Footer -->
             <AppFooter class="mt-12" />
           </div>
         </transition>
@@ -804,17 +679,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
 .animate-bounce {
   animation: bounce 2s infinite;
 }

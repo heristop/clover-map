@@ -18,3 +18,5 @@ export interface Status {
   name: string
   color: string
 }
+
+export type SectionWithOptionalStatus = Omit<Section, 'status'> & { status?: string }

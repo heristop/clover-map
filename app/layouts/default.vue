@@ -43,5 +43,16 @@ onUnmounted(() => {
     :class="['w-full', useFullHeight ? 'h-full' : 'h-screen', 'bg-stone-600', 'text-white']"
   >
     <slot />
+
+    <ClientOnly>
+      <NuxtSnackbar
+        bottom
+        right
+        shadow
+        success="#34d399"
+        error="#f87171"
+        info="#3b82f6"
+      />
+    </ClientOnly>
   </div>
 </template>

@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'TreemapFlow',
+      title: 'CloverMap',
       htmlAttrs: {
         lang: 'en',
       },
@@ -28,17 +28,17 @@ export default defineNuxtConfig({
         {
           hid: 'description',
           name: 'description',
-          content: 'Project management tool designed to visualize and monitor the status of various projects and processes',
+          content: 'Boost your productivity with CloverMap, the innovative visual workflow management tool. Organize, track, and streamline your tasks with intuitive treemap visualizations. Simplify project management and achieve more, faster!',
         },
         {
           hid: 'apple-mobile-web-app-title',
           name: 'apple-mobile-web-app-title',
-          content: 'TreemapFlow',
+          content: 'CloverMap',
         },
         {
           hid: 'application-name',
           name: 'application-name',
-          content: 'TreemapFlow',
+          content: 'CloverMap',
         },
         {
           hid: 'msapplication-TileColor',

@@ -49,7 +49,7 @@ const cancelEdit = () => {
     <div class="flex-grow overflow-hidden">
       <div
         v-if="currentProject"
-        class="p-4 bg-stone-200 dark:bg-stone-600 text-stone-800 dark:text-stone-200 flex items-center drop-shadow-sm"
+        class="p-3 bg-stone-200 dark:bg-stone-600 text-stone-800 dark:text-stone-200 flex items-center drop-shadow-sm"
       >
         <template v-if="isEditing">
           <input
