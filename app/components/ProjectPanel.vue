@@ -2,13 +2,14 @@
 import { computed, ref } from 'vue'
 import { format } from 'date-fns'
 import { useRouter } from 'vue-router'
-import TButton from './ui/TButton.vue'
+import CloverButton from './ui/CloverButton.vue'
 import { useProjects } from '~/composables/project'
 import { useStore } from '~/composables/store'
 import { useSnackbar } from '#imports'
 import { useConfig } from '~/composables/config'
+import ProjectForm from '~/components/project/ProjectForm.vue'
 
-const { projects, setCurrentProject, deleteProject } = useProjects()
+const { projects, setCurrentProject, deleteProject, addProject } = useProjects()
 const store = useStore()
 const snackbar = useSnackbar()
 const router = useRouter()
@@ -18,6 +19,7 @@ const confirmDelete = ref(false)
 const projectToDelete = ref<string | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 const isPositioned = ref(false)
+const showAddProjectModal = ref(false)
 
 const currentProjectId = computed(() => store.currentProjectId)
 const panelCollapsed = computed(() => store.panelCollapsed)
@@ -27,7 +29,6 @@ const sortedProjects = computed(() => {
 
 const selectProject = (projectId: string) => {
   setCurrentProject(projectId)
-
   router.push(`/projects/${projectId}`)
 }
 
@@ -48,7 +49,6 @@ const handleAction = (action: string) => {
 
 const initiateDelete = (event: Event, projectId: string) => {
   event.stopPropagation()
-
   projectToDelete.value = projectId
   confirmDelete.value = true
 }
@@ -56,16 +56,12 @@ const initiateDelete = (event: Event, projectId: string) => {
 const confirmDeleteProject = () => {
   if (projectToDelete.value && projects.value) {
     const index = projects.value.findIndex(p => p.id === projectToDelete.value) ?? -1
-
     deleteProject(projectToDelete.value)
-
     snackbar.add({
       type: 'success',
       title: 'Project deleted successfully.',
     })
-
     const previousProject = projects.value[index - 1]
-
     if (index > 0 && previousProject !== undefined) {
       selectProject(previousProject.id)
     }
@@ -76,7 +72,6 @@ const confirmDeleteProject = () => {
       router.push('/')
     }
   }
-
   cancelDelete()
 }
 
@@ -87,7 +82,6 @@ const cancelDelete = () => {
 
 const toggleCollapse = () => {
   store.toggleCollapse()
-
   nextTick(() => isPositioned.value = true)
 }
 
@@ -103,13 +97,28 @@ const handleFileUpload = (event: Event) => {
 const handleExport = () => {
   if (store.currentProject) {
     exportToFile()
-
     return
   }
-
   snackbar.add({
     type: 'error',
     title: 'No project selected for export.',
+  })
+}
+
+const openAddProjectModal = () => {
+  showAddProjectModal.value = true
+}
+
+const closeAddProjectModal = () => {
+  showAddProjectModal.value = false
+}
+
+const handleAddProject = (projectData: string) => {
+  addProject(projectData)
+  closeAddProjectModal()
+  snackbar.add({
+    type: 'success',
+    title: 'Project added successfully.',
   })
 }
 
@@ -162,7 +171,7 @@ onMounted(() => {
         v-if="!panelCollapsed"
         class="flex flex-col items-center justify-center text-center text-xl font-semibold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]"
       >
-        TreemapFlow
+        CloverMap
       </h2>
 
       <button
@@ -199,6 +208,31 @@ onMounted(() => {
       v-if="!panelCollapsed"
       class="flex-grow overflow-y-auto p-4"
     >
+      <CloverButton
+        full-width
+        aria-label="Add New Project"
+        class="mb-4 border-0"
+        @click="openAddProjectModal"
+      >
+        <template #icon>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+        </template>
+        Add New Project
+      </CloverButton>
+
       <ul class="space-y-2">
         <TransitionGroup name="list">
           <li
@@ -224,7 +258,7 @@ onMounted(() => {
               @click="initiateDelete($event, project.id)"
             >
               <svg
-                class="w-4 h-4"
+                class="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -247,6 +281,25 @@ onMounted(() => {
       v-else
       class="flex-grow flex flex-col items-center space-y-4 p-2"
     >
+      <button
+        class="w-10 h-10 rounded-full flex items-center justify-center bg-stone-300 hover:bg-stone-400 dark:bg-stone-500 dark:hover:bg-stone-400 text-stone-800 dark:text-stone-100 transition-colors duration-200"
+        @click="openAddProjectModal"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          />
+        </svg>
+      </button>
       <button
         v-for="project in sortedProjects"
         :key="project.id"
@@ -274,7 +327,7 @@ onMounted(() => {
       v-if="!panelCollapsed"
       class="p-4 border-t border-stone-200 dark:border-stone-600 space-y-2"
     >
-      <TButton
+      <CloverButton
         full-width
         aria-label="Configure Project"
         class="border-0"
@@ -304,9 +357,9 @@ onMounted(() => {
         </template>
 
         Configure Project
-      </TButton>
+      </CloverButton>
 
-      <TButton
+      <CloverButton
         full-width
         aria-label="Upload project"
         class="border-0"
@@ -330,9 +383,9 @@ onMounted(() => {
         </template>
 
         Upload Project
-      </TButton>
+      </CloverButton>
 
-      <TButton
+      <CloverButton
         full-width
         aria-label="Export project"
         class="border-0"
@@ -356,9 +409,9 @@ onMounted(() => {
         </template>
 
         Export Project
-      </TButton>
+      </CloverButton>
 
-      <TButton
+      <CloverButton
         full-width
         aria-label="Go to Homepage"
         class="border-0"
@@ -382,7 +435,7 @@ onMounted(() => {
         </template>
 
         Go to Homepage
-      </TButton>
+      </CloverButton>
     </div>
 
     <div
@@ -468,6 +521,45 @@ onMounted(() => {
             Delete
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Add Project Modal -->
+    <div
+      v-if="showAddProjectModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div class="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-xl w-full max-w-lg relative">
+        <!-- Bouton pour fermer la modale -->
+        <button
+          class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 dark:text-stone-300 dark:hover:text-white transition-colors duration-300"
+          aria-label="Close Modal"
+          @click="closeAddProjectModal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <h3 class="text-lg font-bold mb-4 text-stone-800 dark:text-stone-200">
+          Add New Project
+        </h3>
+
+        <ProjectForm
+          @submit="handleAddProject"
+          @cancel="closeAddProjectModal"
+        />
       </div>
     </div>
   </div>

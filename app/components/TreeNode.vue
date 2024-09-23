@@ -97,7 +97,7 @@ const getUniqueKeyName = (base: string, type: 'key' | 'name') => {
   return newName
 }
 
-const addNode = (event: MouseEvent) => {
+const addChildNode = (event: MouseEvent) => {
   event.stopPropagation()
 
   const newNodeKey = getUniqueKeyName(`${props.node.key}-child-`, 'key')
@@ -330,7 +330,7 @@ const applySuccessAnimation = (node: Section) => {
 
         <button
           class="p-1 rounded-full bg-black/10 dark:bg-black/10"
-          @click.stop="addNode"
+          @click.stop="addChildNode"
         >
           <svg
             class="w-4 h-4 text-stone-200 hover:text-stone-100 dark:text-stone-200 dark:hover:text-white transition-colors duration-200"

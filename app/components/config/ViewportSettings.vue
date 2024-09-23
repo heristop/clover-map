@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import TButton from '~/components/ui/TButton.vue'
+import CloverButton from '~/components/ui/CloverButton.vue'
 import { useStore } from '~/composables/store'
 import { useTreemapCapture } from '~/composables/capture'
 
@@ -20,7 +20,7 @@ const minHeight = computed({
 
 <template>
   <div class="flex items-center space-x-2 justify-between mb-3">
-    <TButton
+    <CloverButton
       :is-active="store.isEditingMode"
       size="sm"
       class="w-full truncate"
@@ -47,9 +47,9 @@ const minHeight = computed({
       </template>
 
       Edit Mode
-    </TButton>
+    </CloverButton>
 
-    <TButton
+    <CloverButton
       :is-active="false"
       size="sm"
       class="w-full"
@@ -57,7 +57,7 @@ const minHeight = computed({
     >
       <template #icon>
         <svg
-          class="w-4 h-4"
+          class="w-5 h-5"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -79,7 +79,7 @@ const minHeight = computed({
       </template>
 
       Capture
-    </TButton>
+    </CloverButton>
   </div>
 
   <div class="flex items-center space-x-4 mb-4 px-2">

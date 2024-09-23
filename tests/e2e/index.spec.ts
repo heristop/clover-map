@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('TreemapFlow Page Tests', () => {
+test.describe('CloverMap Page Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
   })
@@ -49,8 +49,8 @@ test.describe('TreemapFlow Page Tests', () => {
     await expect(page.locator('html')).toHaveText(/Root/, { timeout: 10000 })
 
     // Click the button to go back to home
-    const resetButton = page.locator('button[aria-label="Go to Homepage"]')
-    await resetButton.click()
+    const reseCloverButton = page.locator('button[aria-label="Go to Homepage"]')
+    await reseCloverButton.click()
   })
 
   test('Upload configuration file', async ({ page }) => {
@@ -63,23 +63,23 @@ test.describe('TreemapFlow Page Tests', () => {
     await fileInput.setInputFiles('public/configs/bug-tracking.json')
 
     // Click the button to trigger the file upload
-    // await uploadFileButton.click();
+    await uploadFileButton.click()
 
     // Wait for a reasonable amount of time to ensure the file is uploaded and configuration is loaded
-    // await page.waitForTimeout(5000);
+    await page.waitForTimeout(5000)
 
     // Add assertions to verify the file is uploaded and configuration is loaded
     // await expect(page.locator('text=File Config')).toBeVisible({ timeout: 10000 });
 
-    // const resetButton = page.locator('button[aria-label="Go to home"]')
-    // await resetButton.click()
+    // const reseCloverButton = page.locator('button[aria-label="Go to Homepage"]')
+    // await reseCloverButton.click()
   })
 
   test('Load custom configuration from user input', async ({ page }) => {
     const loadConfigTab = page.locator('button[aria-label="Custom Configuration"]')
     await loadConfigTab.click()
 
-    const loadConfigButton = page.locator('button[aria-label="Load Custom Configuration"]')
+    const loadConfigButton = page.locator('button[aria-label="Load Configuration"]')
 
     // Click the button to load custom configuration from user input
     await loadConfigButton.click()

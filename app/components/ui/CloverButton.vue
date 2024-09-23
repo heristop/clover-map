@@ -28,9 +28,9 @@ const emit = defineEmits<{
 }>()
 
 const sizeClasses = computed(() => ({
-  sm: 'px-2 py-1 text-xs',
-  md: 'px-4 py-2 text-sm',
-  lg: 'px-6 py-3 text-base',
+  sm: 'px-2 py-2 text-xs',
+  md: 'px-4 py-3 text-sm',
+  lg: 'px-6 py-4 text-base',
 }[props.size]))
 
 const variantClasses = computed(() => ({
@@ -45,13 +45,13 @@ const stateClasses = computed(() => {
     return 'bg-stone-300 text-stone-500 cursor-not-allowed dark:bg-stone-600 dark:text-stone-400 border-stone-400 dark:border-stone-500'
   }
   return props.isActive
-    ? 'bg-stone-500 dark:bg-stone-100 text-white dark:text-stone-500 border-stone-600 dark:border-stone-300'
+    ? 'bg-stone-500 dark:bg-stone-300 text-white dark:text-stone-600 border-stone-600 dark:border-stone-300'
     : 'bg-stone-200 hover:bg-stone-300 border-stone-200 text-stone-700 dark:bg-stone-500 dark:hover:bg-stone-600 dark:text-stone-200 dark:border-stone-400 hover:border-stone-400 dark:hover:border-stone-300'
 })
 
 const buttonClasses = computed(() => [
   'flex items-center justify-center rounded shadow transition-all duration-200',
-  'focus:ring-2 focus:ring-offset-2 focus:ring-stone-500',
+  'focus:ring-2 focus:ring-offset-2 focus:ring-stone-500/20',
   sizeClasses.value,
   stateClasses.value,
   variantClasses.value,

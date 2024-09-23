@@ -20,6 +20,12 @@ const { statuses } = storeToRefs(store)
 const isDragging = ref(false)
 const editingStatus = ref<EditingStatus | null>(null)
 
+withDefaults(defineProps<{
+  draggable?: boolean
+}>(), {
+  draggable: false,
+})
+
 const safeStatuses = computed<Status[]>(() => {
   return Array.isArray(statuses.value) ? statuses.value : []
 })
@@ -61,7 +67,7 @@ const updateStatusName = (index: number, name: string) => {
 }
 
 const startStatusDrag = (event: DragEvent, index: number) => {
-  if (event.dataTransfer) {
+  if (!editingStatus.value && event.dataTransfer) {
     event.dataTransfer.setData('statusIndex', index.toString())
     isDragging.value = true
   }
@@ -107,15 +113,16 @@ function getNextColor(): string {
       v-for="(status, index) in safeStatuses"
       :key="status.name"
       class="flex items-center space-x-2 p-2 bg-stone-200/50 dark:bg-stone-800 rounded-lg shadow-sm transition-all duration-300 ease-in-out"
-      :class="{ 'cursor-grab active:cursor-grabbing hover:shadow-sm': !isDragging }"
-      draggable="true"
+      :class="{ 'cursor-grab active:cursor-grabbing hover:shadow-sm': draggable && !editingStatus }"
+      :draggable="draggable && !editingStatus"
       @dragstart="startStatusDrag($event, index)"
       @dragend="isDragging = false"
       @dragover.prevent
       @drop="dropStatus($event, index)"
     >
-      <div class="text-stone-600 dark:text-stone-300 w-20 text-[0.75em] flex items-center">
+      <div class="text-stone-600 dark:text-stone-300 w-20 text-xs flex items-center">
         <svg
+          v-if="draggable && !editingStatus"
           xmlns="http://www.w3.org/2000/svg"
           class="h-4 w-4 mr-1"
           fill="none"
@@ -134,7 +141,7 @@ function getNextColor(): string {
 
       <input
         :value="editingStatus?.index === index ? editingStatus.name : status.name"
-        class="p-[0.25em] font-semibold rounded-sm w-full placeholder:text-stone-300 text-[0.75em] transition-all duration-300 focus:ring-2 focus:ring-stone-500 bg-white dark:bg-stone-700 text-stone-800 dark:text-white"
+        class="p-1 font-semibold rounded w-full placeholder:text-stone-300 text-xs transition-all duration-300 focus:ring-2 focus:ring-stone-500 bg-white dark:bg-stone-700 text-stone-800 dark:text-white"
         placeholder="status"
         @input="updateStatusName(index, ($event.target as HTMLInputElement).value)"
         @focus="startEditing(index, status.name)"
@@ -143,8 +150,10 @@ function getNextColor(): string {
       <input
         v-model="status.color"
         :style="{ backgroundColor: isValidColor(status.color) ? status.color : '#FFFFFF', color: isValidColor(status.color) ? getTextColor(status.color) : '#000000' }"
-        class="p-[0.25em] font-semibold rounded-sm w-full placeholder:text-stone-300 text-[0.75em] transition-all duration-300 focus:ring-2 focus:ring-stone-500"
+        class="p-1 font-semibold rounded w-full placeholder:text-stone-300 text-xs transition-all duration-300 focus:ring-2 focus:ring-stone-500"
         placeholder="color"
+        @focus="startEditing(index, status.name)"
+        @blur="stopEditing"
       >
       <button
         :disabled="safeStatuses.length <= 1"
@@ -153,7 +162,7 @@ function getNextColor(): string {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
+          class="h-5 w-5"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -170,18 +179,18 @@ function getNextColor(): string {
   </div>
 
   <div class="flex items-center space-x-2 p-2 bg-stone-200/50 dark:bg-stone-800 rounded-lg shadow-sm mt-2 hover:shadow-sm">
-    <div class="text-stone-600 dark:text-stone-300 w-20 text-[0.75em]">
+    <div class="text-stone-600 dark:text-stone-300 w-20 text-xs">
       {{ safeStatuses.length + 1 }}.
     </div>
     <input
       v-model="newStatus.name"
-      class="p-[0.25em] font-semibold rounded-sm w-full placeholder:text-stone-400 text-[0.75em] transition-all duration-300 focus:ring-2 focus:ring-stone-500 bg-white dark:bg-stone-700 text-stone-800 dark:text-white"
+      class="p-1 font-semibold rounded w-full placeholder:text-stone-400 text-xs transition-all duration-300 focus:ring-2 focus:ring-stone-500 bg-white dark:bg-stone-700 text-stone-800 dark:text-white"
       placeholder="New Status"
     >
     <input
       v-model="newStatus.color"
       :style="{ backgroundColor: isValidColor(newStatus.color) ? newStatus.color : '#FFFFFF', color: isValidColor(newStatus.color) ? getTextColor(newStatus.color) : '#000000' }"
-      class="p-[0.25em] font-semibold rounded-sm w-full placeholder:text-stone-400 text-[0.75em] transition-all duration-300 focus:ring-2 focus:ring-stone-500"
+      class="p-1 font-semibold rounded w-full placeholder:text-stone-400 text-xs transition-all duration-300 focus:ring-2 focus:ring-stone-500"
       :placeholder="getNextColor()"
     >
     <button
