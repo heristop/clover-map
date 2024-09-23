@@ -24,6 +24,8 @@ onMounted(() => {
 
 <template>
   <div class="h-full">
-    <TreeMap />
+    <ClientOnly>
+      <TreeMap />
+    </ClientOnly>
   </div>
 </template>

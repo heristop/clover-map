@@ -23,13 +23,6 @@ const { updateSectionStatus } = useStatusManagement()
 const localKey = ref(props.node.key)
 const localName = ref(props.node.name)
 
-watch(() => props.node, (newNode) => {
-  localKey.value = newNode.key
-  localName.value = newNode.name
-  nodeStatus.value = newNode.status || store.statuses[0]?.name || ''
-  checkIfSuccessNode(newNode)
-}, { deep: true })
-
 const displayContent = computed({
   get: () => store.displayLabel === 'key' ? localKey.value : localName.value,
   set: (value: string) => {
@@ -43,6 +36,27 @@ const displayContent = computed({
     }
   },
 })
+
+const handleLabelUpdate = (newValue: string) => {
+  displayContent.value = newValue
+}
+
+watch(() => store.displayLabel, () => {
+  isEditing.value = false
+  nextTick(() => {
+    isEditing.value = true
+    nextTick(() => {
+      isEditing.value = false
+    })
+  })
+})
+
+watch(() => props.node, (newNode) => {
+  localKey.value = newNode.key
+  localName.value = newNode.name
+  nodeStatus.value = newNode.status || store.statuses[0]?.name || ''
+  checkIfSuccessNode(newNode)
+}, { deep: true })
 
 const checkIfSuccessNode = (node: Section) => {
   if (store.statuses?.length > 0 && node.status === store.statuses[store.statuses.length - 1]?.name) {
@@ -150,15 +164,6 @@ const handleDragOver = (event: DragEvent) => {
   event.preventDefault()
 }
 
-const handleLabelUpdate = (newValue: string) => {
-  if (store.displayLabel === 'key') {
-    updateSectionKey(props.node.key, newValue)
-  }
-  else {
-    updateSectionName(props.node.key, newValue)
-  }
-}
-
 const handleTitleClick = (event: MouseEvent) => {
   event.stopPropagation()
 }
@@ -231,7 +236,7 @@ const applySuccessAnimation = (node: Section) => {
 
 <template>
   <div
-    class="node-container relative"
+    class="node-container relative dark:bg-stone-800"
     :class="{ 'success-animation': isSuccessNode }"
     :style="nodeStyle"
     :data-node-key="node.key"
@@ -242,7 +247,11 @@ const applySuccessAnimation = (node: Section) => {
     @click="handleClick"
   >
     <div
-      :class="['node-title', { 'center-title': !node.children || !node.children.length }]"
+      :class="[
+        'node-title',
+        { 'center-title': !node.children || !node.children.length },
+        'dark:bg-stone-700 dark:text-white',
+      ]"
       @click="handleTitleClick"
     >
       <span
@@ -252,7 +261,7 @@ const applySuccessAnimation = (node: Section) => {
       >
         <svg
           v-if="node.isCollapsed"
-          class="w-5 h-5 text-stone-100"
+          class="w-5 h-5 text-stone-100 dark:text-stone-200"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -269,7 +278,7 @@ const applySuccessAnimation = (node: Section) => {
 
         <svg
           v-else
-          class="w-5 h-5 text-stone-100"
+          class="w-5 h-5 text-stone-100 dark:text-stone-200"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -286,8 +295,10 @@ const applySuccessAnimation = (node: Section) => {
       </span>
 
       <EditableLabel
+        :key="store.displayLabel"
         :value="displayContent"
         :is-editing="isEditing"
+        class="truncate dark:text-stone-100"
         @update:value="handleLabelUpdate"
         @update:is-editing="isEditing = $event"
       />
@@ -297,11 +308,11 @@ const applySuccessAnimation = (node: Section) => {
         class="flex ml-4 space-x-2"
       >
         <button
-          class="p-1 rounded-full bg-black/10"
+          class="p-1 rounded-full bg-black/10 dark:bg-black/10"
           @click.stop="addSiblingNode"
         >
           <svg
-            class="w-4 h-4 text-stone-200 hover:text-stone-100 transition-colors duration-200"
+            class="w-4 h-4 text-stone-200 hover:text-stone-100 dark:text-stone-200 dark:hover:text-white transition-colors duration-200"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -318,11 +329,11 @@ const applySuccessAnimation = (node: Section) => {
         </button>
 
         <button
-          class="p-1 rounded-full bg-black/10"
+          class="p-1 rounded-full bg-black/10 dark:bg-black/10"
           @click.stop="addNode"
         >
           <svg
-            class="w-4 h-4 text-stone-200 hover:text-stone-100 transition-colors duration-200"
+            class="w-4 h-4 text-stone-200 hover:text-stone-100 dark:text-stone-200 dark:hover:text-white transition-colors duration-200"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -340,11 +351,11 @@ const applySuccessAnimation = (node: Section) => {
 
         <button
           :disabled="store.sections.length === 1 && !store.hasParent(props.node.key)"
-          class="p-1 rounded-full bg-black/10 disabled:opacity-40"
+          class="p-1 rounded-full bg-black/10 dark:bg-black/10 disabled:opacity-40"
           @click.stop="deleteNode"
         >
           <svg
-            class="w-4 h-4 text-stone-200 hover:text-stone-100 transition-colors duration-200"
+            class="w-4 h-4 text-stone-200 hover:text-stone-100 dark:text-stone-200 dark:hover:text-white transition-colors duration-200"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -497,6 +508,16 @@ const applySuccessAnimation = (node: Section) => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+:root.dark .edit-input {
+  background: rgba(0, 0, 0, 0.2);
+  color: #e0e0e0;
+}
+
+:root.dark .edit-input:focus {
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid #e0e0e0;
+}
+
 .collapse-icon {
   cursor: pointer;
   font-weight: bold;
@@ -525,5 +546,9 @@ const applySuccessAnimation = (node: Section) => {
   transform: rotate(45deg);
   animation: successAnimation 1s ease-in-out;
   pointer-events: none;
+}
+
+:root.dark .success-animation::before {
+  background: rgba(0, 0, 0, 0.3);
 }
 </style>

@@ -37,12 +37,14 @@ const cancelEdit = () => {
 
 <template>
   <div class="flex h-screen">
-    <ProjectPanel
-      :class="[panelCollapsed ? 'w-14 min-w-14 max-w-14' : 'w-64 min-w-64 max-w-64']"
-      class="z-10"
-    />
+    <div class="flex">
+      <ProjectPanel
+        :class="[panelCollapsed ? 'w-14 min-w-14 max-w-14' : 'w-64 min-w-64 max-w-64']"
+        class="z-10"
+      />
 
-    <ConfigDrawer />
+      <ConfigDrawer class="max-w-64" />
+    </div>
 
     <div class="flex-grow overflow-hidden">
       <div

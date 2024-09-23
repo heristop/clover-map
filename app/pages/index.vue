@@ -3,9 +3,9 @@ import { ref, computed, nextTick, onMounted } from 'vue'
 import { useStore } from '~/composables/store'
 import { useConfig } from '~/composables/config'
 import { useProjects } from '~/composables/project'
-import AppFooter from '~/components/AppFooter.vue'
 import TButton from '~/components/ui/TButton.vue'
 import DarkModeToggle from '~/components/ui/DarkModeToggle.vue'
+import { useRuntimeConfig, navigateTo } from '#imports'
 
 const store = useStore()
 const { setCurrentProject } = useProjects()
@@ -36,20 +36,42 @@ const sample = ref(`[
   }
 ]`)
 
+const isConfigLoading = ref(false)
+const sampleError = ref('')
+
 const loadConfigFromApi = async (model: string) => {
-  await loadFromModel(model)
+  isConfigLoading.value = true
+  try {
+    await loadFromModel(model)
+  }
+  finally {
+    isConfigLoading.value = false
+  }
 }
 
-const loadConfigFromUrl = async (url: string) => {
-  await loadFromUrl(url)
+const loadConfigFromUrl = async (inputUrl: string) => {
+  isConfigLoading.value = true
+  try {
+    await loadFromUrl(inputUrl)
+  }
+  finally {
+    isConfigLoading.value = false
+  }
 }
 
 const loadConfigFromUserInput = async () => {
-  await loadFromUserInput(sample.value)
+  try {
+    JSON.parse(sample.value)
+    await loadFromUserInput(sample.value)
+    sampleError.value = ''
+  }
+  catch (error) {
+    sampleError.value = 'Invalid JSON format'
+  }
 }
 
-const openExternalLink = (url: string) => {
-  window.open(url, '_blank')
+const openExternalLink = (link: string) => {
+  window.open(link, '_blank')
 }
 
 const observeSections = () => {
@@ -92,6 +114,8 @@ const navigateToLastCreatedProject = () => {
   }
 }
 
+const activeTab = ref('sample')
+
 definePageMeta({
   middleware: 'project',
 })
@@ -111,429 +135,614 @@ onMounted(() => {
 <template>
   <div
     :class="{ dark: darkMode }"
-    class="relative w-full min-h-screen overflow-auto bg-stone-200 dark:bg-stone-900 text-stone-900 dark:text-stone-50"
+    class="relative w-full min-h-screen bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-800 dark:to-stone-900 text-stone-900 dark:text-stone-50"
   >
-    <DarkModeToggle
-      fixed
-      :position="'top-4 right-4'"
-    />
+    <!-- Header -->
+    <header>
+      <DarkModeToggle
+        fixed
+        :position="'top-4 right-4'"
+        class="fixed z-20"
+      />
+    </header>
 
-    <div class="background-grid fixed inset-0 z-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-      <div class="bg-purple-300 dark:bg-purple-700 rounded-lg opacity-30" />
-      <div class="bg-yellow-300 dark:bg-yellow-700 rounded-lg opacity-30" />
-      <div class="bg-blue-300 dark:bg-blue-700 col-span-2 opacity-30" />
-      <div class="bg-pink-300 dark:bg-pink-700 col-span-2 opacity-30" />
-      <div class="bg-green-300 dark:bg-green-700 rounded-lg opacity-30" />
-      <div class="bg-red-300 dark:bg-red-700 rounded-lg opacity-30" />
-      <div class="bg-indigo-300 dark:bg-indigo-700 rounded-lg opacity-30" />
-      <div class="bg-teal-300 dark:bg-teal-700 rounded-lg opacity-30" />
-      <div class="bg-orange-300 dark:bg-orange-700 rounded-lg opacity-30" />
-      <div class="bg-lime-300 dark:bg-lime-700 rounded-lg opacity-30" />
-    </div>
+    <!-- Main Content -->
+    <main class="pt-0">
+      <!-- Background Grid -->
+      <div class="background-grid fixed inset-0 z-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div class="bg-purple-300 dark:bg-purple-700 rounded-lg opacity-30" />
+        <div class="bg-yellow-300 dark:bg-yellow-700 rounded-lg opacity-30" />
+        <div class="bg-blue-300 dark:bg-blue-700 col-span-2 opacity-30" />
+        <div class="bg-pink-300 dark:bg-pink-700 col-span-2 opacity-30" />
+        <div class="bg-green-300 dark:bg-green-700 rounded-lg opacity-30" />
+        <div class="bg-red-300 dark:bg-red-700 rounded-lg opacity-30" />
+        <div class="bg-indigo-300 dark:bg-indigo-700 rounded-lg opacity-30" />
+        <div class="bg-teal-300 dark:bg-teal-700 rounded-lg opacity-30" />
+        <div class="bg-orange-300 dark:bg-orange-700 rounded-lg opacity-30" />
+        <div class="bg-lime-300 dark:bg-lime-700 rounded-lg opacity-30" />
+      </div>
 
-    <div class="absolute h-full inset-0 z-10 bg-stone-200 dark:bg-stone-800 opacity-80 dark:opacity-90" />
+      <div class="absolute h-full inset-0 z-10 bg-stone-200 dark:bg-stone-800 opacity-80 dark:opacity-90" />
 
-    <div
-      v-if="!isLoading"
-      class="relative z-20 flex flex-col justify-center items-center h-screen p-6 max-w-6xl mx-auto section show"
-    >
-      <transition
-        name="fade"
-        appear
+      <!-- Welcome Section -->
+      <section
+        v-if="!isLoading"
+        id="home"
+        class="relative z-20 flex flex-col justify-center items-center min-h-screen p-6 max-w-6xl mx-auto section show"
       >
-        <section class="text-center space-y-6">
-          <h1 class="flex flex-col items-center justify-center text-center text-4xl font-semibold mb-10 drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]">
-            <svg
-              class="w-12 h-12 sm:w-16 sm:h-16 md:w-18 md:h-18 mb-2 sm:mb-3 md:mb-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <defs>
-                <linearGradient
-                  id="grad1"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop
-                    offset="0%"
-                    style="stop-color:#DD5E89;stop-opacity:1"
-                  />
-                  <stop
-                    offset="100%"
-                    style="stop-color:#F7BB97;stop-opacity:1"
-                  />
-                </linearGradient>
-              </defs>
-              <path
-                fill="url(#grad1)"
-                d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm14 18a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4ZM5 11a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5Zm14 2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4Z"
-              />
-            </svg>
-            Welcome to TreemapFlow!
-          </h1>
-
-          <h2 class="text-lg text-stone-600 dark:text-stone-200 max-w-3xl mx-auto">
-            <p>A simple and interactive treemap visualization tool</p>
-          </h2>
-
-          <div class="text-base text-stone-500 dark:text-stone-300 max-w-3xl mx-auto space-y-2">
-            <p v-if="store.projects.length === 0">
-              It looks like you haven't created any project yet. Scroll down and click one of the buttons below to load sample data and see TreemapFlow in action!
-            </p>
-
-            <div
-              v-else
-              class="space-y-2"
-            >
-              <p>
-                You have created <strong>{{ store.projects.length }}</strong>
-                {{ store.projects.length === 1 ? 'project' : 'projects' }} so far. Click the button below to return to Workspace
-              </p>
-
-              <p>
-                Or scroll down to load sample data and see TreemapFlow in action!
-              </p>
-            </div>
-          </div>
-
-          <div
-            v-if="store.projects.length > 0"
-            class="flex justify-center space-x-4 p-6"
-          >
-            <TButton
-              :is-active="false"
-              class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
-              aria-label="View My Projects"
-              @click="() => navigateToLastCreatedProject()"
-            >
-              <template #icon>
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                  />
-                </svg>
-              </template>
-
-              View My Projects
-            </TButton>
-          </div>
-
-          <div class="mt-8 animate-bounce">
-            <svg
-              class="w-6 h-6 mx-auto cursor-pointer drop-shadow-lg text-stone-600 dark:text-stone-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              @click="scrollToSection('section-to-fade')"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </section>
-      </transition>
-    </div>
-
-    <div class="min-h-screen">
-      <transition
-        name="fade"
-        appear
-      >
-        <section
-          id="section-to-fade"
-          class="min-h-screen section"
+        <transition
+          name="fade"
+          appear
         >
-          <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-            <h2 class="text-lg font-bold drop-shadow-lg text-stone-700 dark:text-stone-400">
-              Load Sample Data
+          <div class="text-center space-y-8 py-16">
+            <h1 class="flex flex-col items-center justify-center text-center text-4xl font-bold mb-10 drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]">
+              <svg
+                class="w-16 h-16 mb-6"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <defs>
+                  <linearGradient
+                    id="grad1"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop
+                      offset="0%"
+                      style="stop-color:#DD5E89;stop-opacity:1"
+                    />
+                    <stop
+                      offset="100%"
+                      style="stop-color:#F7BB97;stop-opacity:1"
+                    />
+                  </linearGradient>
+                </defs>
+                <path
+                  fill="url(#grad1)"
+                  d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm14 18a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4ZM5 11a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5Zm14 2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4Z"
+                />
+              </svg>
+              Welcome to TreemapFlow!
+            </h1>
+
+            <h2 class="text-xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto font-light">
+              A simple and interactive treemap visualization tool for your projects
             </h2>
 
-            <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 text-center space-y-6 md:space-y-0">
-              <TButton
-                :is-active="false"
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
-                aria-label="Load Project Project"
-                @click="loadConfigFromApi('blank')"
+            <div class="text-base text-stone-500 dark:text-stone-400 max-w-3xl mx-auto space-y-4">
+              <div
+                v-if="store.projects.length === 0"
+                class="space-y-2"
               >
-                <svg
-                  class="w-5 h-5 mr-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
-                  />
-                </svg>
+                <p>It looks like you haven't created any project yet.</p>
+                <p>Get started by loading sample data or creating your own project!</p>
+                <p class="font-semibold text-stone-600 dark:text-stone-300">
+                  All your data is stored locally in your browser.
+                </p>
+              </div>
 
-                Blank Project
+              <div
+                v-else
+                class="space-y-2"
+              >
+                <p>
+                  You have created <strong>{{ store.projects.length }}</strong>
+                  {{ store.projects.length === 1 ? 'project' : 'projects' }} so far.
+                </p>
+                <p>Continue working on your existing projects or create a new one!</p>
+                <p class="font-semibold text-stone-600 dark:text-stone-300">
+                  All your data is stored locally in your browser.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 p-6">
+              <TButton
+                v-if="store.projects.length > 0"
+                :is-active="false"
+                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400 transition-all duration-300 transform hover:scale-105"
+                aria-label="View My Projects"
+                @click="navigateToLastCreatedProject"
+              >
+                <template #icon>
+                  <svg
+                    class="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                    />
+                  </svg>
+                </template>
+                View My Projects
               </TButton>
 
               <TButton
                 :is-active="false"
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
-                aria-label="Load Project Migration Data"
-                @click="loadConfigFromApi('ecom-migration')"
+                class="bg-gradient-to-r from-[#DD5E89] to-[#F7BB97] hover:from-[#F7BB97] hover:to-[#DD5E89] text-white border-none transition-all duration-300 transform hover:scale-105"
+                aria-label="Create New Project"
+                @click="scrollToSection('create-project')"
               >
-                <svg
-                  class="w-5 h-5 mr-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
+                <template #icon>
+                  <svg
+                    class="w-5 h-5 mr-2"
+                    fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
-                  />
-                </svg>
-
-                E-com Migration
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                </template>
+                Create New Project
               </TButton>
+            </div>
 
-              <TButton
-                :is-active="false"
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
-                aria-label="Load Bug Tracking Data"
-                @click="loadConfigFromApi('bug-tracking')"
+            <div class="mt-12 animate-bounce">
+              <svg
+                class="w-8 h-8 mx-auto cursor-pointer drop-shadow-md text-stone-600 dark:text-stone-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                @click="scrollToSection('create-project')"
               >
-                <svg
-                  class="w-5 h-5 mr-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 5 9 4V3m5 2 1-1V3m-3 6v11m0-11a5 5 0 0 1 5 5m-5-5a5 5 0 0 0-5 5m5-5a4.959 4.959 0 0 1 2.973 1H15V8a3 3 0 0 0-6 0v2h.027A4.959 4.959 0 0 1 12 9Zm-5 5H5m2 0v2a5 5 0 0 0 10 0v-2m2.025 0H17m-9.975 4H6a1 1 0 0 0-1 1v2m12-3h1.025a1 1 0 0 1 1 1v2M16 11h1a1 1 0 0 0 1-1V8m-9.975 3H7a1 1 0 0 1-1-1V8"
-                  />
-                </svg>
-
-                Bug Tracking
-              </TButton>
-
-              <TButton
-                :is-active="false"
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
-                aria-label="Load Recruitment Data"
-                @click="loadConfigFromApi('recruitment')"
-              >
-                <svg
-                  class="w-5 h-5 mr-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-width="2"
-                    d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
-                  />
-                </svg>
-
-                Recruitment
-              </TButton>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
             </div>
           </div>
+        </transition>
+      </section>
 
-          <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-            <h2 class="text-lg font-bold drop-shadow-lg text-stone-700 dark:text-stone-400">
-              Load Configuration
+      <!-- Create Project Section -->
+      <section
+        id="create-project"
+        class="min-h-screen"
+      >
+        <transition
+          name="fade"
+          appear
+        >
+          <div class="relative z-20 flex flex-col justify-center items-center min-h-screen p-6 max-w-6xl mx-auto section">
+            <h2 class="text-3xl font-bold mb-8 text-stone-700 dark:text-stone-300">
+              Create Your Project
             </h2>
 
-            <input
-              ref="fileInput"
-              type="file"
-              accept=".json"
-              class="hidden"
-              @change="loadFromFile"
-            >
+            <div class="w-full max-w-3xl bg-white dark:bg-stone-700 rounded-lg shadow-lg p-8 space-y-8">
+              <!-- Tab Navigation -->
+              <div class="flex flex-col md:flex-row md:space-x-4 mb-6">
+                <button
+                  :class="[
+                    'flex-1 py-2 px-4 rounded-t-lg font-medium transition-colors duration-200',
+                    activeTab === 'sample'
+                      ? 'bg-stone-200 dark:bg-stone-600'
+                      : 'border border-dashed border-stone-200/75 hover:bg-stone-100 dark:hover:bg-stone-800',
+                  ]"
+                  @click="activeTab = 'sample'"
+                >
+                  Sample Data
+                </button>
+                <button
+                  :class="[
+                    'flex-1 py-2 px-4 rounded-t-lg font-medium transition-colors duration-200',
+                    activeTab === 'custom'
+                      ? 'bg-stone-200 dark:bg-stone-600'
+                      : 'border border-dashed border-stone-200/75 hover:bg-stone-100 dark:hover:bg-stone-800',
+                  ]"
+                  aria-label="Custom Configuration"
+                  @click="activeTab = 'custom'"
+                >
+                  Custom Configuration
+                </button>
+              </div>
 
-            <div class="flex flex-col w-full md:w-fit md:flex-row md:space-x-4 space-y-6 md:space-y-0">
-              <TButton
-                :is-active="false"
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
-                aria-label="Upload File"
-                @click="($refs.fileInput as HTMLInputElement).click()"
-              >
-                <template #icon>
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
+              <!-- Sample Data Tab -->
+              <div v-if="activeTab === 'sample'">
+                <h3 class="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">
+                  Load Sample Data
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <!-- Sample Data Buttons -->
+                  <TButton
+                    :is-active="false"
+                    :disabled="isConfigLoading"
+                    class="bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-300 dark:border-stone-500 transition-all duration-300"
+                    aria-label="Load Blank Project"
+                    @click="loadConfigFromApi('blank')"
                   >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"
-                    />
-                  </svg>
-                </template>
+                    <template #icon>
+                      <svg
+                        v-if="!isConfigLoading"
+                        class="w-5 h-5 mr-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
+                        />
+                      </svg>
+                      <svg
+                        v-else
+                        class="w-5 h-5 mr-2 animate-spin"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        />
+                        <path
+                          class="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8z"
+                        />
+                      </svg>
+                    </template>
+                    <span v-if="!isConfigLoading">Blank Project</span>
+                    <span v-else>Loading...</span>
+                  </TButton>
 
-                <span>Upload File</span>
-              </TButton>
+                  <TButton
+                    :is-active="false"
+                    class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
+                    aria-label="Load Project Migration Data"
+                    @click="loadConfigFromApi('ecom-migration')"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                      />
+                    </svg>
+
+                    E-com Migration
+                  </TButton>
+
+                  <TButton
+                    :is-active="false"
+                    class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
+                    aria-label="Load Bug Tracking Data"
+                    @click="loadConfigFromApi('bug-tracking')"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 5 9 4V3m5 2 1-1V3m-3 6v11m0-11a5 5 0 0 1 5 5m-5-5a5 5 0 0 0-5 5m5-5a4.959 4.959 0 0 1 2.973 1H15V8a3 3 0 0 0-6 0v2h.027A4.959 4.959 0 0 1 12 9Zm-5 5H5m2 0v2a5 5 0 0 0 10 0v-2m2.025 0H17m-9.975 4H6a1 1 0 0 0-1 1v2m12-3h1.025a1 1 0 0 1 1 1v2M16 11h1a1 1 0 0 0 1-1V8m-9.975 3H7a1 1 0 0 1-1-1V8"
+                      />
+                    </svg>
+
+                    Bug Tracking
+                  </TButton>
+
+                  <TButton
+                    :is-active="false"
+                    class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
+                    aria-label="Load Recruitment Data"
+                    @click="loadConfigFromApi('recruitment')"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+                      />
+                    </svg>
+
+                    Recruitment
+                  </TButton>
+                </div>
+
+                <!-- Load Configuration Section -->
+                <h3 class="text-2xl font-semibold mt-8 mb-4 text-stone-700 dark:text-stone-300">
+                  Load Configuration
+                </h3>
+                <div class="space-y-6">
+                  <!-- Load from File -->
+                  <div class="flex flex-col space-y-2">
+                    <label
+                      for="file-upload"
+                      class="text-sm font-medium text-stone-700 dark:text-stone-300"
+                    >
+                      Load from File
+                    </label>
+                    <div class="flex flex-col space-y-4 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+                      <input
+                        id="file-upload"
+                        ref="fileInput"
+                        type="file"
+                        accept=".json"
+                        class="hidden"
+                        @change="loadFromFile"
+                      >
+                      <TButton
+                        :is-active="false"
+                        :disabled="isConfigLoading"
+                        class="mt-4 md:mt-0 bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500border-stone-300 dark:border-stone-500 transition-all duration-300"
+                        aria-label="Upload File"
+                        @click="($refs.fileInput as HTMLInputElement).click()"
+                      >
+                        <template #icon>
+                          <svg
+                            v-if="!isConfigLoading"
+                            class="w-5 h-5 mr-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"
+                            />
+                          </svg>
+                          <svg
+                            v-else
+                            class="w-5 h-5 mr-2 animate-spin"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              class="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              stroke-width="4"
+                            />
+                            <path
+                              class="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v8z"
+                            />
+                          </svg>
+                        </template>
+                        <span v-if="!isConfigLoading">Select File</span>
+                        <span v-else>Loading...</span>
+                      </TButton>
+                    </div>
+
+                    <p class="text-xs text-stone-500 dark:text-stone-400">
+                      Select a JSON file from your computer.
+                    </p>
+                  </div>
+
+                  <!-- Load from URL -->
+                  <div class="flex flex-col space-y-2">
+                    <label
+                      for="url-input"
+                      class="text-sm font-medium text-stone-700 dark:text-stone-300"
+                    >
+                      Load from URL
+                    </label>
+                    <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+                      <input
+                        id="url-input"
+                        v-model="url"
+                        placeholder="https://"
+                        class="flex-grow bg-stone-100 dark:bg-stone-600 text-stone-900 dark:text-white
+          px-4 py-2 rounded-md text-sm shadow-sm border border-stone-300 dark:border-stone-500
+          focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-300 focus:border-transparent"
+                      >
+                      <TButton
+                        :is-active="false"
+                        :disabled="!url || isConfigLoading"
+                        class="mt-4 md:mt-0 bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500
+          border-stone-300 dark:border-stone-500 transition-all duration-300"
+                        aria-label="Load from URL"
+                        @click="loadConfigFromUrl(url)"
+                      >
+                        <template #icon>
+                          <svg
+                            v-if="!isConfigLoading"
+                            class="w-5 h-5 mr-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
+                            />
+                          </svg>
+                          <svg
+                            v-else
+                            class="w-5 h-5 mr-2 animate-spin"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              class="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              stroke-width="4"
+                            />
+                            <path
+                              class="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v8z"
+                            />
+                          </svg>
+                        </template>
+                        <span v-if="!isConfigLoading">Load</span>
+                        <span v-else>Loading...</span>
+                      </TButton>
+                    </div>
+
+                    <p class="text-xs text-stone-500 dark:text-stone-400">
+                      Enter the URL of a JSON configuration file.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Configuration Tab -->
+              <div
+                v-if="activeTab === 'custom'"
+                class="space-y-4"
+              >
+                <h3 class="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">
+                  Custom Configuration
+                </h3>
+                <div class="space-y-2">
+                  <label
+                    for="sample-config"
+                    class="block text-sm font-medium text-stone-700 dark:text-stone-300"
+                  >
+                    JSON Configuration
+                  </label>
+                  <textarea
+                    id="sample-config"
+                    v-model="sample"
+                    class="w-full h-60 text-sm text-stone-700 bg-stone-100 rounded-md p-2 dark:bg-stone-600 dark:text-stone-300 border border-stone-300 dark:border-stone-500 focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-300 focus:border-transparent"
+                    aria-label="Sample Configuration"
+                  />
+                  <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">
+                    <strong>key:</strong> Unique identifier for the section<br>
+                    <strong>name:</strong> Name of the section<br>
+                    <strong>status:</strong> Current status of the section<br>
+                    <strong>children:</strong> Nested sections<br>
+                    <strong>isCollapsed:</strong> Optional flag to collapse the section
+                  </p>
+                  <p
+                    v-if="sampleError"
+                    class="text-red-500 text-sm"
+                  >
+                    {{ sampleError }}
+                  </p>
+                </div>
+                <TButton
+                  :is-active="false"
+                  :disabled="isConfigLoading"
+                  full-width
+                  class="bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-300 dark:border-stone-500 transition-all duration-300"
+                  aria-label="Load Custom Configuration"
+                  @click="loadConfigFromUserInput"
+                >
+                  <template #icon>
+                    <svg
+                      v-if="!isConfigLoading"
+                      class="w-5 h-5 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
+                      />
+                    </svg>
+                    <svg
+                      v-else
+                      class="w-5 h-5 mr-2 animate-spin"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                      />
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8z"
+                      />
+                    </svg>
+                  </template>
+                  <span v-if="!isConfigLoading">Load Custom Configuration</span>
+                  <span v-else>Loading...</span>
+                </TButton>
+              </div>
             </div>
 
-            <div class="flex flex-col w-full md:w-2/3 md:flex-row md:space-x-4 space-y-6 md:space-y-0">
-              <input
-                v-model="url"
-                placeholder="https://"
-                class="bg-stone-100 text-stone-900 dark:bg-stone-700 dark:text-white px-4 py-2 rounded-md text-sm w-full md:w-2/3 shadow-sm"
-              >
-              <TButton
-                :is-active="false"
-                :disabled="!url"
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400"
-                aria-label="Load Configuration from URL"
-                @click="loadConfigFromUrl(url)"
-              >
-                <template #icon>
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
-                    />
-                  </svg>
-                </template>
-
-                Load from URL
-              </TButton>
-            </div>
-          </div>
-
-          <div class="relative z-20 flex flex-col justify-center items-center min-h-60 space-y-8 p-6 max-w-6xl mx-auto">
-            <h2 class="text-lg font-bold drop-shadow-lg text-stone-700 dark:text-stone-400">
-              Load Custom Configuration
-            </h2>
-
-            <div class="bg-stone-100 text-stone-900 dark:bg-stone-700 dark:text-white p-4 rounded-md text-sm w-full md:w-1/2 shadow-sm">
-              <label
-                for="sample-config"
-                class="block text-sm font-medium text-stone-900 dark:text-stone-50"
-              >
-                Sample Configuration
-              </label>
-
-              <textarea
-                id="sample-config"
-                v-model="sample"
-                class="w-full h-60 text-xs text-stone-500 bg-stone-200 rounded-md p-2 dark:bg-stone-600 dark:text-stone-300 mt-1 focus:border-stone-300 dark:focus:border-stone-600"
-                aria-label="Sample Configuration"
-              />
-
-              <p class="text-stone-500 mt-4 dark:text-stone-300">
-                <strong>key:</strong> Unique identifier for the section<br>
-                <strong>name:</strong> Name of the section<br>
-                <strong>status:</strong> Current status of the section<br>
-                <strong>children:</strong> Nested sections<br>
-                <strong>isCollapsed:</strong>  Optional flag to collapse the section
-              </p>
-
-              <TButton
-                :is-active="false"
-                full-width
-                class="bg-stone-300/40 hover:bg-stone-400/40 border-stone-400 mt-4"
-                aria-label="Load Sample Data"
-                @click="loadConfigFromUserInput"
-              >
-                <template #icon>
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 12V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4m5-13v4a1 1 0 0 1-1 1H5m0 6h9m0 0-2-2m2 2-2 2"
-                    />
-                  </svg>
-                </template>
-
-                Load Config
-              </TButton>
-            </div>
-
-            <div class="flex justify-center space-x-4 p-6">
+            <!-- External Links -->
+            <div class="mt-12 flex justify-center space-x-4">
               <TButton
                 :is-active="false"
                 aria-label="View on GitHub"
-                full-width
-                class="w-full md:w-auto border-2"
+                class="bg-stone-100/50 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-200 dark:border-stone-500 transition-all duration-300"
                 @click="openExternalLink('https://github.com/heristop/treemap-flow')"
               >
                 <template #icon>
+                  <!-- GitHub Icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    aria-hidden="true"
-                    role="img"
                     class="icon flex-shrink-0 h-5 w-5 mr-2"
-                    width="1em"
-                    height="1em"
                     viewBox="0 0 24 24"
                   >
                     <path
@@ -542,26 +751,20 @@ onMounted(() => {
                     />
                   </svg>
                 </template>
-
-                <span>View on GitHub</span>
+                View on GitHub
               </TButton>
 
               <TButton
                 :is-active="false"
                 aria-label="Edit on StackBlitz"
-                full-width
-                class="w-full md:w-auto border-2"
+                class="bg-stone-100/50 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500 border-stone-200 dark:border-stone-500 transition-all duration-300"
                 @click="openExternalLink('https://stackblitz.com/~/github.com/heristop/treemap-flow')"
               >
                 <template #icon>
+                  <!-- StackBlitz Icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    aria-hidden="true"
-                    role="img"
                     class="icon flex-shrink-0 h-5 w-5 mr-2"
-                    width="1em"
-                    height="1em"
                     viewBox="0 0 24 24"
                   >
                     <path
@@ -570,11 +773,11 @@ onMounted(() => {
                     />
                   </svg>
                 </template>
-
                 Edit on StackBlitz
               </TButton>
             </div>
 
+            <!-- Snackbar and Footer -->
             <ClientOnly>
               <NuxtSnackbar
                 bottom
@@ -586,47 +789,49 @@ onMounted(() => {
               />
             </ClientOnly>
 
-            <AppFooter />
+            <AppFooter class="mt-12" />
           </div>
-        </section>
-      </transition>
-    </div>
+        </transition>
+      </section>
+    </main>
   </div>
 </template>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s, transform 0.3s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.background-grid {
-  height: 100%;
-  width: 100%;
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .animate-bounce {
-  animation: bounce 1.5s infinite;
+  animation: bounce 2s infinite;
 }
 
 @keyframes bounce {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    transform: translateY(-15%);
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
 .section {
   opacity: 0;
-  transition: opacity 0.6s ease-in-out;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
 }
 
 .section.show {
   opacity: 1;
+  transform: translateY(0);
 }
 </style>

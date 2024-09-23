@@ -23,12 +23,12 @@ const minHeight = computed({
     <TButton
       :is-active="store.isEditingMode"
       size="sm"
-      class="w-full"
+      class="w-full truncate"
       @click="store.toggleEditingMode()"
     >
       <template #icon>
         <svg
-          class="w-4 h-4 mr-2"
+          class="w-4 h-4"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -57,7 +57,7 @@ const minHeight = computed({
     >
       <template #icon>
         <svg
-          class="w-4 h-4 mr-2"
+          class="w-4 h-4"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

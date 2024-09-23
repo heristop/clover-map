@@ -7,7 +7,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  transparent: {
+  dark: {
     type: Boolean,
     default: false,
   },
@@ -39,10 +39,9 @@ const buttonClasses = computed(() => {
   return [
     props.fixed ? 'fixed' : '',
     props.position,
-    props.transparent ? 'bg-transparent' : 'bg-stone-100 dark:bg-stone-600',
+    props.dark ? 'text-stone-100 hover:text-white bg-stone-600 hover:bg-stone-500 dark:bg-stone-600 dark:hover:text-stone-200 dark:hover:bg-stone-500' : 'text-stone-600 hover:text-stone-800 bg-stone-100 hover:bg-white dark:bg-stone-700 dark:hover:bg-stone-600 dark:text-stone-100 dark:hover:text-white',
     props.size === 'sm' ? 'p-1' : 'p-2',
-    !props.transparent ? 'rounded shadow-sm' : '',
-    'text-stone-700 hover:text-stone-500 dark:text-stone-50 dark:hover:text-stone-200 hover:bg-opacity-75 z-50 transition-colors duration-300',
+    'transition-colors duration-300 rounded-full shadow-sm',
   ]
 })
 

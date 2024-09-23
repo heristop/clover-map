@@ -23,7 +23,7 @@ test.describe('TreemapFlow Page Tests', () => {
 
   test('Load configuration from URL', async ({ page }) => {
     const urlInput = page.locator('input[placeholder="https://"]')
-    const loadFromUrlButton = page.locator('button[aria-label="Load Configuration from URL"]')
+    const loadFromUrlButton = page.locator('button[aria-label="Load from URL"]')
 
     await expect(loadFromUrlButton).toBeVisible({ timeout: 10000 })
 
@@ -49,7 +49,7 @@ test.describe('TreemapFlow Page Tests', () => {
     await expect(page.locator('html')).toHaveText(/Root/, { timeout: 10000 })
 
     // Click the button to go back to home
-    const resetButton = page.locator('button[aria-label="Go to home"]')
+    const resetButton = page.locator('button[aria-label="Go to Homepage"]')
     await resetButton.click()
   })
 
@@ -63,20 +63,23 @@ test.describe('TreemapFlow Page Tests', () => {
     await fileInput.setInputFiles('public/configs/bug-tracking.json')
 
     // Click the button to trigger the file upload
-    /* await uploadFileButton.click();
+    // await uploadFileButton.click();
 
     // Wait for a reasonable amount of time to ensure the file is uploaded and configuration is loaded
-    await page.waitForTimeout(5000);
+    // await page.waitForTimeout(5000);
 
     // Add assertions to verify the file is uploaded and configuration is loaded
-    await expect(page.locator('text=File Config')).toBeVisible({ timeout: 10000 });
+    // await expect(page.locator('text=File Config')).toBeVisible({ timeout: 10000 });
 
-    const resetButton = page.locator('button[aria-label="Go to home"]')
-    await resetButton.click() */
+    // const resetButton = page.locator('button[aria-label="Go to home"]')
+    // await resetButton.click()
   })
 
   test('Load custom configuration from user input', async ({ page }) => {
-    const loadConfigButton = page.locator('button[aria-label="Load Sample Data"]')
+    const loadConfigTab = page.locator('button[aria-label="Custom Configuration"]')
+    await loadConfigTab.click()
+
+    const loadConfigButton = page.locator('button[aria-label="Load Custom Configuration"]')
 
     // Click the button to load custom configuration from user input
     await loadConfigButton.click()
