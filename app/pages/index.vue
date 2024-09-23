@@ -348,6 +348,7 @@ onMounted(() => {
                       ? 'bg-stone-200 dark:bg-stone-600'
                       : 'border border-dashed border-stone-200/75 hover:bg-stone-100 dark:hover:bg-stone-800',
                   ]"
+                  aria-label="Custom Configuration"
                   @click="activeTab = 'custom'"
                 >
                   Custom Configuration
@@ -515,8 +516,7 @@ onMounted(() => {
                       <TButton
                         :is-active="false"
                         :disabled="isConfigLoading"
-                        class="mt-4 md:mt-0 bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500
-          border-stone-300 dark:border-stone-500 transition-all duration-300"
+                        class="mt-4 md:mt-0 bg-stone-100 dark:bg-stone-600 hover:bg-stone-200 dark:hover:bg-stone-500border-stone-300 dark:border-stone-500 transition-all duration-300"
                         aria-label="Upload File"
                         @click="($refs.fileInput as HTMLInputElement).click()"
                       >
