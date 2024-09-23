@@ -32,7 +32,10 @@ const selectProject = (projectId: string) => {
 }
 
 const handleAction = (action: string) => {
-  if (action === 'upload') {
+  if (action === 'configure') {
+    store.toggleMinimize()
+  }
+  else if (action === 'upload') {
     fileInput.value?.click()
   }
   else if (action === 'export') {
@@ -68,6 +71,9 @@ const confirmDeleteProject = () => {
     }
     else if (projects.value.length > 0 && projects.value[0] !== undefined) {
       selectProject(projects.value[0].id)
+    }
+    else {
+      router.push('/')
     }
   }
 
@@ -214,8 +220,6 @@ onMounted(() => {
             </div>
             <button
               class="text-rose-500 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-600 transition-colors duration-200 ml-2 flex-shrink-0"
-              :disabled="projects.length === 1"
-              :class="{ 'opacity-50 cursor-not-allowed': projects.length === 1 }"
               aria-label="Delete project"
               @click="initiateDelete($event, project.id)"
             >
@@ -272,13 +276,45 @@ onMounted(() => {
     >
       <TButton
         full-width
+        aria-label="Configure Project"
+        class="border-0"
+        @click="() => store.toggleMinimize()"
+      >
+        <template #icon>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </template>
+
+        Configure Project
+      </TButton>
+
+      <TButton
+        full-width
         aria-label="Upload project"
         class="border-0"
         @click="() => fileInput?.click()"
       >
         <template #icon>
           <svg
-            class="w-5 h-5 mr-2"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -304,7 +340,7 @@ onMounted(() => {
       >
         <template #icon>
           <svg
-            class="w-5 h-5 mr-2"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -324,13 +360,13 @@ onMounted(() => {
 
       <TButton
         full-width
-        aria-label="Go to home"
+        aria-label="Go to Homepage"
         class="border-0"
         @click="goToHome"
       >
         <template #icon>
           <svg
-            class="w-5 h-5 mr-2"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -345,7 +381,7 @@ onMounted(() => {
           </svg>
         </template>
 
-        Home
+        Go to Homepage
       </TButton>
     </div>
 
@@ -354,7 +390,7 @@ onMounted(() => {
       class="p-2 border-t border-stone-200 dark:border-stone-600 space-y-2"
     >
       <button
-        v-for="(action, index) in ['upload', 'export', 'home']"
+        v-for="(action, index) in ['configure', 'upload', 'export', 'home']"
         :key="index"
         class="w-full p-2 rounded flex items-center justify-center bg-stone-200 hover:bg-stone-300 dark:bg-stone-600 dark:hover:bg-stone-500 text-stone-700 dark:text-stone-200 transition-colors duration-200"
         @click="handleAction(action)"
@@ -366,8 +402,23 @@ onMounted(() => {
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <template v-if="action === 'configure'">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </template>
+
           <path
-            v-if="action === 'upload'"
+            v-else-if="action === 'upload'"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"

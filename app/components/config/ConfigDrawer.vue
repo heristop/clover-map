@@ -35,7 +35,7 @@ onMounted(() => {
   <transition name="slide-fade">
     <div
       v-if="isPositioned"
-      class=" bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-white shadow-lg text-sm border-r border-white border-opacity-20 transition-all duration-300 flex flex-col"
+      class="bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-white shadow-lg text-sm border-r border-white border-opacity-20 transition-all duration-300 flex flex-col"
       :class="[drawerMinimized ? 'w-12' : 'w-80']"
     >
       <div
@@ -72,30 +72,38 @@ onMounted(() => {
           </button>
         </template>
         <template v-else>
-          <h2 class="text-base text-stone-100 font-bold px-2">
-            Config
-          </h2>
-          <button
-            class="text-white rounded-full text-lg font-bold h-8 w-8 flex items-center justify-center"
-            aria-label="Minimize config"
-            @click="toggleMinimize"
-          >
-            <svg
-              class="w-4 h-4 text-stone-100 hover:text-stone-50 transition duration-200"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          <h3 class="text-base text-stone-100 font-bold px-2">
+            Configuration
+          </h3>
+
+          <div class="flex flex-row items-center justify-center space-x-2">
+            <DarkModeToggle
+              size="sm"
+              dark
+            />
+
+            <button
+              class="text-stone-100 hover:text-white bg-stone-600 hover:bg-stone-500 rounded-full p-1 text-lg font-bold flex items-center justify-center transition duration-200"
+              aria-label="Minimize config"
+              @click="toggleMinimize"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
+              <svg
+                class="w-4 h-4 text-stone-100 hover:text-stone-50 transition duration-200"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+          </div>
         </template>
       </div>
 
@@ -103,13 +111,6 @@ onMounted(() => {
         v-show="!drawerMinimized"
         class="flex-grow overflow-y-auto px-4 py-4"
       >
-        <div class="mb-4 flex justify-end">
-          <DarkModeToggle
-            transparent
-            size="sm"
-          />
-        </div>
-
         <h3 class="text-md font-bold mb-3">
           Progress
         </h3>
@@ -162,7 +163,7 @@ onMounted(() => {
               >
                 <template #icon>
                   <svg
-                    class="w-4 h-4 mr-1"
+                    class="w-4 h-4"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -190,7 +191,7 @@ onMounted(() => {
               >
                 <template #icon>
                   <svg
-                    class="w-4 h-4 mr-1"
+                    class="w-4 h-4"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"

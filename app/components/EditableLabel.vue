@@ -38,6 +38,7 @@ const finishEditing = () => {
     @blur="finishEditing"
     @keyup.enter="finishEditing"
     @keyup.esc="finishEditing"
+    @dbclick="finishEditing"
   >
   <span
     v-else
