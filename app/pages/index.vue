@@ -249,7 +249,7 @@ onMounted(() => {
               >
                 <template #icon>
                   <svg
-                    class="w-5 h-5 mr-2"
+                    class="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -274,7 +274,7 @@ onMounted(() => {
               >
                 <template #icon>
                   <svg
-                    class="w-5 h-5 mr-2"
+                    class="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -372,7 +372,7 @@ onMounted(() => {
                     <template #icon>
                       <svg
                         v-if="!isConfigLoading"
-                        class="w-5 h-5 mr-2"
+                        class="w-5 h-5"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -386,7 +386,7 @@ onMounted(() => {
                       </svg>
                       <svg
                         v-else
-                        class="w-5 h-5 mr-2 animate-spin"
+                        class="w-5 h-5 animate-spin"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -416,23 +416,25 @@ onMounted(() => {
                     aria-label="Load Project Migration Data"
                     @click="loadConfigFromApi('ecom-migration')"
                   >
-                    <svg
-                      class="w-5 h-5 mr-2"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
-                      />
-                    </svg>
+                    <template #icon>
+                      <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                        />
+                      </svg>
+                    </template>
 
                     E-com Migration
                   </TButton>
@@ -443,23 +445,25 @@ onMounted(() => {
                     aria-label="Load Bug Tracking Data"
                     @click="loadConfigFromApi('bug-tracking')"
                   >
-                    <svg
-                      class="w-5 h-5 mr-2"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10 5 9 4V3m5 2 1-1V3m-3 6v11m0-11a5 5 0 0 1 5 5m-5-5a5 5 0 0 0-5 5m5-5a4.959 4.959 0 0 1 2.973 1H15V8a3 3 0 0 0-6 0v2h.027A4.959 4.959 0 0 1 12 9Zm-5 5H5m2 0v2a5 5 0 0 0 10 0v-2m2.025 0H17m-9.975 4H6a1 1 0 0 0-1 1v2m12-3h1.025a1 1 0 0 1 1 1v2M16 11h1a1 1 0 0 0 1-1V8m-9.975 3H7a1 1 0 0 1-1-1V8"
-                      />
-                    </svg>
+                    <template #icon>
+                      <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 5 9 4V3m5 2 1-1V3m-3 6v11m0-11a5 5 0 0 1 5 5m-5-5a5 5 0 0 0-5 5m5-5a4.959 4.959 0 0 1 2.973 1H15V8a3 3 0 0 0-6 0v2h.027A4.959 4.959 0 0 1 12 9Zm-5 5H5m2 0v2a5 5 0 0 0 10 0v-2m2.025 0H17m-9.975 4H6a1 1 0 0 0-1 1v2m12-3h1.025a1 1 0 0 1 1 1v2M16 11h1a1 1 0 0 0 1-1V8m-9.975 3H7a1 1 0 0 1-1-1V8"
+                        />
+                      </svg>
+                    </template>
 
                     Bug Tracking
                   </TButton>
@@ -470,22 +474,24 @@ onMounted(() => {
                     aria-label="Load Recruitment Data"
                     @click="loadConfigFromApi('recruitment')"
                   >
-                    <svg
-                      class="w-5 h-5 mr-2"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-width="2"
-                        d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
-                      />
-                    </svg>
+                    <template #icon>
+                      <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-width="2"
+                          d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+                        />
+                      </svg>
+                    </template>
 
                     Recruitment
                   </TButton>
@@ -523,7 +529,7 @@ onMounted(() => {
                         <template #icon>
                           <svg
                             v-if="!isConfigLoading"
-                            class="w-5 h-5 mr-2"
+                            class="w-5 h-5"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -538,7 +544,7 @@ onMounted(() => {
                           </svg>
                           <svg
                             v-else
-                            class="w-5 h-5 mr-2 animate-spin"
+                            class="w-5 h-5 animate-spin"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -596,7 +602,7 @@ onMounted(() => {
                         <template #icon>
                           <svg
                             v-if="!isConfigLoading"
-                            class="w-5 h-5 mr-2"
+                            class="w-5 h-5"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -611,7 +617,7 @@ onMounted(() => {
                           </svg>
                           <svg
                             v-else
-                            class="w-5 h-5 mr-2 animate-spin"
+                            class="w-5 h-5 animate-spin"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -689,7 +695,7 @@ onMounted(() => {
                   <template #icon>
                     <svg
                       v-if="!isConfigLoading"
-                      class="w-5 h-5 mr-2"
+                      class="w-5 h-5"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -704,7 +710,7 @@ onMounted(() => {
                     </svg>
                     <svg
                       v-else
-                      class="w-5 h-5 mr-2 animate-spin"
+                      class="w-5 h-5 animate-spin"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -742,7 +748,7 @@ onMounted(() => {
                   <!-- GitHub Icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="icon flex-shrink-0 h-5 w-5 mr-2"
+                    class="icon flex-shrink-0 h-5 w-5"
                     viewBox="0 0 24 24"
                   >
                     <path
@@ -764,7 +770,7 @@ onMounted(() => {
                   <!-- StackBlitz Icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="icon flex-shrink-0 h-5 w-5 mr-2"
+                    class="icon flex-shrink-0 h-5 w-5"
                     viewBox="0 0 24 24"
                   >
                     <path
