@@ -44,7 +44,7 @@ onMounted(() => {
       >
         <template v-if="drawerMinimized">
           <button
-            class="text-white rounded-full text-lg font-bold h-8 w-8 flex items-center justify-center"
+            class="text-white rounded-full text-lg font-bold h-6 w-6 flex items-center justify-center"
             aria-label="Expand config"
             @click="toggleMinimize"
           >

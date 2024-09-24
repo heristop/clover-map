@@ -134,45 +134,21 @@ onMounted(() => {
     :class="[panelCollapsed ? 'w-16 relative' : 'w-64 fixed md:relative']"
   >
     <div class="flex justify-between items-center p-4 border-b border-stone-200 dark:border-stone-600">
-      <svg
-        v-if="!panelCollapsed"
-        class="w-8 h-8"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <defs>
-          <linearGradient
-            id="grad1"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop
-              offset="0%"
-              style="stop-color:#DD5E89;stop-opacity:1"
-            />
-            <stop
-              offset="100%"
-              style="stop-color:#F7BB97;stop-opacity:1"
-            />
-          </linearGradient>
-        </defs>
-        <path
-          fill="url(#grad1)"
-          d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5Zm14 18a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4ZM5 11a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H5Zm14 2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h4Z"
-        />
-      </svg>
+      <div class="flex justify-left items-center gap-x-3">
+        <img
+          alt="Clover Map Logo"
+          src="@/assets/logo.svg"
+          class="w-8 h-8"
+          aria-hidden="true"
+        >
 
-      <h2
-        v-if="!panelCollapsed"
-        class="flex flex-col items-center justify-center text-center text-xl font-semibold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]"
-      >
-        Clover Map
-      </h2>
+        <h2
+          v-if="!panelCollapsed"
+          class="flex flex-col items-center justify-center text-center text-xl font-semibold drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]"
+        >
+          Clover Map
+        </h2>
+      </div>
 
       <button
         class="text-rose-500 hover:text-rose-700 dark:text-stroseone-300 dark:hover:text-rose-100 opacity-50 cursor-pointer transition-colors duration-200"

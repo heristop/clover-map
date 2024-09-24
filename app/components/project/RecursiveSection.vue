@@ -49,7 +49,7 @@ const removeNode = () => {
       <input
         :value="section.name"
         type="text"
-        class="text-sm border rounded p-2 text-stone-700 dark:text-stone-300 bg-stone-50 dark:bg-stone-600 w-full focus:ring focus:ring-stone-500 transition-all duration-300"
+        class="text-sm border rounded p-2 text-stone-700 dark:text-stone-300 bg-stone-50 dark:bg-stone-600 w-full focus:ring focus:ring-stone-500/20 transition-all duration-300"
         placeholder="Section Name"
         @input="updateSectionName(($event.target as HTMLInputElement).value)"
       >
@@ -57,7 +57,7 @@ const removeNode = () => {
       <div class="flex items-center space-x-2">
         <select
           :value="section.status"
-          class="text-sm max-w-32 p-2 border rounded text-stone-700 dark:text-stone-300 bg-stone-50 dark:bg-stone-600 focus:ring focus:ring-stone-500 transition-all duration-300"
+          class="text-sm max-w-32 p-2 border rounded text-stone-700 dark:text-stone-300 bg-stone-50 dark:bg-stone-600 focus:ring focus:ring-stone-500/20 transition-all duration-300"
           :style="{ borderColor: getStatusColor(section.status) }"
           @change="updateSectionStatus(($event.target as HTMLSelectElement).value)"
         >
