@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('CloverMap Page Tests', () => {
+test.describe('Clover Map Page Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
   })

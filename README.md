@@ -1,14 +1,14 @@
-# CloverMap
+# Clover Map
 
 ![Logo](/public/logo-80x80.png)
 
-**CloverMap** is a powerful and intuitive project management tool that leverages treemap visualization to give you a clear, hierarchical overview of your projects. It helps you **track, manage, and optimize workflows** with ease, making complex project structures **easier to understand and navigate**. Originally designed for Information System migrations, CloverMap is now a versatile solution for any industry dealing with **multi-level data and intricate hierarchies**.
+**Clover Map** is a powerful and intuitive project management tool that leverages treemap visualization to give you a clear, hierarchical overview of your projects. It helps you **track, manage, and optimize workflows** with ease, making complex project structures **easier to understand and navigate**. Originally designed for Information System migrations, Clover Map is now a versatile solution for any industry dealing with **multi-level data and intricate hierarchies**.
 
-Ready to take control of your projects? **Try CloverMap today and experience seamless project management with treemap visualization!**
+Ready to take control of your projects? **Try Clover Map today and experience seamless project management with treemap visualization!**
 
 ## 🎨 Visual Overview
 
-Here's a sneak peek of **CloverMap** in action:
+Here's a sneak peek of **Clover Map** in action:
 
 ![screenshot](/public/screenshot.jpg?a1)
 
@@ -32,7 +32,7 @@ Explore the interface and see how easy it is to manage complex projects with a v
 
 ## 🛠️ Installation
 
-To install and run **CloverMap** locally, follow these steps:
+To install and run **Clover Map** locally, follow these steps:
 
 1. Clone the repository:
 
@@ -89,7 +89,7 @@ Stay tuned for updates, and feel free to suggest features!
 
 ## 💬 Feedback and Contributions
 
-We highly value your feedback to help improve **CloverMap**! Whether you encounter a bug, have a feature request, or want to contribute code, here’s how you can get involved:
+We highly value your feedback to help improve **Clover Map**! Whether you encounter a bug, have a feature request, or want to contribute code, here’s how you can get involved:
 
 * 💡 **Suggestions**: Open an issue for new feature ideas or improvements.
 * 🐛 **Bug Reports**: If you find any bugs, please open a bug report on the GitHub Issues page.
