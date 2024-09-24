@@ -1,7 +1,5 @@
 # Clover Map
 
-![Logo](/public/logo-80x80.png)
-
 **Clover Map** is a powerful and intuitive project management tool that leverages treemap visualization to give you a clear, hierarchical overview of your projects. It helps you **track, manage, and optimize workflows** with ease, making complex project structures **easier to understand and navigate**. Originally designed for Information System migrations, Clover Map is now a versatile solution for any industry dealing with **multi-level data and intricate hierarchies**.
 
 Ready to take control of your projects? **Try Clover Map today and experience seamless project management with treemap visualization!**
