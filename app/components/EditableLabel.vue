@@ -1,31 +1,49 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
   value: string
   isEditing: boolean
+  isEditMode: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'update:value', value: string): void
   (e: 'update:isEditing', value: boolean): void
+  (e: 'double-click'): void
 }>()
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const inputValue = ref(props.value)
 
-onMounted(() => {
-  if (props.isEditing) {
-    nextTick(() => {
+watch(() => props.isEditing, (newValue) => {
+  if (newValue) {
+    setTimeout(() => {
       inputRef.value?.focus()
       inputRef.value?.select()
     })
   }
 })
 
+watch(() => props.value, (newValue) => {
+  inputValue.value = newValue
+})
+
 const finishEditing = () => {
   emit('update:value', inputValue.value)
   emit('update:isEditing', false)
+}
+
+const cancelEditing = () => {
+  inputValue.value = props.value
+  emit('update:isEditing', false)
+}
+
+const handleDoubleClick = (event: MouseEvent) => {
+  if (!props.isEditMode) {
+    event.stopPropagation()
+    emit('double-click')
+  }
 }
 </script>
 
@@ -37,42 +55,13 @@ const finishEditing = () => {
     class="edit-input"
     @blur="finishEditing"
     @keyup.enter="finishEditing"
-    @keyup.esc="finishEditing"
-    @dbclick="finishEditing"
+    @keyup.esc="cancelEditing"
   >
   <span
     v-else
     class="node-text cursor-text"
-    @click="$emit('update:isEditing', true)"
+    @dblclick="handleDoubleClick"
   >
     {{ value }}
   </span>
 </template>
-
-<style scoped>
-.edit-input {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-bottom: 1px solid white;
-  color: white;
-  outline: none;
-  transition: all 0.3s;
-  padding: 2px 4px;
-  border-radius: 2px;
-}
-
-.edit-input:focus {
-  background: rgba(255, 255, 255, 0.2);
-  border-bottom: 2px solid white;
-  outline: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.node-text {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>

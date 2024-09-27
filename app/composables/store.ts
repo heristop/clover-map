@@ -19,12 +19,6 @@ export const pastelColors = [
   '#D4A5A5', // Light Rose
   '#FFD1DC', // Light Pinkish
   '#B2B2B2', // Light Gray
-  '#FF6961', // Pastel Red
-  '#F49AC2', // Pastel Pink
-  '#77DD77', // Pastel Green
-  '#AEC6CF', // Pastel Blue
-  '#CFCFC4', // Pastel Gray
-  '#B19CD9', // Pastel Lilac
 ]
 
 type State = {

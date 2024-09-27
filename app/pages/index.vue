@@ -139,7 +139,7 @@ onMounted(() => {
           appear
         >
           <div class="text-center space-y-8 py-16">
-            <h1 class="flex flex-col items-center justify-center text-center text-4xl font-bold mb-10 drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]">
+            <h1 class="flex flex-row items-center justify-center text-center text-4xl font-bold mb-10 drop-shadow-lg bg-clip-text text-transparent bg-gradient-to-r from-[#DD5E89] to-[#F7BB97]">
               <img
                 alt="Clover Map Logo"
                 src="@/assets/logo.svg"

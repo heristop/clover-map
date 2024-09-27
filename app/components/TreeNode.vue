@@ -37,8 +37,11 @@ const displayContent = computed({
   },
 })
 
+const isDraggable = computed(() => !store.isEditingMode && !isEditing.value)
+
 const handleLabelUpdate = (newValue: string) => {
   displayContent.value = newValue
+  isEditing.value = false
 }
 
 watch(() => store.displayLabel, () => {
@@ -97,6 +100,12 @@ const getUniqueKeyName = (base: string, type: 'key' | 'name') => {
   return newName
 }
 
+const handleLabelDoubleClick = () => {
+  if (!store.isEditingMode) {
+    isEditing.value = true
+  }
+}
+
 const addChildNode = (event: MouseEvent) => {
   event.stopPropagation()
 
@@ -142,6 +151,11 @@ const deleteNode = (event: MouseEvent) => {
 }
 
 const handleDragStart = (event: DragEvent) => {
+  if (!isDraggable.value) {
+    event.preventDefault()
+    return
+  }
+
   if (isDragging.value) {
     return
   }
@@ -151,6 +165,11 @@ const handleDragStart = (event: DragEvent) => {
 }
 
 const handleDrop = (event: DragEvent) => {
+  if (store.isEditingMode) {
+    event.preventDefault()
+    return
+  }
+
   event.preventDefault()
   event.stopPropagation()
   const draggedKey = event.dataTransfer?.getData('text/plain')
@@ -161,21 +180,14 @@ const handleDrop = (event: DragEvent) => {
 }
 
 const handleDragOver = (event: DragEvent) => {
-  event.preventDefault()
+  if (!store.isEditingMode) {
+    event.preventDefault()
+  }
 }
 
 const handleTitleClick = (event: MouseEvent) => {
   event.stopPropagation()
 }
-
-watch(() => [props.node.status, store.statuses], () => {
-  nodeStatus.value = props.node.status || store.statuses[0]?.name || ''
-  checkIfSuccessNode(props.node)
-}, { immediate: true })
-
-onMounted(() => {
-  updateParentStatus()
-})
 
 const nodeStyle = computed(() => {
   const baseFlex = 1
@@ -193,7 +205,6 @@ const handleClick = (event: MouseEvent) => {
 
   if (!props.node.children || !props.node.children.length) {
     updateStatus()
-
     return
   }
 }
@@ -232,6 +243,15 @@ const applySuccessAnimation = (node: Section) => {
   applyToParents(node)
   isSuccessNode.value = true
 }
+
+watch(() => [props.node.status, store.statuses], () => {
+  nodeStatus.value = props.node.status || store.statuses[0]?.name || ''
+  checkIfSuccessNode(props.node)
+}, { immediate: true })
+
+onMounted(() => {
+  updateParentStatus()
+})
 </script>
 
 <template>
@@ -240,7 +260,7 @@ const applySuccessAnimation = (node: Section) => {
     :class="{ 'success-animation': isSuccessNode }"
     :style="nodeStyle"
     :data-node-key="node.key"
-    :draggable="!store.isEditingMode && !isEditing"
+    :draggable="isDraggable"
     @dragstart="handleDragStart"
     @drop="handleDrop"
     @dragover="handleDragOver"
@@ -295,12 +315,12 @@ const applySuccessAnimation = (node: Section) => {
       </span>
 
       <EditableLabel
-        :key="store.displayLabel"
         :value="displayContent"
         :is-editing="isEditing"
-        class="truncate dark:text-stone-100"
+        :is-edit-mode="store.isEditingMode"
         @update:value="handleLabelUpdate"
         @update:is-editing="isEditing = $event"
+        @double-click="handleLabelDoubleClick"
       />
 
       <div
