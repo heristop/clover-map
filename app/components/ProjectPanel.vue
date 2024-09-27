@@ -506,7 +506,6 @@ onMounted(() => {
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
       <div class="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-xl w-full max-w-lg relative">
-        <!-- Bouton pour fermer la modale -->
         <button
           class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 dark:text-stone-300 dark:hover:text-white transition-colors duration-300"
           aria-label="Close Modal"
