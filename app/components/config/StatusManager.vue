@@ -203,7 +203,7 @@ const closeColorPicker = () => {
         />
         <button
           :disabled="safeStatuses.length <= 1"
-          class="p-1 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-stone-300"
+          class="p-1 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-stone-300"
           aria-label="Remove status"
           @click="removeStatus(index)"
         >
@@ -248,7 +248,7 @@ const closeColorPicker = () => {
     />
     <button
       :disabled="!newStatus.name || !newStatus.color"
-      class="p-1 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-stone-300"
+      class="p-1 rounded-full bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-stone-300"
       aria-label="Add new status"
       @click="addNewStatus"
     >
@@ -281,7 +281,7 @@ const closeColorPicker = () => {
               Choose a Color
             </h3>
             <button
-              class="text-stone-400 hover:text-stone-600 dark:text-stone-300 dark:hover:text-white transition-colors duration-300"
+              class="text-stone-400 hover:text-stone-600 dark:text-stone-300 dark:hover:text-white cursor-pointer transition-colors duration-300"
               aria-label="Close Color Picker"
               @click="closeColorPicker"
             >
@@ -306,7 +306,7 @@ const closeColorPicker = () => {
             <button
               v-for="color in pastelColors"
               :key="color"
-              class="w-full pt-full rounded-full border border-stone-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 transition-transform duration-200 hover:scale-110"
+              class="w-full pt-full rounded-full border border-stone-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 transition-transform duration-200 hover:scale-110"
               :style="{ backgroundColor: color }"
               :aria-label="`Select color ${color}`"
               @click="updateStatusColor(color)"

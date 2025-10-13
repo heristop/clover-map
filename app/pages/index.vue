@@ -273,6 +273,7 @@ onMounted(() => {
               <!-- Tab Navigation -->
               <div class="flex flex-col md:flex-row md:space-x-4 mb-6">
                 <button
+                  class="cursor-pointer"
                   :class="[
                     ' flex-1 py-2 px-4 rounded-t-lg font-medium transition-colors duration-200',
                     activeTab === 'sample'
@@ -284,6 +285,7 @@ onMounted(() => {
                   Sample Data
                 </button>
                 <button
+                  class="cursor-pointer"
                   :class="[
                     'flex-1 py-2 px-4 rounded-t-lg font-medium transition-colors duration-200',
                     activeTab === 'custom'

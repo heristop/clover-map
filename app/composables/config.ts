@@ -50,7 +50,7 @@ export function useConfig() {
       createProject(model, sections)
       router.push(`/projects/${store.currentProject?.id}`)
     }
-    catch (error) {
+    catch {
       snackbar.add({
         type: 'error',
         title: 'Error loading data from model.',
@@ -79,7 +79,7 @@ export function useConfig() {
 
           return true
         }
-        catch (error) {
+        catch {
           displayInvalidDataError()
 
           return false
@@ -130,7 +130,7 @@ export function useConfig() {
 
       return true
     }
-    catch (error) {
+    catch {
       snackbar.add({
         type: 'error',
         title: 'Error fetching data. Please check the URL and try again.',
@@ -155,8 +155,7 @@ export function useConfig() {
 
       return true
     }
-    catch (error) {
-      console.log(error)
+    catch {
       displayInvalidDataError()
 
       return false

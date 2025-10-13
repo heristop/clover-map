@@ -50,7 +50,7 @@ const stateClasses = computed(() => {
 })
 
 const buttonClasses = computed(() => [
-  'flex items-center justify-center rounded shadow transition-all duration-200',
+  'flex items-center justify-center rounded shadow transition-all duration-200 cursor-pointer',
   'focus:ring-2 focus:ring-offset-2 focus:ring-stone-500/20',
   sizeClasses.value,
   stateClasses.value,

@@ -44,7 +44,7 @@ onMounted(() => {
       >
         <template v-if="drawerMinimized">
           <button
-            class="text-white rounded-full text-lg font-bold h-6 w-6 flex items-center justify-center"
+            class="text-white rounded-full text-lg font-bold h-6 w-6 flex items-center justify-center cursor-pointer"
             aria-label="Expand config"
             @click="toggleMinimize"
           >
@@ -83,7 +83,7 @@ onMounted(() => {
             />
 
             <button
-              class="text-stone-100 hover:text-white bg-stone-600 hover:bg-stone-500 rounded-full p-1 text-lg font-bold flex items-center justify-center transition duration-200"
+              class="text-stone-100 hover:text-white bg-stone-600 hover:bg-stone-500 rounded-full p-1 text-lg font-bold flex items-center justify-center cursor-pointer transition duration-200"
               aria-label="Minimize config"
               @click="toggleMinimize"
             >
