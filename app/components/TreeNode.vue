@@ -328,7 +328,7 @@ onMounted(() => {
         class="flex ml-4 space-x-2"
       >
         <button
-          class="p-1 rounded-full bg-black/10 dark:bg-black/10"
+          class="p-1 rounded-full bg-black/10 dark:bg-black/10 cursor-pointer"
           @click.stop="addSiblingNode"
         >
           <svg
@@ -349,7 +349,7 @@ onMounted(() => {
         </button>
 
         <button
-          class="p-1 rounded-full bg-black/10 dark:bg-black/10"
+          class="p-1 rounded-full bg-black/10 dark:bg-black/10 cursor-pointer"
           @click.stop="addChildNode"
         >
           <svg
@@ -371,7 +371,7 @@ onMounted(() => {
 
         <button
           :disabled="store.sections.length === 1 && !store.hasParent(props.node.key)"
-          class="p-1 rounded-full bg-black/10 dark:bg-black/10 disabled:opacity-40"
+          class="p-1 rounded-full bg-black/10 dark:bg-black/10 disabled:opacity-40 cursor-pointer"
           @click.stop="deleteNode"
         >
           <svg

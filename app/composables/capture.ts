@@ -44,7 +44,7 @@ export function useTreemapCapture() {
     })
 
     try {
-      treemapElement.offsetHeight // Force layout recalculation
+      void treemapElement.offsetHeight // Force layout recalculation
 
       const dataUrl = await domtoimage.toPng(treemapElement, {
         height: contentHeight,

@@ -41,7 +41,7 @@ const buttonClasses = computed(() => {
     props.position,
     props.dark ? 'text-stone-100 hover:text-white bg-stone-600 hover:bg-stone-500 dark:bg-stone-600 dark:hover:text-stone-200 dark:hover:bg-stone-500' : 'text-stone-600 hover:text-stone-800 bg-stone-100 hover:bg-white dark:bg-stone-700 dark:hover:bg-stone-600 dark:text-stone-100 dark:hover:text-white',
     props.size === 'sm' ? 'p-1' : 'p-2',
-    'transition-colors duration-300 rounded-full shadow-sm',
+    'transition-colors duration-300 rounded-full shadow-sm cursor-pointer',
   ]
 })
 

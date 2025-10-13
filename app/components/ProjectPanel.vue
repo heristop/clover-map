@@ -229,7 +229,7 @@ onMounted(() => {
               </span>
             </div>
             <button
-              class="text-rose-500 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-600 transition-colors duration-200 ml-2 flex-shrink-0"
+              class="text-rose-500 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-600 transition-colors duration-200 ml-2 flex-shrink-0 cursor-pointer"
               aria-label="Delete project"
               @click="initiateDelete($event, project.id)"
             >
@@ -258,7 +258,7 @@ onMounted(() => {
       class="flex-grow flex flex-col items-center space-y-4 p-2"
     >
       <button
-        class="w-10 h-10 rounded-full flex items-center justify-center bg-stone-300 hover:bg-stone-400 dark:bg-stone-500 dark:hover:bg-stone-400 text-stone-800 dark:text-stone-100 transition-colors duration-200"
+        class="w-10 h-10 rounded-full flex items-center justify-center bg-stone-300 hover:bg-stone-400 dark:bg-stone-500 dark:hover:bg-stone-400 text-stone-800 dark:text-stone-100 transition-colors duration-200 cursor-pointer"
         @click="openAddProjectModal"
       >
         <svg
@@ -279,7 +279,7 @@ onMounted(() => {
       <button
         v-for="project in sortedProjects"
         :key="project.id"
-        class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200"
+        class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer"
         :class="[
           project.id === currentProjectId
             ? 'bg-stone-300 dark:bg-stone-500 text-stone-800 dark:text-stone-100'
@@ -421,7 +421,7 @@ onMounted(() => {
       <button
         v-for="(action, index) in ['configure', 'upload', 'export', 'home']"
         :key="index"
-        class="w-full p-2 rounded flex items-center justify-center bg-stone-200 hover:bg-stone-300 dark:bg-stone-600 dark:hover:bg-stone-500 text-stone-700 dark:text-stone-200 transition-colors duration-200"
+        class="w-full p-2 rounded flex items-center justify-center bg-stone-200 hover:bg-stone-300 dark:bg-stone-600 dark:hover:bg-stone-500 text-stone-700 dark:text-stone-200 transition-colors duration-200 cursor-pointer"
         @click="handleAction(action)"
       >
         <svg
@@ -485,13 +485,13 @@ onMounted(() => {
         </p>
         <div class="flex justify-end space-x-2">
           <button
-            class="px-4 py-2 bg-stone-300 text-stone-800 rounded hover:bg-stone-400 transition-colors duration-200"
+            class="px-4 py-2 bg-stone-300 text-stone-800 rounded hover:bg-stone-400 transition-colors duration-200 cursor-pointer"
             @click="cancelDelete"
           >
             Cancel
           </button>
           <button
-            class="px-4 py-2 bg-rose-500 text-white rounded hover:bg-rose-600 transition-colors duration-200"
+            class="px-4 py-2 bg-rose-500 text-white rounded hover:bg-rose-600 transition-colors duration-200 cursor-pointer"
             @click="confirmDeleteProject"
           >
             Delete
@@ -507,7 +507,7 @@ onMounted(() => {
     >
       <div class="bg-white dark:bg-stone-800 p-6 rounded-lg shadow-xl w-full max-w-lg relative">
         <button
-          class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 dark:text-stone-300 dark:hover:text-white transition-colors duration-300"
+          class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 dark:text-stone-300 dark:hover:text-white transition-colors duration-300 cursor-pointer"
           aria-label="Close Modal"
           @click="closeAddProjectModal"
         >

@@ -1,20 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  future: {
-    compatibilityVersion: 4,
-  },
-
-  devtools: { enabled: true },
 
   modules: [
     '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
-    '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/google-fonts',
     'nuxt-snackbar',
     '@nuxt/test-utils',
   ],
+
+  devtools: { enabled: true },
 
   app: {
     head: {
@@ -26,22 +23,22 @@ export default defineNuxtConfig({
       },
       meta: [
         {
-          hid: 'description',
+          key: 'description',
           name: 'description',
           content: 'Boost your productivity with Clover Map, the innovative visual workflow management tool. Organize, track, and streamline your tasks with intuitive treemap visualizations. Simplify project management and achieve more, faster!',
         },
         {
-          hid: 'apple-mobile-web-app-title',
+          key: 'apple-mobile-web-app-title',
           name: 'apple-mobile-web-app-title',
           content: 'Clover Map',
         },
         {
-          hid: 'application-name',
+          key: 'application-name',
           name: 'application-name',
           content: 'Clover Map',
         },
         {
-          hid: 'msapplication-TileColor',
+          key: 'msapplication-TileColor',
           name: 'msapplication-TileColor',
         },
       ],
@@ -69,37 +66,34 @@ export default defineNuxtConfig({
     },
   },
 
-  googleFonts: {
-    families: {
-      Nunito: true,
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3000',
+    },
+  },
+
+  sourcemap: {
+    client: false,
+    server: false,
+  },
+
+  compatibilityDate: '2024-07-04',
+
+  nitro: {
+    preset: process.env.NITRO_PRESET || 'cloudflare-pages',
+    // Cloudflare-specific configuration
+    rollupConfig: {
+      external: ['oxc-parser'],
     },
   },
 
   postcss: {
     plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-      cssnano:
+      '@tailwindcss/postcss': {},
+      'cssnano':
         process.env.NODE_ENV === 'production'
           ? { preset: ['default', { discardComments: { removeAll: true } }] }
           : false,
-    },
-  },
-
-  tailwindcss: {
-    config: {
-      darkMode: 'class', // or 'media'
-      theme: {
-        extend: {
-          colors: {},
-        },
-      },
-    },
-  },
-
-  runtimeConfig: {
-    public: {
-      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3000',
     },
   },
 
@@ -112,5 +106,17 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2024-07-04',
+  googleFonts: {
+    families: {
+      Nunito: true,
+    },
+  },
+
+  pinia: {
+    storesDirs: ['./app/composables/**'],
+    autoImports: [
+      'defineStore',
+      'storeToRefs',
+    ],
+  },
 })

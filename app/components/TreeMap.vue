@@ -6,7 +6,7 @@ import ConfigDrawer from '~/components/config/ConfigDrawer.vue'
 import { useStore } from '~/composables/store'
 import { useProjects } from '~/composables/project'
 
-const chart = ref < HTMLElement | null > (null)
+const chart = ref <HTMLElement | null> (null)
 const store = useStore()
 const { currentProject, renameProject } = useProjects()
 
@@ -61,7 +61,7 @@ const cancelEdit = () => {
             @keyup.esc="cancelEdit"
           >
           <button
-            class="ml-2 text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
+            class="ml-2 text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 cursor-pointer"
             aria-label="Save project name"
             @click="saveEdit"
           >
@@ -82,7 +82,7 @@ const cancelEdit = () => {
           </button>
 
           <button
-            class="ml-2 text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300"
+            class="ml-2 text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 cursor-pointer"
             aria-label="Cancel editing"
             @click="cancelEdit"
           >
@@ -107,7 +107,7 @@ const cancelEdit = () => {
           <span @dblclick="startEditing">{{ currentProject.name }}</span>
 
           <button
-            class="ml-2 text-stone-600 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200"
+            class="ml-2 text-stone-600 hover:text-stone-700 dark:text-stone-300 dark:hover:text-stone-200 cursor-pointer"
             aria-label="Edit project name"
             @click="startEditing"
           >

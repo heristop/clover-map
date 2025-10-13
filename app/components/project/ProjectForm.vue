@@ -34,7 +34,7 @@ const loadConfigFromUserInput = async () => {
     await loadFromUserInput(jsonPreview.value)
     sampleError.value = ''
   }
-  catch (error) {
+  catch {
     sampleError.value = 'Invalid JSON format'
   }
   finally {

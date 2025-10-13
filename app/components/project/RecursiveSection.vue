@@ -72,7 +72,7 @@ const removeNode = () => {
 
         <div class="flex space-x-1">
           <button
-            class="text-stone-500 hover:text-stone-600 dark:text-stone-400 dark:hover:text-stone-200 transition-colors duration-300 p-1"
+            class="text-stone-500 hover:text-stone-600 dark:text-stone-400 dark:hover:text-stone-200 transition-colors duration-300 p-1 cursor-pointer"
             @click="addSibling"
           >
             <svg
@@ -91,7 +91,7 @@ const removeNode = () => {
           </button>
 
           <button
-            class="text-stone-500 hover:text-stone-600 dark:text-stone-400 dark:hover:text-stone-200 transition-colors duration-300 p-1"
+            class="text-stone-500 hover:text-stone-600 dark:text-stone-400 dark:hover:text-stone-200 transition-colors duration-300 p-1 cursor-pointer"
             @click="addChild"
           >
             <svg
@@ -112,7 +112,7 @@ const removeNode = () => {
           </button>
 
           <button
-            class="text-stone-500 hover:text-stone-600 dark:text-stone-400 dark:hover:text-stone-200 transition-colors duration-300 p-1"
+            class="text-stone-500 hover:text-stone-600 dark:text-stone-400 dark:hover:text-stone-200 transition-colors duration-300 p-1 cursor-pointer"
             @click="removeNode"
           >
             <svg

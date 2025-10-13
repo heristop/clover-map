@@ -53,9 +53,7 @@ export const useStore = defineStore('store', {
     darkMode: false,
     isEditingMode: false,
   }),
-  persist: {
-    storage: persistedState.localStorage,
-  },
+  persist: true,
   actions: {
     addProject(project: Project, sections: Section[] = []) {
       this.projects.push(project)
